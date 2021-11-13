@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/owner/tenants/tenants_screen.dart';
+import 'package:gharbeti_ui/screens/tenant/home_screen_registered.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/signup/screen/signup_screen.dart';
+
+final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
 class LoginScreen extends StatefulWidget {
   static String route = '/loginScreen';
@@ -59,8 +64,9 @@ class StartState extends State<LoginScreen> {
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius:
-                    BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15)),
               ),
               child: _createLoginBody(),
             ),
@@ -91,7 +97,10 @@ class StartState extends State<LoginScreen> {
             //border: Border.all(color: new Color(0xff09548c), width: 1),
             color: Colors.grey[200],
             boxShadow: const [
-              BoxShadow(offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
+              BoxShadow(
+                  offset: Offset(0, 10),
+                  blurRadius: 50,
+                  color: Color(0xffEEEEEE)),
             ],
           ),
           child: TextField(
@@ -118,7 +127,10 @@ class StartState extends State<LoginScreen> {
             //border: Border.all(color: new Color(0xff09548c), width: 1),
             color: const Color(0xffEEEEEE),
             boxShadow: const [
-              BoxShadow(offset: Offset(0, 20), blurRadius: 100, color: Color(0xffEEEEEE)),
+              BoxShadow(
+                  offset: Offset(0, 20),
+                  blurRadius: 100,
+                  color: Color(0xffEEEEEE)),
             ],
           ),
           child: TextField(
@@ -157,6 +169,9 @@ class StartState extends State<LoginScreen> {
             // checkLogin(email, pass);
           },
           child: InkWell(
+            onTap: () async{
+              checkLogin(_email.text.toString(), _password.text.toString());
+            },
             child: Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.only(left: 20, right: 20, top: 50),
@@ -166,7 +181,10 @@ class StartState extends State<LoginScreen> {
                 color: const Color(0xff09548c),
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: const [
-                  BoxShadow(offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
+                  BoxShadow(
+                      offset: Offset(0, 10),
+                      blurRadius: 50,
+                      color: Color(0xffEEEEEE)),
                 ],
               ),
               child: const Text(
@@ -188,7 +206,8 @@ class StartState extends State<LoginScreen> {
                   style: TextStyle(color: Color(0xff09548c)),
                 ),
                 onTap: () {
-                  Navigator.pushNamed(context, SignUpScreen.route); // Write Tap Code Here.
+                  Navigator.pushNamed(
+                      context, SignUpScreen.route); // Write Tap Code Here.
                 },
               )
             ],
@@ -198,45 +217,67 @@ class StartState extends State<LoginScreen> {
     );
   }
 
-  // void checkLogin(String email, String pass) async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-  //   if (email.isEmpty && pass.isEmpty) {
-  //     setState(() {
-  //       isLoading = false;
-  //     });
-  //     showErrorMessage("Email and password can not be empty", context);
-  //   } else if (email.isEmpty) {
-  //     setState(() {
-  //       isLoading = false;
-  //     });
-  //     showErrorMessage("Email can not be empty", context);
-  //   } else if (pass.isEmpty) {
-  //     setState(() {
-  //       isLoading = false;
-  //     });
-  //     showErrorMessage("Password can not be empty", context);
-  //   } else
-  //     try {
-  //       final user = await AuthService.loginWithEmail(email, pass, context);
-  //       setState(() {
-  //         isLoading = false;
-  //       });
-  //       if (user != null) {
-  //         if (user.emailVerified) {
-  //           final pref = await SharedPreferences.getInstance();
-  //           pref.setBool('login', true);
-  //           Navigator.of(context).pushReplacementNamed(HomepageScreen.route);
-  //         } else
-  //           showErrorMessage("Please verify your email for login", context);
-  //       } else {
-  //         showErrorMessage("Invalid email or password", context);
-  //       }
-  //     } catch (e) {
-  //       print(e);
-  //     }
-  // }
+  void checkLogin(String email, String pass) async {
+    setState(() {
+      isLoading = true;
+    });
+    if (email.isEmpty && pass.isEmpty) {
+      setState(() {
+        isLoading = false;
+      });
+      showErrorMessage("Email and password can not be empty", context);
+    } else if (email.isEmpty) {
+      setState(() {
+        isLoading = false;
+      });
+      showErrorMessage("Email can not be empty", context);
+    } else if (pass.isEmpty) {
+      setState(() {
+        isLoading = false;
+      });
+      showErrorMessage("Password can not be empty", context);
+    } else {
+      var type = "";
+      var query = _fireStore.collection('Users').get();
+      await query.then((value) {
+        Map<String, dynamic> addUser = {};
+        if (value.docs.isEmpty) {
+          //Please  Register
+        } else {
+          var count = 0;
+          for (int i = 0; i < value.docs.length; i++) {
+            var emailDatabase = value.docs[i]["Email"];
+            var passwordDatabase = value.docs[i]["Password"];
+            if (email == emailDatabase && pass == passwordDatabase) {
+              type = value.docs[i]["Type"];
+              count += 1;
+              break;
+            }
+          }
+          if (count > 0) {
+            setState(() {
+              isLoading = false;
+            });
+            if(type=="tenant"){
+              Navigator.pushNamed(
+                  context, HomeScreenRegistered.route);
+            }
+            else{
+              Navigator.pushNamed(
+                  context, SignUpScreen.route);
+            }
+          } else {
+            setState(() {
+              isLoading = false;
+            });
+            showErrorMessage("Invalid email or password", context);
+
+            //show Invalid email and password Message
+          }
+        }
+      });
+    }
+  }
 
   Widget showErrorMessage(String message, BuildContext context) {
     Future.delayed(const Duration(milliseconds: 100), () {

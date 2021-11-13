@@ -368,7 +368,7 @@ class InitState extends State<SignUpScreen> {
             break;
           }
         }
-        if (count > 1) {
+        if (count > 0) {
           setState(() {
             isLoading = false;
           });

@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 
 class HomeScreenRegistered extends StatefulWidget {
+  static String route = '/homeScreenRegistered';
+
   const HomeScreenRegistered({Key? key}) : super(key: key);
 
   @override

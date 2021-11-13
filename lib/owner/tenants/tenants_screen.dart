@@ -6,6 +6,7 @@ import 'package:gharbeti_ui/owner/tenants/tenant_detail.dart';
 import 'add_tenants_screen.dart';
 
 class TenantsScreen extends StatefulWidget {
+  static String route = '/tenantScreen';
   const TenantsScreen({Key? key}) : super(key: key);
 
   @override
