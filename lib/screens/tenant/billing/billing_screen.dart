@@ -10,17 +10,20 @@ class BillingScreen extends StatefulWidget {
 }
 
 class _BillingScreenState extends State<BillingScreen> {
-  int dueBalance = 8000;
+  int totalDueBalance = 8000;
+  int monthlyRent = 4000;
   String status = 'Paid';
-  late String balance = dueBalance.toString();
-  String month = 'Kartik';
+  String tenantName = 'Sarthak Shrestha';
+  String paymentOption = 'Khalti';
+
+  String rentMonth = 'October';
   final List<String> entries = <String>[
-    'Baishak',
-    'Jestha',
-    'Ashar',
-    'Shrawan',
-    'Bhadra',
-    'Ashwin',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
   ];
   String paymentStatus = 'Complete';
 
@@ -28,157 +31,348 @@ class _BillingScreenState extends State<BillingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(240, 240, 240, 1),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(
-          Icons.filter_list_alt,
-          color: Colors.white,
-        ),
-        backgroundColor: Color(0xff09548c),
-      ), // appBar: ReusableWidgets.getAppBar(title),
       body: SafeArea(
-        child: Column(
-          children: [
-            //First Container
-            Container(
-              color: Colors.white,
-              margin: EdgeInsets.fromLTRB(10, 15.0, 10, 10),
-              padding: EdgeInsets.fromLTRB(0, 15.0, 0, 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text('Balance Due'),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    'Rs. ' + balance + '.00',
-                    style: TextStyle(
-                      color: Color(0xff09548c),
-                      fontWeight: FontWeight.w500,
-                      fontSize: 25,
+        child: Container(
+          margin: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //First Container
+              Container(
+                color: Colors.white,
+                padding: EdgeInsets.fromLTRB(0, 15.0, 0, 0),
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('Balance Due'),
+                    SizedBox(
+                      height: 5,
                     ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Status: '),
-                      Text(
-                        status,
-                        style: TextStyle(
-                          color: status == 'Paid' ? Colors.green : Colors.red,
-                        ),
+                    Text(
+                      'Rs. ' + totalDueBalance.toString() + '.00',
+                      style: TextStyle(
+                        color: Color(0xff09548c),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 25,
                       ),
-                    ],
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      primary: Colors.white, // <-- Button color
                     ),
-                    child: Container(
-                      height: 35,
-                      color: Colors.deepOrangeAccent,
-                      child: Center(
-                        child: Text(
-                          'Pay Now',
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Status: '),
+                        Text(
+                          status,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: status == 'Paid' ? Colors.green : Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    InkWell(
+                      onTap: (
+                          //ROUTE TO PAY NOW HERE!!
+                          ) {},
+                      child: Container(
+                        height: 35,
+                        color: Colors.deepOrangeAccent,
+                        child: Center(
+                          child: Text(
+                            'Pay Now',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ), //Balance Due //First Container
-            // Second Container
-            Expanded(
-              child: ListView.separated(
-                shrinkWrap: true,
-                physics: BouncingScrollPhysics(),
-                separatorBuilder: (BuildContext context, int index) => Divider(
-                  height: 0.1,
-                  indent: 0,
-                  thickness: 0.1,
+                  ],
                 ),
-                itemCount: entries.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    color: Colors.white,
-                    margin: EdgeInsets.fromLTRB(10, 0.0, 10, 10),
-                    padding: EdgeInsets.all(10.0),
-                    child: Row(
+              ), //Balance Due //First Container
+              // Pending Bills
+              Text(
+                'Pending Bills',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                color: Colors.white,
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  children: [
+                    //Monthly Rent and PDF
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Rs. ' + balance + '.00',
+                              'Rs. ' + monthlyRent.toString(),
                               style: TextStyle(
                                 color: Color(0xff09548c),
-                                fontWeight: FontWeight.w500,
                               ),
                             ),
                             SizedBox(
                               height: 5,
                             ),
                             Text(
-                              // ignore: prefer_adjacent_string_concatenation
-                              'Monthly Rent: ' + entries[index],
+                              'Rent Month: ' + rentMonth,
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text('Payment System'),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text('Payment Status'),
                           ],
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          // ignore: prefer_const_literals_to_create_immutables
-                          children: [
-                            IconButton(
-                              iconSize: 35,
-                              padding: EdgeInsets.all(10),
-                              icon: Icon(
-                                Icons.picture_as_pdf,
-                                color: Color(0xff09548c),
-                              ),
-                              onPressed: () {},
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text('Online Payment'), //Type of Payment
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              paymentStatus,
-                              style: TextStyle(
-                                color: paymentStatus == 'Complete'
-                                    ? Colors.green
-                                    : Colors.red,
-                              ),
-                            ),
-                          ],
+                        IconButton(
+                          icon: Icon(
+                            Icons.picture_as_pdf,
+                            size: 33,
+                            color: Color(0xff09548c),
+                          ),
+                          onPressed: () {
+                            //ROUTE TO PDF PAGE HERE
+                          },
                         ),
                       ],
                     ),
-                  );
-                },
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.deepOrangeAccent,
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            //Add room Function
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Text(
+                              'Pay Now',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              SizedBox(height: 10),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: InkWell(
+                  onTap: () {
+                    //ROUTE TO PENDING BILLS
+                  },
+                  child: Text(
+                    'View All >>',
+                    style: TextStyle(
+                      color: Color(0xff09548c),
+                    ),
+                  ),
+                ),
+              ),
+
+              //RECENT PAYMENT
+              Text(
+                'Recent Payment',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                color: Colors.white,
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  children: [
+                    //Monthly Rent and PDF
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Rs. ' + monthlyRent.toString(),
+                              style: TextStyle(
+                                color: Color(0xff09548c),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              'Rent Month: ' + rentMonth,
+                            ),
+                          ],
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.picture_as_pdf,
+                            size: 35,
+                            color: Color(0xff09548c),
+                          ),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Payment Option',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                        Text(
+                          paymentOption,
+                          style: TextStyle(
+                            color: Color(0xff09548c),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Payment Status',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                        Text(
+                          paymentStatus,
+                          style: TextStyle(
+                            color: paymentStatus == 'Complete' ? Colors.green : Colors.orange,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                color: Colors.white,
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  children: [
+                    //Monthly Rent and PDF
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Rs. ' + monthlyRent.toString(),
+                              style: TextStyle(
+                                color: Color(0xff09548c),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              'Rent Month: ' + rentMonth,
+                            ),
+                          ],
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.picture_as_pdf,
+                            size: 35,
+                            color: Color(0xff09548c),
+                          ),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Payment Option',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                        Text(
+                          paymentOption,
+                          style: TextStyle(
+                            color: Color(0xff09548c),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Payment Status',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                        Text(
+                          paymentStatus,
+                          style: TextStyle(
+                            color: paymentStatus == 'Complete' ? Colors.green : Colors.orange,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: InkWell(
+                  onTap: () {
+                    //ROUTE TO RECENT PAYMENT
+                  },
+                  child: Text(
+                    'View All >>',
+                    style: TextStyle(
+                      color: Color(0xff09548c),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
