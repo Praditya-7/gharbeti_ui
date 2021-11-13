@@ -1,4 +1,4 @@
-package com.example.gharbeti_ui
+package com.prime.gharbeti
 
 import io.flutter.embedding.android.FlutterActivity
 

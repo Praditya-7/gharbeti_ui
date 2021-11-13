@@ -6,6 +6,6 @@ class Routes {
   static var routes = {
     LoginScreen.route: (ctx) => const LoginScreen(),
     SplashScreen.route: (ctx) => const SplashScreen(),
-    SignUpScreen.route: (ctx) => SignUpScreen(),
+    SignUpScreen.route: (ctx) => const SignUpScreen(),
   };
 }
