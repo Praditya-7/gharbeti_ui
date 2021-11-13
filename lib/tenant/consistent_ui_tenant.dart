@@ -7,7 +7,6 @@ import 'billing/billing_screen.dart';
 import 'discover/discover_screen.dart';
 import 'home_screen_registered.dart';
 
-
 class ConsistentUITenant extends StatefulWidget {
   const ConsistentUITenant({Key? key}) : super(key: key);
 
@@ -20,10 +19,10 @@ class _ConsistentUITenantState extends State<ConsistentUITenant> {
   int currentIndex = 0;
 
   final screens = [
-    HomeScreenRegistered(),
-    BillingScreen(),
-    DiscoverScreen(),
-    ProfileScreen(),
+    TenantHomeScreenRegistered(),
+    BillingTenantScreen(),
+    DiscoverTenantScreen(),
+    ProfileTenantScreen(),
   ];
 
   @override

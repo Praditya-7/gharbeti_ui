@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:gharbeti_ui/owner/billing/billing_screen.dart';
-import 'package:gharbeti_ui/owner/home/home_screen.dart';
-import 'package:gharbeti_ui/owner/listings/listings_screen.dart';
-import 'package:gharbeti_ui/owner/profile/profile_screen.dart';
-import 'package:gharbeti_ui/owner/tenants/tenants_screen.dart';
 import 'package:gharbeti_ui/shared/color.dart';
-import 'package:gharbeti_ui/shared/owner_dashboard_icons.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
+import 'package:gharbeti_ui/shared/tenant_dashboard_icons.dart';
+import 'package:gharbeti_ui/tenant/billing/billing_screen.dart';
+import 'package:gharbeti_ui/tenant/discover/discover_screen.dart';
+import 'package:gharbeti_ui/tenant/home_screen_registered.dart';
+import 'package:gharbeti_ui/tenant/profile/profile_screen.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-class OwnerDashboardScreen extends StatefulWidget {
-  static const route = "/ownerDashboardScreen";
+class TenantDashboardScreen extends StatefulWidget {
+  static const route = "/TenantDashboardScreen";
 
-  const OwnerDashboardScreen({Key? key}) : super(key: key);
+  const TenantDashboardScreen({Key? key}) : super(key: key);
 
   @override
-  _OwnerDashboardScreenState createState() => _OwnerDashboardScreenState();
+  _TenantDashboardScreenState createState() => _TenantDashboardScreenState();
 }
 
-class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
+class _TenantDashboardScreenState extends State<TenantDashboardScreen> {
   int _selectedIndex = 0;
   PageController pageController = PageController();
 
@@ -26,12 +25,10 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
     return _selectedIndex == 0
         ? "Home"
         : _selectedIndex == 1
-            ? "Tenants"
+            ? "Billing"
             : _selectedIndex == 2
-                ? "Listing"
-                : _selectedIndex == 3
-                    ? "Billing"
-                    : "Profile";
+                ? "Discover"
+                : "Profile";
   }
 
   onPageChange(index) {
@@ -71,11 +68,11 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
       controller: pageController,
       onPageChanged: (value) => onPageChange(value),
       children: const [
-        HomeScreenOwner(),
-        TenantsScreen(),
-        ListingsScreen(),
-        BillingScreenOwner(),
-        ProfileScreenOwner(),
+        TenantHomeScreenRegistered(),
+        BillingTenantScreen(),
+        DiscoverTenantScreen(),
+        ProfileTenantScreen(),
+
         // userType == "Team Lead" ? TeamLeadScreen() : Profile(),
         // LeaveScreen(),
         // Attendance(),
@@ -89,13 +86,12 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
         child: GNav(
           curve: Curves.fastOutSlowIn,
-          duration: Duration(milliseconds: 100),
+          duration: const Duration(milliseconds: 100),
           tabs: [
-            gTabs("Home", OwnerDashboard.home),
-            gTabs("Tenants", OwnerDashboard.tenant),
-            gTabs("Listing", OwnerDashboard.listing),
-            gTabs("Billing", OwnerDashboard.wallet),
-            gTabs("Profile", OwnerDashboard.profile),
+            gTabs("Home", TenantDashboard.home),
+            gTabs("Billing", TenantDashboard.wallet),
+            gTabs("Discover", TenantDashboard.discover),
+            gTabs("Profile", TenantDashboard.profile),
           ],
           selectedIndex: _selectedIndex,
           onTabChange: (index) => onTabChange(index),

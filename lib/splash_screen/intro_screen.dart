@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
       // if (pref.getBool("login") != null && pref.getBool("login")!)
       //   Navigator.of(context).pushReplacementNamed(HomepageScreen.route);
       // else
-        Navigator.of(context).pushReplacementNamed(LoginScreen.route);
+      Navigator.of(context).pushReplacementNamed(LoginScreen.route);
     });
     super.initState();
   }

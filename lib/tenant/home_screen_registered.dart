@@ -2,16 +2,16 @@
 
 import 'package:flutter/material.dart';
 
-class HomeScreenRegistered extends StatefulWidget {
+class TenantHomeScreenRegistered extends StatefulWidget {
   static String route = '/homeScreenRegistered';
 
-  const HomeScreenRegistered({Key? key}) : super(key: key);
+  const TenantHomeScreenRegistered({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenRegisteredState createState() => _HomeScreenRegisteredState();
+  _TenantHomeScreenRegisteredState createState() => _TenantHomeScreenRegisteredState();
 }
 
-class _HomeScreenRegisteredState extends State<HomeScreenRegistered> {
+class _TenantHomeScreenRegisteredState extends State<TenantHomeScreenRegistered> {
   int dueBalance = 8000;
   String status = 'Paid';
   late String balance = dueBalance.toString();

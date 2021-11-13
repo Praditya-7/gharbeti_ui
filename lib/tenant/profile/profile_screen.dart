@@ -3,14 +3,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class ProfileTenantScreen extends StatefulWidget {
+  const ProfileTenantScreen({Key? key}) : super(key: key);
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _ProfileTenantScreenState createState() => _ProfileTenantScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileTenantScreenState extends State<ProfileTenantScreen> {
   bool _toggleDarkMode = false;
   bool _toggleNotifications = false;
   late String name = 'Sarthak Shrestha';

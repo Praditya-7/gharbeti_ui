@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/tenant/billing/pending_bills.dart';
 import 'package:gharbeti_ui/tenant/billing/recent_payments.dart';
 
-class BillingScreen extends StatefulWidget {
-  const BillingScreen({Key? key}) : super(key: key);
+class BillingTenantScreen extends StatefulWidget {
+  const BillingTenantScreen({Key? key}) : super(key: key);
 
   @override
-  _BillingScreenState createState() => _BillingScreenState();
+  _BillingTenantScreenState createState() => _BillingTenantScreenState();
 }
 
-class _BillingScreenState extends State<BillingScreen> {
+class _BillingTenantScreenState extends State<BillingTenantScreen> {
   int totalDueBalance = 8000;
   int monthlyRent = 4000;
   String status = 'Paid';

@@ -5,15 +5,14 @@ import 'package:flutter/material.dart';
 
 import 'discover_listing_detail.dart';
 
-
-class DiscoverScreen extends StatefulWidget {
-  const DiscoverScreen({Key? key}) : super(key: key);
+class DiscoverTenantScreen extends StatefulWidget {
+  const DiscoverTenantScreen({Key? key}) : super(key: key);
 
   @override
-  _DiscoverScreenState createState() => _DiscoverScreenState();
+  _DiscoverTenantScreenState createState() => _DiscoverTenantScreenState();
 }
 
-class _DiscoverScreenState extends State<DiscoverScreen> {
+class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
   final TextEditingController _destinationController = TextEditingController();
   final List<String> entries = <String>[
     'Baishak',
