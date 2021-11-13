@@ -1,7 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/owner/listings/entity/Listings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
 class AddListingsScreen extends StatefulWidget {
   const AddListingsScreen({Key? key}) : super(key: key);
@@ -11,7 +16,8 @@ class AddListingsScreen extends StatefulWidget {
 }
 
 class _AddListingsScreenState extends State<AddListingsScreen> {
-  String? listingDropdownValue;
+  bool isLoading = false;
+  String? listingTypeDropdownValue;
   String? floorDropdownValue;
   String parkingDropdownValue = 'No';
   String bathroomDropdownValue = '1';
@@ -84,10 +90,10 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           underline: Container(
                             height: 0,
                           ),
-                          value: listingDropdownValue,
+                          value: listingTypeDropdownValue,
                           onChanged: (String? newValue) {
                             setState(() {
-                              listingDropdownValue = newValue!;
+                              listingTypeDropdownValue = newValue!;
                             });
                           },
                           icon: Icon(Icons.arrow_drop_down_sharp),
@@ -621,8 +627,11 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                     color: Color(0xff09548c),
                   ),
                   child: InkWell(
-                    onTap: () {
-                      //Add room Function
+                    onTap: () async {
+                      setState(() {
+                        isLoading = true;
+                        setData();
+                      });
                     },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(30, 8, 30, 8),
@@ -644,5 +653,83 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
         ),
       ),
     );
+  }
+
+  void setData() async {
+    final pref = await SharedPreferences.getInstance();
+    var model = Listings(
+      type: listingTypeDropdownValue,
+      listingNo: _listingNo.text.toString(),
+      floor: floorDropdownValue,
+      address: _streetAddress.text.toString(),
+      state: _state.text.toString(),
+      city: _city.text.toString(),
+      parking: parkingDropdownValue,
+      bathrooms: bathroomDropdownValue,
+      kitchen: kitchenDropdownValue,
+      internet: internetDropdownValue,
+      monthlyRent: _price.text.toString(),
+      negotiable: negotiableDropdownValue,
+      description: _additionalDescription.text.toString(),
+      email: pref.getString("email"),
+      status: "vacant",
+    );
+
+    var query = _fireStore.collection('Listings').get();
+    await query.then((value) {
+      Map<String, dynamic> addListing = {};
+      if (value.docs.isEmpty) {
+        addListing = addData(model);
+      } else {
+        var count = 0;
+        for (int i = 0; i < value.docs.length; i++) {
+          var listingID = value.docs[i]["ListingNo"];
+
+          if (model.listingNo == listingID) {
+            count += 1;
+            break;
+          }
+        }
+        if (count > 0) {
+          setState(() {
+            isLoading = false;
+          });
+          //show message
+        } else {
+          addListing = addData(model);
+        }
+      }
+      _fireStore.collection('Listings').add(addListing).then((value) {
+        print("Data Updated");
+        setState(() {
+          isLoading = false;
+        });
+      }).catchError((error) {
+        print("Failed to add data: $error");
+        setState(() {
+          isLoading = false;
+        });
+      });
+    });
+  }
+
+  Map<String, dynamic> addData(Listings model) {
+    Map<String, dynamic> data = <String, dynamic>{
+      "Type": model.type,
+      "ListingNo": model.listingNo,
+      "Floor": model.floor,
+      "Address": model.address,
+      "State": model.state,
+      "City": model.city,
+      "Parking": model.parking,
+      "Bathrooms": model.bathrooms,
+      "Kitchen": model.kitchen,
+      "Internet": model.internet,
+      "MonthlyRent": model.monthlyRent,
+      "Negotiable": model.negotiable,
+      "Description": model.description,
+      "Status": model.status,
+    };
+    return data;
   }
 }

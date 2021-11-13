@@ -3,10 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/profile/profile_screen.dart';
 
-
 import 'billing/billing_screen.dart';
 import 'home/home_screen.dart';
-import 'listings/listings_screen.dart';
+import 'listings/screens/listings_screen.dart';
 import 'tenants/tenants_screen.dart';
 
 class ConsistentUIOwner extends StatefulWidget {

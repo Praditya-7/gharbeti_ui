@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/billing/billing_screen.dart';
 import 'package:gharbeti_ui/owner/home/home_screen.dart';
-import 'package:gharbeti_ui/owner/listings/listings_screen.dart';
+import 'package:gharbeti_ui/owner/listings/screens/listings_screen.dart';
 import 'package:gharbeti_ui/owner/profile/profile_screen.dart';
 import 'package:gharbeti_ui/owner/tenants/tenants_screen.dart';
 import 'package:gharbeti_ui/shared/color.dart';

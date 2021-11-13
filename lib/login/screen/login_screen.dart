@@ -6,6 +6,7 @@ import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/signup/screen/signup_screen.dart';
 import 'package:gharbeti_ui/tenant/tenant_dashboard.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
@@ -207,6 +208,7 @@ class StartState extends State<LoginScreen> {
   }
 
   void checkLogin(String email, String pass) async {
+    final pref = await SharedPreferences.getInstance();
     setState(() {
       isLoading = true;
     });
@@ -250,6 +252,7 @@ class StartState extends State<LoginScreen> {
             if (type == "tenant") {
               Navigator.pushNamed(context, TenantDashboardScreen.route);
             } else {
+              pref.setString('email', email);
               Navigator.pushNamed(context, OwnerDashboardScreen.route);
             }
           } else {
