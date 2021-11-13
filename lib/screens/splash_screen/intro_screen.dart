@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gharbeti_ui/screens/login/screen/login_screen.dart';
+import 'package:gharbeti_ui/login/screen/login_screen.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 
 class SplashScreen extends StatefulWidget {

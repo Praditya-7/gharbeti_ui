@@ -1,8 +1,9 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:gharbeti_ui/screens/owner/consistent_ui_owner.dart';
 import 'package:gharbeti_ui/screens/tenant/consistent_ui_tenant.dart';
+
+import 'owner/consistent_ui_owner.dart';
 
 
 class SwitchUserUI extends StatefulWidget {

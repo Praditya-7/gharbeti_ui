@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:gharbeti_ui/screens/owner/tenants/add_tenants_screen.dart';
-import 'package:gharbeti_ui/screens/owner/tenants/tenant_detail.dart';
+import 'package:gharbeti_ui/owner/tenants/tenant_detail.dart';
+
+import 'add_tenants_screen.dart';
 
 class TenantsScreen extends StatefulWidget {
   const TenantsScreen({Key? key}) : super(key: key);

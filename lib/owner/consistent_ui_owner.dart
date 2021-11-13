@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:gharbeti_ui/screens/owner/billing/billing_screen.dart';
-import 'package:gharbeti_ui/screens/owner/home/home_screen.dart';
-import 'package:gharbeti_ui/screens/owner/listings/listings_screen.dart';
-import 'package:gharbeti_ui/screens/owner/profile/profile_screen.dart';
+import 'package:gharbeti_ui/owner/profile/profile_screen.dart';
 
 
+import 'billing/billing_screen.dart';
+import 'home/home_screen.dart';
+import 'listings/listings_screen.dart';
 import 'tenants/tenants_screen.dart';
 
 class ConsistentUIOwner extends StatefulWidget {

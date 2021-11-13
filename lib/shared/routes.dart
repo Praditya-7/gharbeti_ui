@@ -1,4 +1,4 @@
-import 'package:gharbeti_ui/screens/login/screen/login_screen.dart';
+import 'package:gharbeti_ui/login/screen/login_screen.dart';
 import 'package:gharbeti_ui/screens/splash_screen/intro_screen.dart';
 
 class Routes {

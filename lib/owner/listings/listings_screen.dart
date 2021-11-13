@@ -3,8 +3,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:gharbeti_ui/screens/owner/listings/add_listings_screen.dart';
-import 'package:gharbeti_ui/screens/owner/listings/listing_detail.dart';
+
+import 'add_listings_screen.dart';
+import 'listing_detail.dart';
 
 
 class ListingsScreen extends StatefulWidget {
