@@ -80,6 +80,9 @@ flutter:
     - family: OwnerDashboard
       fonts:
         - asset: assets/icons/OwnerDashboard.ttf
+    - family: TenantDashboard
+      fonts:
+        - asset: assets/icons/TenantDashboard.ttf
 
 
   # For details regarding fonts from package dependencies,
