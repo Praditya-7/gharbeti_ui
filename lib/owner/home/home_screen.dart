@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 class HomeScreenOwner extends StatefulWidget {
+  static const route="/homeScreenOwner";
   const HomeScreenOwner({Key? key}) : super(key: key);
 
   @override

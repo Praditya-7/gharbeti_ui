@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/owner/home/home_screen.dart';
+import 'package:gharbeti_ui/owner/owner_dashboard.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
@@ -168,7 +170,7 @@ class StartState extends State<LoginScreen> {
             // checkLogin(email, pass);
           },
           child: InkWell(
-            onTap: () async{
+            onTap: () async {
               checkLogin(_email.text.toString(), _password.text.toString());
             },
             child: Container(
@@ -257,13 +259,10 @@ class StartState extends State<LoginScreen> {
             setState(() {
               isLoading = false;
             });
-            if(type=="tenant"){
-              Navigator.pushNamed(
-                  context, HomeScreenRegistered.route);
-            }
-            else{
-              Navigator.pushNamed(
-                  context, SignUpScreen.route);
+            if (type == "tenant") {
+              Navigator.pushNamed(context, HomeScreenRegistered.route);
+            } else {
+              Navigator.pushNamed(context, OwnerDashboardScreen.route);
             }
           } else {
             setState(() {
