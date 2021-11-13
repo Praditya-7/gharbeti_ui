@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:gharbeti_ui/screens/tenant/billing/billing_screen.dart';
-import 'package:gharbeti_ui/screens/tenant/home_screen_registered.dart';
-import 'package:gharbeti_ui/screens/tenant/profile/profile_screen.dart';
+import 'package:gharbeti_ui/tenant/profile/profile_screen.dart';
 
+import 'billing/billing_screen.dart';
 import 'discover/discover_screen.dart';
+import 'home_screen_registered.dart';
 
 
 class ConsistentUITenant extends StatefulWidget {

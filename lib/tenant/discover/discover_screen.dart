@@ -2,7 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gharbeti_ui/screens/tenant/discover/discover_listing_detail.dart';
+
+import 'discover_listing_detail.dart';
 
 
 class DiscoverScreen extends StatefulWidget {

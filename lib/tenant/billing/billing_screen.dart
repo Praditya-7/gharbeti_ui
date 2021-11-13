@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:gharbeti_ui/screens/tenant/billing/pending_bills.dart';
-import 'package:gharbeti_ui/screens/tenant/billing/recent_payments.dart';
+import 'package:gharbeti_ui/tenant/billing/pending_bills.dart';
+import 'package:gharbeti_ui/tenant/billing/recent_payments.dart';
 
 class BillingScreen extends StatefulWidget {
   const BillingScreen({Key? key}) : super(key: key);

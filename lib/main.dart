@@ -2,8 +2,8 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:gharbeti_ui/screens/splash_screen/intro_screen.dart';
 import 'package:gharbeti_ui/shared/routes.dart';
+import 'package:gharbeti_ui/splash_screen/intro_screen.dart';
 import 'package:gharbeti_ui/switchUser_ui.dart';
 
 Future<void> main() async {

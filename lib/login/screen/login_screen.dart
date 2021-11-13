@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gharbeti_ui/owner/tenants/tenants_screen.dart';
-import 'package:gharbeti_ui/screens/tenant/home_screen_registered.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/signup/screen/signup_screen.dart';
+import 'package:gharbeti_ui/tenant/home_screen_registered.dart';
 
 final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
