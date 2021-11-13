@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/screens/tenant/billing/pending_bills.dart';
+import 'package:gharbeti_ui/screens/tenant/billing/recent_payments.dart';
 
 class BillingScreen extends StatefulWidget {
   const BillingScreen({Key? key}) : super(key: key);
@@ -368,7 +369,12 @@ class _BillingScreenState extends State<BillingScreen> {
                   alignment: Alignment.bottomRight,
                   child: InkWell(
                     onTap: () {
-                      //ROUTE TO RECENT PAYMENT
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RecentPayments(),
+                        ),
+                      );
                     },
                     child: Text(
                       'View All >>',
