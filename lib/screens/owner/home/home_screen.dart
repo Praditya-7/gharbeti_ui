@@ -157,7 +157,9 @@ class _HomeScreenOwnerState extends State<HomeScreenOwner> {
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Monthly Rent:' + rentMonth),
+                              Text(
+                                'Monthly Rent:' + rentMonth,
+                              ),
                             ],
                           ),
                           IconButton(
@@ -175,7 +177,9 @@ class _HomeScreenOwnerState extends State<HomeScreenOwner> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Payment By'),
+                          Text(
+                            'Payment By',
+                          ),
                           Text(
                             tenantName,
                             style: TextStyle(
@@ -194,9 +198,7 @@ class _HomeScreenOwnerState extends State<HomeScreenOwner> {
                           Text(
                             paymentStatus,
                             style: TextStyle(
-                              color: paymentStatus == 'Complete'
-                                  ? Colors.green
-                                  : Colors.orange,
+                              color: paymentStatus == 'Complete' ? Colors.green : Colors.orange,
                             ),
                           ),
                         ],
@@ -265,9 +267,7 @@ class _HomeScreenOwnerState extends State<HomeScreenOwner> {
                           Text(
                             paymentStatus,
                             style: TextStyle(
-                              color: paymentStatus == 'Complete'
-                                  ? Colors.green
-                                  : Colors.orange,
+                              color: paymentStatus == 'Complete' ? Colors.green : Colors.orange,
                             ),
                           ),
                         ],
@@ -336,9 +336,7 @@ class _HomeScreenOwnerState extends State<HomeScreenOwner> {
                           Text(
                             paymentStatus,
                             style: TextStyle(
-                              color: paymentStatus == 'Complete'
-                                  ? Colors.green
-                                  : Colors.orange,
+                              color: paymentStatus == 'Complete' ? Colors.green : Colors.orange,
                             ),
                           ),
                         ],
