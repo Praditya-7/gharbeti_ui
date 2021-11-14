@@ -729,6 +729,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
       "Negotiable": model.negotiable,
       "Description": model.description,
       "Status": model.status,
+      "OwnerEmail": model.email,
     };
     return data;
   }
