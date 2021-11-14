@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
 class AddListingsScreen extends StatefulWidget {
+  static String route = '/addListingScreen';
+
   const AddListingsScreen({Key? key}) : super(key: key);
 
   @override
@@ -675,7 +677,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
       status: "vacant",
     );
 
-    var query = _fireStore.collection('Listings').get();
+    var query = _fireStore.collection('Room').get();
     await query.then((value) {
       Map<String, dynamic> addListing = {};
       if (value.docs.isEmpty) {
@@ -699,7 +701,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
           addListing = addData(model);
         }
       }
-      _fireStore.collection('Listings').add(addListing).then((value) {
+      _fireStore.collection('Room').add(addListing).then((value) {
         print("Data Updated");
         setState(() {
           isLoading = false;

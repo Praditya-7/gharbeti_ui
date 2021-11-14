@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
+import 'package:gharbeti_ui/shared/color.dart';
+import 'package:gharbeti_ui/shared/widget/build_text.dart';
 
 class RoomWidget extends StatelessWidget {
   final int index;
@@ -27,6 +29,7 @@ class RoomWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
             width: width * 20,
@@ -37,6 +40,33 @@ class RoomWidget extends StatelessWidget {
                   : Colors.red.withOpacity(0.5),
               borderRadius: BorderRadius.circular(10),
             ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              BuildText(
+                text: "ROOM NO ${data.listingNo}",
+                weight: FontWeight.w600,
+                fontSize: 18,
+              ),
+              SizedBox(height: 10),
+              BuildText(
+                text: "${data.address}, ${data.city}",
+                weight: FontWeight.w300,
+                fontSize: 14,
+              ),
+              SizedBox(height: 10),
+              BuildText(
+                text: "Preferences: ${data.preference}",
+                weight: FontWeight.w300,
+                fontSize: 14,
+              )
+            ],
+          ),
+          Icon(
+            Icons.location_on,
+            size: width * 10,
+            color: ColorData.primaryColor,
           )
         ],
       ),

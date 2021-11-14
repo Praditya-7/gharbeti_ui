@@ -21,10 +21,10 @@ class OwnerHomeScreen extends StatefulWidget {
 }
 
 class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
-  int roomCount = 4;
-  int vacantCount = 2;
+  int roomCount = 0;
+  int vacantCount = 0;
   TabController? controller;
-  int occupiedCount = 4;
+  int occupiedCount = 0;
   double width = 0.0;
   double height = 0.0;
   List<Room> roomList = [];
@@ -90,7 +90,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                   Expanded(
                     child: roomCount != 0
                         ? _getVacantOccupiedTab()
-                        : _getNoRoomWidget(),
+                        : _getNoRoomWidget("No Rooms available"),
                   ),
                   SizedBox(height: 60),
                 ],
@@ -136,42 +136,56 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
   }
 
   Widget _createVacantList() {
-    return ListView.builder(
-      itemBuilder: (context, index) => Padding(
-        padding: index == 0
-            ? const EdgeInsets.only(top: 20.0)
-            : const EdgeInsets.all(0),
-        child: RoomWidget(
-          index: index,
-          onTap: (index) {},
-          data: vacantList[index],
-          width: width,
-          height: height,
-        ),
-      ),
-      itemCount: vacantList.length,
-    );
+    return vacantList.isNotEmpty
+        ? ListView.builder(
+            itemBuilder: (context, index) => Padding(
+              padding: index == 0
+                  ? const EdgeInsets.only(top: 20.0)
+                  : const EdgeInsets.all(0),
+              child: RoomWidget(
+                index: index,
+                onTap: (index) {
+                  //room Detail
+                },
+                data: vacantList[index],
+                width: width,
+                height: height,
+              ),
+            ),
+            itemCount: vacantList.length,
+          )
+        : Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: _getNoRoomWidget("No vacant rooms available"),
+          );
   }
 
   Widget _createOccupiedList() {
-    return ListView.builder(
-      itemBuilder: (context, index) => Padding(
-        padding: index == 0
-            ? const EdgeInsets.only(top: 20.0)
-            : const EdgeInsets.all(0),
-        child: RoomWidget(
-          index: index,
-          data: occupiedList[index],
-          onTap: (index) {},
-          width: width,
-          height: height,
-        ),
-      ),
-      itemCount: occupiedList.length,
-    );
+    return occupiedList.isNotEmpty
+        ? ListView.builder(
+            itemBuilder: (context, index) => Padding(
+              padding: index == 0
+                  ? const EdgeInsets.only(top: 20.0)
+                  : const EdgeInsets.all(0),
+              child: RoomWidget(
+                index: index,
+                data: occupiedList[index],
+                onTap: (index) {
+                  //room detail
+                },
+                width: width,
+                height: height,
+              ),
+            ),
+            itemCount: occupiedList.length,
+          )
+        : Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: _getNoRoomWidget("No occupied rooms available"),
+          );
   }
 
-  Widget _getNoRoomWidget() {
+  Widget _getNoRoomWidget(String title) {
     return Container(
       height: width * 70,
       decoration: BoxDecoration(
@@ -180,7 +194,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
       ),
       child: Center(
           child: BuildText(
-        text: "No Rooms available",
+        text: title,
         fontSize: 20,
       )),
     );
@@ -231,7 +245,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
   Widget _getAddWidget() {
     return InkWell(
       onTap: () {
-        if (roomCount == 0) {}
+        Navigator.pushNamed(context, AddListingsScreen.route);
       },
       child: Container(
         width: width * 40,

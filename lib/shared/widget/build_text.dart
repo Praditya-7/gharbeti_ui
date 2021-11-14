@@ -73,6 +73,7 @@ class BuildTextFeild extends StatefulWidget {
 class _BuildTextFeildState extends State<BuildTextFeild> {
   FocusNode _focusNode = FocusNode();
   bool? obsecureText;
+
   @override
   void initState() {
     obsecureText = widget.obscureText;
@@ -134,7 +135,8 @@ class _BuildTextFeildState extends State<BuildTextFeild> {
                           ? Theme.of(context).primaryColor
                           : Colors.grey,
                     ))
-                : SizedBox.shrink(), // icon ,
+                : SizedBox.shrink(),
+            // icon ,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15.0),
               borderSide: BorderSide(),
@@ -189,6 +191,7 @@ class BuildTextFieldIcons extends StatefulWidget {
 
 class _BuildTextFieldIcons extends State<BuildTextFieldIcons> {
   FocusNode _focusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
@@ -259,6 +262,7 @@ class BuildTextFieldBorder extends StatefulWidget {
 
 class _BuildTextFieldBorder extends State<BuildTextFieldBorder> {
   FocusNode _focusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
