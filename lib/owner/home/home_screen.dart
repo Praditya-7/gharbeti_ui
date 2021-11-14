@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/owner/home/occupied_room.dart';
+import 'package:gharbeti_ui/owner/home/vacant_room.dart';
 
 class HomeScreenOwner extends StatefulWidget {
-  static const route="/homeScreenOwner";
+  static const route = "/homeScreenOwner";
   const HomeScreenOwner({Key? key}) : super(key: key);
 
   @override
@@ -67,56 +69,72 @@ class _HomeScreenOwnerState extends State<HomeScreenOwner> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  //Vacant room
-                                  Container(
-                                    padding: EdgeInsets.all(8.0),
-                                    color: Color(0xff30D472),
-                                    child: Text(
-                                      vacantCount.toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 16.0,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10.0,
-                                  ),
-                                  Text(
-                                    "Vacant",
-                                    style: TextStyle(fontSize: 16.0),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 25.0),
-                              Row(
-                                children: [
-                                  //Occupied Indicator
-                                  Container(
-                                    padding: EdgeInsets.all(8.0),
-                                    color: Color(0xffF6821E),
-                                    child: Text(
-                                      occupiedCount.toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 16.0,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
+                              //Vacant Room Indicator
+                              InkWell(
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(8.0),
+                                      color: Color(0xff30D472),
+                                      child: Text(
+                                        vacantCount.toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 10.0,
-                                  ),
-                                  Text(
-                                    "Occupied",
-                                    style: TextStyle(fontSize: 16.0),
-                                  ),
-                                ],
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Text(
+                                      "Vacant",
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                  ],
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => VacantRoom()));
+                                },
                               ),
+                              SizedBox(height: 25.0),
+                              InkWell(
+                                  child: Row(
+                                    children: [
+                                      //Occupied Indicator
+                                      Container(
+                                        padding: EdgeInsets.all(8.0),
+                                        color: Color(0xffF6821E),
+                                        child: Text(
+                                          occupiedCount.toString(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10.0,
+                                      ),
+                                      Text(
+                                        "Occupied",
+                                        style: TextStyle(fontSize: 16.0),
+                                      ),
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                OccupiedRoom()));
+                                  }),
                             ],
                           ),
                         ],
@@ -199,7 +217,9 @@ class _HomeScreenOwnerState extends State<HomeScreenOwner> {
                           Text(
                             paymentStatus,
                             style: TextStyle(
-                              color: paymentStatus == 'Complete' ? Colors.green : Colors.orange,
+                              color: paymentStatus == 'Complete'
+                                  ? Colors.green
+                                  : Colors.orange,
                             ),
                           ),
                         ],
@@ -268,7 +288,9 @@ class _HomeScreenOwnerState extends State<HomeScreenOwner> {
                           Text(
                             paymentStatus,
                             style: TextStyle(
-                              color: paymentStatus == 'Complete' ? Colors.green : Colors.orange,
+                              color: paymentStatus == 'Complete'
+                                  ? Colors.green
+                                  : Colors.orange,
                             ),
                           ),
                         ],
@@ -337,7 +359,9 @@ class _HomeScreenOwnerState extends State<HomeScreenOwner> {
                           Text(
                             paymentStatus,
                             style: TextStyle(
-                              color: paymentStatus == 'Complete' ? Colors.green : Colors.orange,
+                              color: paymentStatus == 'Complete'
+                                  ? Colors.green
+                                  : Colors.orange,
                             ),
                           ),
                         ],
