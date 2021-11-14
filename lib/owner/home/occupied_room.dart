@@ -23,7 +23,7 @@ class _OccupiedRoomState extends State<OccupiedRoom> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(240, 240, 240, 1),
       appBar: AppBar(
-        backgroundColor: Color(ColorData.primaryColor),
+        backgroundColor: ColorData.primaryColor,
         title: Text("Occupied Listing"),
       ),
       body: SafeArea(
@@ -81,7 +81,7 @@ class _OccupiedRoomState extends State<OccupiedRoom> {
                                   WidgetSpan(
                                     child: Icon(
                                       Icons.pin_drop,
-                                      color: Color(ColorData.primaryColor),
+                                      color: ColorData.primaryColor,
                                     ),
                                   ),
                                   TextSpan(

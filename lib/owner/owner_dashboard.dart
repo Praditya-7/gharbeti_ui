@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/billing/billing_screen.dart';
-import 'package:gharbeti_ui/owner/home/home_screen.dart';
 import 'package:gharbeti_ui/owner/listings/screens/listings_screen.dart';
 import 'package:gharbeti_ui/owner/profile/profile_screen.dart';
 import 'package:gharbeti_ui/owner/tenants/tenants_screen.dart';
@@ -8,6 +7,8 @@ import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/owner_dashboard_icons.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+
+import 'home/owner_home_screen.dart';
 
 class OwnerDashboardScreen extends StatefulWidget {
   static const route = "/ownerDashboardScreen";
@@ -59,7 +60,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
           getTitle(),
           style: const TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(ColorData.primaryColor),
+        backgroundColor: ColorData.primaryColor,
       ),
       body: _dashBody(height!, width!),
       bottomNavigationBar: _btmNavBar(height, width),
@@ -71,7 +72,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
       controller: pageController,
       onPageChanged: (value) => onPageChange(value),
       children: const [
-        HomeScreenOwner(),
+        OwnerHomeScreen(),
         TenantsScreen(),
         ListingsScreen(),
         BillingScreenOwner(),

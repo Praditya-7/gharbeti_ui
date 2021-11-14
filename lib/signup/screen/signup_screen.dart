@@ -35,7 +35,7 @@ class InitState extends State<SignUpScreen> {
   Widget initWidget() {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(ColorData.primaryColor),
+        backgroundColor: ColorData.primaryColor,
         title: Text(
           "Register",
           style: TextStyle(color: Colors.white),

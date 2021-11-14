@@ -13,7 +13,7 @@ class _VacantRoomState extends State<VacantRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(ColorData.primaryColor),
+        backgroundColor: ColorData.primaryColor,
         title: Text("Vacant Listing"),
       ),
     );

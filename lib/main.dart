@@ -2,9 +2,9 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/owner/home/owner_home_screen.dart';
 import 'package:gharbeti_ui/shared/routes.dart';
 import 'package:gharbeti_ui/splash_screen/intro_screen.dart';
-import 'package:gharbeti_ui/switchUser_ui.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,11 +19,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      //home: SplashScreen(),
-      initialRoute: SplashScreen.route,
-      routes: Routes.routes
-    );
+        // navigatorKey: navigatorKey,
+        debugShowCheckedModeBanner: false,
+        //home: SplashScreen(),
+        initialRoute: SplashScreen.route,
+        routes: Routes.routes);
   }
 }

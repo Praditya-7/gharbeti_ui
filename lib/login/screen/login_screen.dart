@@ -49,7 +49,7 @@ class StartState extends State<LoginScreen> {
         child: Container(
       width: double.infinity,
       height: height * 130,
-      color: const Color(ColorData.primaryColor),
+      color: ColorData.primaryColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

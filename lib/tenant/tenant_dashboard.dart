@@ -56,7 +56,7 @@ class _TenantDashboardScreenState extends State<TenantDashboardScreen> {
           getTitle(),
           style: const TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(ColorData.primaryColor),
+        backgroundColor: ColorData.primaryColor,
       ),
       body: _dashBody(height!, width!),
       bottomNavigationBar: _btmNavBar(height, width),
