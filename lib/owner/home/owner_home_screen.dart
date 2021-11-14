@@ -5,6 +5,7 @@ import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/owner/home/room_widget.dart';
 import 'package:gharbeti_ui/owner/listings/screens/add_listings_screen.dart';
 import 'package:gharbeti_ui/shared/color.dart';
+import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +31,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
   List<Room> roomList = [];
   List<Room> vacantList = [];
   List<Room> occupiedList = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -38,6 +40,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
   }
 
   setData() async {
+    roomList.clear();
     final pref = await SharedPreferences.getInstance();
     var email = pref.getString("email");
     var query = _fireStore
@@ -65,6 +68,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
       roomCount = roomList.length;
       vacantCount = vacantList.length;
       occupiedCount = occupiedList.length;
+      isLoading = false;
     });
   }
 
@@ -78,24 +82,38 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
         backgroundColor: Color.fromRGBO(240, 240, 240, 1),
         body: Container(
           color: Color.fromRGBO(240, 240, 240, 1),
-          child: SingleChildScrollView(
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              margin: EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _getRoomInfo(),
-                  SizedBox(height: 20),
-                  Expanded(
-                    child: roomCount != 0
-                        ? _getVacantOccupiedTab()
-                        : _getNoRoomWidget("No Rooms available"),
+          child: Stack(
+            children: [
+              RefreshIndicator(
+                onRefresh: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  setData();
+                },
+                child: SingleChildScrollView(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    margin: EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _getRoomInfo(),
+                        SizedBox(height: 20),
+                        Expanded(
+                          child: roomCount != 0
+                              ? _getVacantOccupiedTab()
+                              : _getNoRoomWidget("No Rooms available"),
+                        ),
+                        SizedBox(height: 60),
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 60),
-                ],
+                ),
               ),
-            ),
+              Visibility(
+                  visible: isLoading, child: CustomProgressIndicatorWidget())
+            ],
           ),
         ),
       ),
