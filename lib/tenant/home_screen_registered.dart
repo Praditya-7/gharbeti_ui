@@ -34,8 +34,7 @@ class _TenantHomeScreenRegisteredState
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               tenantStatus == 'unregistered'
-                  ? _getNoLeaseWidget("No active lease",
-                      "Your landlord needs to connect with you in the system and share the lease with you")
+                  ? _getNoLeaseWidget("No active lease")
                   : Container(
                       color: Colors.white,
                       margin: EdgeInsets.fromLTRB(10, 15.0, 10, 10),
@@ -98,10 +97,6 @@ class _TenantHomeScreenRegisteredState
               tenantStatus == 'unregistered'
                   ? Expanded(
                       child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
@@ -228,19 +223,34 @@ class _TenantHomeScreenRegisteredState
     );
   }
 
-  Widget _getNoLeaseWidget(String title, String title2) {
+  Widget _getNoLeaseWidget(String title) {
     return Expanded(
       child: Container(
+        height: 199,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(
             child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: BuildText(
-            text: title + "\n" + title2,
-            fontSize: 16,
+          padding: const EdgeInsets.only(left: 20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              BuildText(
+                text: title,
+                fontSize: 16,
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              Text(
+                  "Your landlord needs to connect with you in the system and share the lease with you",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                  )),
+            ],
           ),
         )),
       ),
