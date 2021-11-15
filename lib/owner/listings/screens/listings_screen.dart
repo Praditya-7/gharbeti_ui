@@ -7,7 +7,6 @@ import 'package:flutter/painting.dart';
 import 'add_listings_screen.dart';
 import 'listing_detail.dart';
 
-
 class ListingsScreen extends StatefulWidget {
   const ListingsScreen({Key? key}) : super(key: key);
 
@@ -32,12 +31,7 @@ class _ListingsScreenState extends State<ListingsScreen> {
       backgroundColor: Color.fromRGBO(240, 240, 240, 1),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddListingsScreen(),
-            ),
-          );
+          Navigator.pushNamed(context, AddListingsScreen.route);
         },
         child: Icon(
           Icons.add,
