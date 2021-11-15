@@ -2,8 +2,9 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:gharbeti_ui/owner/listings/entity/Rooms.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,7 +32,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
   String internetDropdownValue = 'Yes';
   String negotiableDropdownValue = 'Yes';
   String preferencesDropdownValue = 'Family';
-  late Position position;
+
   late LatLng _latLng;
 
   late GoogleMapController _googleMapController;
@@ -551,18 +552,18 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                     children: [
                       GestureDetector(
                         onTap: () async {
-                          position = await Geolocator.getCurrentPosition(
-                              desiredAccuracy: LocationAccuracy.lowest);
-                          _marker = {
-                            Marker(
-                              markerId: MarkerId('Pin'),
-                              icon: BitmapDescriptor.defaultMarker,
-                              position: LatLng(position.latitude, position.longitude),
-                            )
-                          };
-                          setState(() {
-                            showMap = true;
-                          });
+                          // position = await Geolocator.getCurrentPosition(
+                          //     desiredAccuracy: LocationAccuracy.lowest);
+                          // _marker = {
+                          //   Marker(
+                          //     markerId: MarkerId('Pin'),
+                          //     icon: BitmapDescriptor.defaultMarker,
+                          //     position: LatLng(position.latitude, position.longitude),
+                          //   )
+                          // };
+                          // setState(() {
+                          //   showMap = true;
+                          // });
                         },
                         child: Container(
                           height: 400,
@@ -571,43 +572,47 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                             borderRadius: BorderRadius.circular(5),
                             color: Colors.grey[200],
                           ),
-                          child: showMap == false
-                              ? Icon(
-                                  Icons.add_location_alt,
-                                  size: 75,
-                                )
-                              : GoogleMap(
-                                  compassEnabled: false,
-                                  mapType: MapType.normal,
-                                  myLocationEnabled: true,
-                                  trafficEnabled: false,
-                                  buildingsEnabled: false,
-                                  mapToolbarEnabled: false,
-                                  zoomGesturesEnabled: true,
-                                  cameraTargetBounds: CameraTargetBounds.unbounded,
-                                  onTap: (point) {
-                                    setState(() {
-                                      _marker = {
-                                        Marker(
-                                          markerId: MarkerId('Pin'),
-                                          icon: BitmapDescriptor.defaultMarker,
-                                          position: point,
-                                        )
-                                      };
-                                      _latLng = point;
-                                    });
-                                  },
-                                  myLocationButtonEnabled: true,
-                                  markers: _marker,
-                                  initialCameraPosition: CameraPosition(
-                                    bearing: 0.0,
-                                    target: LatLng(
-                                      position.latitude,
-                                      position.longitude,
-                                    ),
-                                    zoom: 14.0,
-                                  ),
-                                ),
+                          child: GoogleMap(
+                            compassEnabled: false,
+                            mapType: MapType.normal,
+                            myLocationEnabled: true,
+                            trafficEnabled: false,
+                            buildingsEnabled: false,
+                            mapToolbarEnabled: false,
+                            onMapCreated: (GoogleMapController controller) {
+                              _googleMapController = controller;
+                            },
+                            gestureRecognizers: <
+                                Factory<OneSequenceGestureRecognizer>>{
+                              Factory<OneSequenceGestureRecognizer>(
+                                () => EagerGestureRecognizer(),
+                              ),
+                            },
+                            cameraTargetBounds: CameraTargetBounds.unbounded,
+                            onTap: (point) {
+                              setState(() {
+                                _marker = {
+                                  Marker(
+                                    markerId: MarkerId('Pin'),
+                                    icon: BitmapDescriptor.defaultMarker,
+                                    position: point,
+                                  )
+                                };
+                                _latLng = point;
+                                print(_latLng.latitude);
+                              });
+                            },
+                            myLocationButtonEnabled: true,
+                            markers: _marker,
+                            initialCameraPosition: CameraPosition(
+                              bearing: 0.0,
+                              target: LatLng(
+                                27.7172,
+                                85.3240,
+                              ),
+                              zoom: 12.0,
+                            ),
+                          ),
                         ),
                       ),
                     ],
