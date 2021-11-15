@@ -39,6 +39,8 @@ dependencies:
   intl: ^0.17.0
   google_nav_bar: ^5.0.5
   shared_preferences: ^2.0.8
+  google_maps_flutter: ^2.1.0
+  geolocator: ^7.7.1
 
 dev_dependencies:
   flutter_test:

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Room {
   final String? bathroom;
-
   final String? description;
   final String? floor;
   final String? internet;

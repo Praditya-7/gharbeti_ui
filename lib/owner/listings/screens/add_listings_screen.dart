@@ -3,7 +3,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:gharbeti_ui/owner/listings/entity/Rooms.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
@@ -18,7 +20,9 @@ class AddListingsScreen extends StatefulWidget {
 }
 
 class _AddListingsScreenState extends State<AddListingsScreen> {
+  Set<Marker> _marker = <Marker>{};
   bool isLoading = false;
+  bool showMap = false;
   String? listingTypeDropdownValue;
   String? floorDropdownValue;
   String parkingDropdownValue = 'No';
@@ -27,7 +31,10 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
   String internetDropdownValue = 'Yes';
   String negotiableDropdownValue = 'Yes';
   String preferencesDropdownValue = 'Family';
+  late Position position;
+  late LatLng _latLng;
 
+  late GoogleMapController _googleMapController;
   final TextEditingController _listingNo = TextEditingController();
 
   final TextEditingController _additionalDescription = TextEditingController();
@@ -528,7 +535,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                   height: 10,
                 ),
                 Text(
-                  'Pin Location',
+                  'Pin Listing Location',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -539,25 +546,67 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                 ),
                 Container(
                   color: Colors.white,
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(10),
                   child: Column(
                     children: [
                       Container(
-                        height: 150,
+                        height: 400,
                         alignment: Alignment.center,
-                        padding: EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200],
                         ),
                         child: InkWell(
-                          onTap: () {
-                            //ADD PHOTOS ROUTE
+                          onTap: () async {
+                            position = await Geolocator.getCurrentPosition(
+                                desiredAccuracy: LocationAccuracy.lowest);
+                            _marker = {
+                              Marker(
+                                markerId: MarkerId('Pin'),
+                                icon: BitmapDescriptor.defaultMarker,
+                                position: LatLng(position.latitude, position.longitude),
+                              )
+                            };
+
+                            setState(() {
+                              showMap = true;
+                            });
                           },
-                          child: Icon(
-                            Icons.add_location_alt,
-                            size: 75,
-                          ),
+                          child: showMap == false
+                              ? Icon(
+                                  Icons.add_location_alt,
+                                  size: 75,
+                                )
+                              : GoogleMap(
+                                  myLocationEnabled: true,
+                                  mapToolbarEnabled: false,
+                                  zoomGesturesEnabled: true,
+                                  onLongPress: (point) {
+                                    setState(() {
+                                      _marker = {
+                                        Marker(
+                                          markerId: MarkerId('Pin'),
+                                          icon: BitmapDescriptor.defaultMarker,
+                                          position: point,
+                                        )
+                                      };
+                                      _latLng = point;
+                                    });
+                                  },
+                                  onMapCreated: (GoogleMapController controller) {
+                                    _googleMapController = controller;
+                                  },
+                                  myLocationButtonEnabled: true,
+                                  markers: _marker,
+                                  initialCameraPosition: CameraPosition(
+                                    bearing: 0.0,
+                                    target: LatLng(
+                                      position.latitude,
+                                      position.longitude,
+                                    ),
+                                    zoom: 14.0,
+                                  ),
+                                ),
                         ),
                       ),
                     ],
