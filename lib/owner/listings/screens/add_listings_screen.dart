@@ -549,39 +549,43 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                   padding: EdgeInsets.all(10),
                   child: Column(
                     children: [
-                      Container(
-                        height: 400,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.grey[200],
-                        ),
-                        child: InkWell(
-                          onTap: () async {
-                            position = await Geolocator.getCurrentPosition(
-                                desiredAccuracy: LocationAccuracy.lowest);
-                            _marker = {
-                              Marker(
-                                markerId: MarkerId('Pin'),
-                                icon: BitmapDescriptor.defaultMarker,
-                                position: LatLng(position.latitude, position.longitude),
-                              )
-                            };
-
-                            setState(() {
-                              showMap = true;
-                            });
-                          },
+                      GestureDetector(
+                        onTap: () async {
+                          position = await Geolocator.getCurrentPosition(
+                              desiredAccuracy: LocationAccuracy.lowest);
+                          _marker = {
+                            Marker(
+                              markerId: MarkerId('Pin'),
+                              icon: BitmapDescriptor.defaultMarker,
+                              position: LatLng(position.latitude, position.longitude),
+                            )
+                          };
+                          setState(() {
+                            showMap = true;
+                          });
+                        },
+                        child: Container(
+                          height: 400,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.grey[200],
+                          ),
                           child: showMap == false
                               ? Icon(
                                   Icons.add_location_alt,
                                   size: 75,
                                 )
                               : GoogleMap(
+                                  compassEnabled: false,
+                                  mapType: MapType.normal,
                                   myLocationEnabled: true,
+                                  trafficEnabled: false,
+                                  buildingsEnabled: false,
                                   mapToolbarEnabled: false,
                                   zoomGesturesEnabled: true,
-                                  onLongPress: (point) {
+                                  cameraTargetBounds: CameraTargetBounds.unbounded,
+                                  onTap: (point) {
                                     setState(() {
                                       _marker = {
                                         Marker(
@@ -592,9 +596,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                                       };
                                       _latLng = point;
                                     });
-                                  },
-                                  onMapCreated: (GoogleMapController controller) {
-                                    _googleMapController = controller;
                                   },
                                   myLocationButtonEnabled: true,
                                   markers: _marker,
