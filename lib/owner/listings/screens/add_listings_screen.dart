@@ -672,6 +672,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
       internet: internetDropdownValue,
       monthlyRent: _price.text.toString(),
       negotiable: negotiableDropdownValue,
+      preferences: preferencesDropdownValue,
       description: _additionalDescription.text.toString(),
       email: pref.getString("email"),
       status: "vacant",
@@ -732,6 +733,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
       "Description": model.description,
       "Status": model.status,
       "OwnerEmail": model.email,
+      "Preferences": model.preferences,
     };
     return data;
   }
