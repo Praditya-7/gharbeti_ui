@@ -35,9 +35,7 @@ class RoomWidget extends StatelessWidget {
             width: width * 20,
             height: width * 30,
             decoration: BoxDecoration(
-              color: index % 2 == 0
-                  ? Colors.green.withOpacity(0.5)
-                  : Colors.red.withOpacity(0.5),
+              color: index % 2 == 0 ? Colors.green.withOpacity(0.5) : Colors.red.withOpacity(0.5),
               borderRadius: BorderRadius.circular(10),
             ),
           ),
@@ -50,14 +48,14 @@ class RoomWidget extends StatelessWidget {
                 fontSize: 18,
               ),
               SizedBox(height: 10),
-              BuildText(
-                text: "${data.address}, ${data.city}",
-                weight: FontWeight.w300,
-                fontSize: 14,
-              ),
+              // BuildText(
+              //   text: "${data.address}, ${data.city}",
+              //   weight: FontWeight.w300,
+              //   fontSize: 14,
+              // ),
               SizedBox(height: 10),
               BuildText(
-                text: "Preferences: ${data.preference}",
+                text: "Preferences: ${data.preferences}",
                 weight: FontWeight.w300,
                 fontSize: 14,
               )

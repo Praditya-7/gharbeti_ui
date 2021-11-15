@@ -3,7 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gharbeti_ui/owner/listings/entity/Listings.dart';
+import 'package:gharbeti_ui/owner/listings/entity/Rooms.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
@@ -29,9 +29,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
   String preferencesDropdownValue = 'Family';
 
   final TextEditingController _listingNo = TextEditingController();
-  final TextEditingController _streetAddress = TextEditingController();
-  final TextEditingController _state = TextEditingController();
-  final TextEditingController _city = TextEditingController();
+
   final TextEditingController _additionalDescription = TextEditingController();
   final TextEditingController _price = TextEditingController();
 
@@ -162,62 +160,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                               child: Text(value),
                             );
                           }).toList(),
-                        ),
-                      ),
-                      //STREET ADDRESS//
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.grey[200],
-                        ),
-                        child: TextField(
-                          controller: _streetAddress,
-                          cursorColor: Color(0xff09548c),
-                          decoration: InputDecoration(
-                            hintText: "Street Address*",
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                      //STATE//
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.grey[200],
-                        ),
-                        child: TextField(
-                          controller: _state,
-                          cursorColor: Color(0xff09548c),
-                          decoration: InputDecoration(
-                            hintText: "State/Region*",
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                      //CITY//
-                      Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.grey[200],
-                        ),
-                        child: TextField(
-                          controller: _city,
-                          cursorColor: Color(0xff09548c),
-                          decoration: InputDecoration(
-                            hintText: "City*",
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                          ),
                         ),
                       ),
                     ],
@@ -395,7 +337,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                   height: 10,
                 ),
                 Text(
-                  'Price(Monthly)',
+                  'Rent Price(Monthly)',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -421,7 +363,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           controller: _price,
                           cursorColor: Color(0xff09548c),
                           decoration: InputDecoration(
-                            hintText: "Price",
+                            hintText: "Rent Price(in Rs.)",
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
                           ),
@@ -659,18 +601,15 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
 
   void setData() async {
     final pref = await SharedPreferences.getInstance();
-    var model = Listings(
+    var model = Rooms(
       type: listingTypeDropdownValue,
       listingNo: _listingNo.text.toString(),
       floor: floorDropdownValue,
-      address: _streetAddress.text.toString(),
-      state: _state.text.toString(),
-      city: _city.text.toString(),
       parking: parkingDropdownValue,
       bathrooms: bathroomDropdownValue,
       kitchen: kitchenDropdownValue,
       internet: internetDropdownValue,
-      monthlyRent: _price.text.toString(),
+      rent: _price.text.toString(),
       negotiable: negotiableDropdownValue,
       preferences: preferencesDropdownValue,
       description: _additionalDescription.text.toString(),
@@ -678,31 +617,30 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
       status: "vacant",
     );
 
-    var query = _fireStore.collection('Room').get();
+    var query = _fireStore.collection('Rooms').get();
     await query.then((value) {
-      Map<String, dynamic> addListing = {};
+      Map<String, dynamic> addRoom = {};
       if (value.docs.isEmpty) {
-        addListing = addData(model);
+        addRoom = addData(model);
       } else {
-        var count = 0;
-        for (int i = 0; i < value.docs.length; i++) {
-          var listingID = value.docs[i]["ListingNo"];
-
-          if (model.listingNo == listingID) {
-            count += 1;
-            break;
-          }
-        }
-        if (count > 0) {
-          setState(() {
-            isLoading = false;
-          });
-          //show message
-        } else {
-          addListing = addData(model);
-        }
+        // var count = 0;
+        // for (int i = 0; i < value.docs.length; i++) {
+        //   var listingID = value.docs[i]["ListingNo"];
+        //   if (model.listingNo == listingID) {
+        //     count += 1;
+        //     break;
+        //   }
+        // }
+        // if (count > 0) {
+        //   setState(() {
+        //     isLoading = false;
+        //   });
+        //   //show message
+        // } else {
+        addRoom = addData(model);
+        // }
       }
-      _fireStore.collection('Room').add(addListing).then((value) {
+      _fireStore.collection('Rooms').add(addRoom).then((value) {
         print("Data Updated");
         setState(() {
           isLoading = false;
@@ -716,19 +654,16 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
     });
   }
 
-  Map<String, dynamic> addData(Listings model) {
+  Map<String, dynamic> addData(Rooms model) {
     Map<String, dynamic> data = <String, dynamic>{
       "Type": model.type,
       "ListingNo": model.listingNo,
       "Floor": model.floor,
-      "Address": model.address,
-      "State": model.state,
-      "City": model.city,
       "Parking": model.parking,
       "Bathrooms": model.bathrooms,
       "Kitchen": model.kitchen,
       "Internet": model.internet,
-      "MonthlyRent": model.monthlyRent,
+      "Rent": model.rent,
       "Negotiable": model.negotiable,
       "Description": model.description,
       "Status": model.status,

@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Room {
-  final String? address;
   final String? bathroom;
-  final String? city;
+
   final String? description;
   final String? floor;
   final String? internet;
@@ -11,17 +10,16 @@ class Room {
   final String? listingNo;
   final String? rent;
   final String? parking;
-  final String? preference;
-  final String? state;
+  final String? preferences;
+  final String? negotiable;
   final String? status;
   final String? type;
   final String? email;
   String? documentId;
 
   Room({
-    this.address,
+    this.negotiable,
     this.bathroom,
-    this.city,
     this.description,
     this.floor,
     this.internet,
@@ -29,8 +27,7 @@ class Room {
     this.listingNo,
     this.rent,
     this.parking,
-    this.preference,
-    this.state,
+    this.preferences,
     this.status,
     this.type,
     this.email,
@@ -38,9 +35,7 @@ class Room {
 
   factory Room.fromJson(Map<String, dynamic> json) {
     return Room(
-      address: json['Address'],
       bathroom: json['Bathrooms'],
-      city: json['City'],
       description: json['Description'],
       floor: json['Floor'],
       internet: json['Internet'],
@@ -48,49 +43,45 @@ class Room {
       listingNo: json['ListingNo'],
       rent: json['MonthlyRent'],
       parking: json['Parking'],
-      preference: json['Preferences'],
-      state: json['State'],
+      preferences: json['Preferences'],
       status: json['Status'],
       type: json['Type'],
       email: json['OwnerEmail'],
+      negotiable: json['Negotiable'],
     );
   }
 
   Room.fromFireStoreSnapshot(DocumentSnapshot snap)
       : documentId = snap.id,
-        address = snap.get('Address'),
         bathroom = snap.get('Bathrooms'),
-        city = snap.get('City'),
         description = snap.get('Description'),
         floor = snap.get('Floor'),
         internet = snap.get('Internet'),
         kitchen = snap.get('Kitchen'),
         listingNo = snap.get('ListingNo'),
-        rent = snap.get('MonthlyRent'),
+        rent = snap.get('Rent'),
         parking = snap.get('Parking'),
-        preference = snap.get('Preferences'),
-        state = snap.get('State'),
+        preferences = snap.get('Preferences'),
         type = snap.get('Type'),
         status = snap.get('Status'),
+        negotiable = snap.get('Negotiable'),
         email = snap.get('OwnerEmail');
 
   toJson() {
     return {
-      'Address': address,
       'Bathrooms': bathroom,
-      'City': city,
       'Description': description,
       'Floor': floor,
       'Internet': internet,
       'Kitchen': kitchen,
       'ListingNo': listingNo,
-      'MonthlyRent': rent,
+      'Rent': rent,
       'Parking': parking,
-      'Preferences': preference,
-      'State': state,
+      'Preferences': preferences,
       'Type': type,
       'Status': status,
       'OwnerEmail': email,
+      'Negotiable': negotiable,
     };
   }
 }
