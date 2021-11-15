@@ -35,7 +35,9 @@ class RoomWidget extends StatelessWidget {
             width: width * 20,
             height: width * 30,
             decoration: BoxDecoration(
-              color: index % 2 == 0 ? Colors.green.withOpacity(0.5) : Colors.red.withOpacity(0.5),
+              color: index % 2 == 0
+                  ? Colors.green.withOpacity(0.5)
+                  : Colors.red.withOpacity(0.5),
               borderRadius: BorderRadius.circular(10),
             ),
           ),
