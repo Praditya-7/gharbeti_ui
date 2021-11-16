@@ -3,6 +3,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:gharbeti_ui/shared/color.dart';
+import 'package:gharbeti_ui/shared/widget/build_text.dart';
 
 import 'add_listings_screen.dart';
 import 'listing_detail.dart';
@@ -15,9 +17,10 @@ class ListingsScreen extends StatefulWidget {
 }
 
 class _ListingsScreenState extends State<ListingsScreen> {
-  String listingType = 'Flat';
+  String listingType = 'ROOM';
   String listingNumber = '1';
   String listingStatus = 'Occupied';
+  String floor = "First";
 
   List<String> entries = <String>[
     '1',
@@ -67,10 +70,14 @@ class _ListingsScreenState extends State<ListingsScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Icon(
-                      Icons.meeting_room,
-                      color: Color(0xff09548c),
-                      size: 100,
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5.0),
+                        color: ColorData.primaryColor,
+                      ),
+                      child: Image(
+                        image: AssetImage("assets/image/logo_image.png"),
+                      ),
                     ),
                     SizedBox(
                       width: 20,
@@ -79,12 +86,17 @@ class _ListingsScreenState extends State<ListingsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
-                          listingType + ' No ' + entries[index],
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                        BuildText(
+                          text: listingType + ' NO ' + entries[index],
+                          weight: FontWeight.bold,
+                          fontSize: 20.0,
                         ),
+                        BuildText(
+                          text: "Floor : " + floor,
+                          weight: FontWeight.bold,
+                          fontSize: 14.0,
+                        ),
+                        //Status
                         Row(
                           children: [
                             Text(
@@ -96,8 +108,9 @@ class _ListingsScreenState extends State<ListingsScreen> {
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-                                color:
-                                    listingStatus == 'Vacant' ? Color(0xff30d472) : Colors.orange,
+                                color: listingStatus == 'Vacant'
+                                    ? Color(0xff30d472)
+                                    : Colors.orange,
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -113,30 +126,6 @@ class _ListingsScreenState extends State<ListingsScreen> {
                               ),
                             ),
                           ],
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color:
-                                listingStatus == 'Vacant' ? Color(0xff09548c) : Color(0xffa7a7a7),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              //List room Button
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(30, 8, 30, 8),
-                              child: Center(
-                                child: Text(
-                                  'List Room',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
                         ),
                       ],
                     ),
