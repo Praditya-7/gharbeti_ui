@@ -16,6 +16,8 @@ class Room {
   final String? email;
   String? documentId;
   final String? imageName;
+  final double latitude;
+  final double longitude;
 
   Room({
     this.negotiable,
@@ -32,6 +34,8 @@ class Room {
     this.type,
     this.email,
     this.imageName,
+    required this.latitude,
+    required this.longitude,
   });
 
   factory Room.fromJson(Map<String, dynamic> json) {
@@ -49,7 +53,9 @@ class Room {
         type: json['Type'],
         email: json['OwnerEmail'],
         negotiable: json['Negotiable'],
-        imageName: json['ImageName']);
+        imageName: json['ImageName'],
+        latitude: json['Latitude'],
+        longitude: json['Longitude']);
   }
 
   Room.fromFireStoreSnapshot(DocumentSnapshot snap)
@@ -67,6 +73,8 @@ class Room {
         status = snap.get('Status'),
         negotiable = snap.get('Negotiable'),
         imageName = snap.get('ImageName'),
+        latitude = snap.get('Latitude'),
+        longitude = snap.get('Longitude'),
         email = snap.get('OwnerEmail');
 
   toJson() {
@@ -84,6 +92,8 @@ class Room {
       'Status': status,
       'OwnerEmail': email,
       'Negotiable': negotiable,
+      'Latitude': latitude,
+      'Longitude': longitude,
       'ImageName': imageName,
     };
   }

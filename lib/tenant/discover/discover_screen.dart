@@ -27,6 +27,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
   List<Room> roomList = [];
   int roomCount = 0;
   bool isLoading = true;
+  String address = '';
 
   @override
   void initState() {

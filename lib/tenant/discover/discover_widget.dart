@@ -1,19 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/tenant/discover/service/discover_storage_service.dart';
 
-class DiscoverWidget extends StatelessWidget {
-  String wifiAvailable = '';
-  String waterAvailable = '';
-  String parkingAvailable = '';
-  String randomAvailable = '';
-  String floor = '';
-  String including = '';
-  String preferred = '';
-  int price = 0;
-  String address = '';
-
+class DiscoverWidget extends StatefulWidget {
   final int index;
   final double width;
   final double height;
@@ -30,9 +21,44 @@ class DiscoverWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<DiscoverWidget> createState() => _DiscoverWidgetState();
+}
+
+class _DiscoverWidgetState extends State<DiscoverWidget> {
+  String including = '';
+
+  Future<String> _getPlace() async {
+    String add;
+    List<Placemark> newPlace =
+        await placemarkFromCoordinates(widget.data.latitude, widget.data.longitude);
+
+    // this is all you need
+    Placemark placeMark = newPlace[0];
+    String name = placeMark.name.toString();
+    String subLocality = placeMark.subLocality.toString();
+    String locality = placeMark.locality.toString();
+    String administrativeArea = placeMark.administrativeArea.toString();
+    String postalCode = placeMark.postalCode.toString();
+    String country = placeMark.country.toString();
+    add = name +
+        "," +
+        subLocality +
+        ",\n" +
+        locality +
+        "," +
+        postalCode +
+        ",\n" +
+        administrativeArea +
+        "," +
+        country;
+    return add;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    including = data.kitchen.toString() == 'Yes' ? ' | Room including Kitchen' : ' ';
-    print(data.imageName.toString());
+    including = widget.data.kitchen.toString() == 'Yes' ? ' | Room including Kitchen' : ' ';
+    String address = _getPlace().value;
+
     return InkWell(
       onTap: () {
         //onTap Code here
@@ -44,8 +70,9 @@ class DiscoverWidget extends StatelessWidget {
           children: [
             //Image Here
             FutureBuilder(
-              future: DiscoverStorage(listingNo: data.listingNo, email: data.email).downloadURL(
-                data.imageName.toString(),
+              future: DiscoverStorage(listingNo: widget.data.listingNo, email: widget.data.email)
+                  .downloadURL(
+                widget.data.imageName.toString(),
               ),
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
@@ -54,7 +81,7 @@ class DiscoverWidget extends StatelessWidget {
                       snapshot.data!,
                       fit: BoxFit.fitWidth,
                       width: double.infinity,
-                      height: height * 15,
+                      height: widget.height * 15,
                     ),
                   );
                 }
@@ -76,19 +103,19 @@ class DiscoverWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       getRoundedIconWithLabel(
-                        data.internet == 'Yes' ? 'Available' : 'None',
+                        widget.data.internet == 'Yes' ? 'Available' : 'None',
                         Icons.wifi,
                       ),
                       getRoundedIconWithLabel(
-                        data.parking == 'Yes' ? 'Available' : 'None',
+                        widget.data.parking == 'Yes' ? 'Available' : 'None',
                         Icons.local_parking,
                       ),
                       getRoundedIconWithLabel(
-                        data.kitchen == 'Yes' ? 'Available' : 'None',
+                        widget.data.kitchen == 'Yes' ? 'Available' : 'None',
                         Icons.kitchen,
                       ),
                       getRoundedIconWithLabel(
-                        data.bathroom == 'Yes' ? 'Available' : 'None',
+                        widget.data.bathroom == 'Yes' ? 'Available' : 'None',
                         Icons.bathroom,
                       ),
                     ],
@@ -132,7 +159,7 @@ class DiscoverWidget extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    'Rs.' + data.rent.toString() + '/month',
+                    'Rs.' + widget.data.rent.toString() + '/month',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -145,10 +172,10 @@ class DiscoverWidget extends StatelessWidget {
               alignment: Alignment.bottomLeft,
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: Text(
-                data.floor.toString() +
+                widget.data.floor.toString() +
                     ' Floor' +
                     ' | ' +
-                    data.preferences.toString() +
+                    widget.data.preferences.toString() +
                     ' Preferred' +
                     including,
                 style: TextStyle(
