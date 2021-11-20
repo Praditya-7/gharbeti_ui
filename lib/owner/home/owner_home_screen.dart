@@ -56,7 +56,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
     occupiedList.clear();
 
     for (var item in roomList) {
-      if (item.status == "vacant") {
+      if (item.status == "Vacant") {
         vacantList.add(item);
       } else {
         occupiedList.add(item);
@@ -110,7 +110,10 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                   ),
                 ),
               ),
-              Visibility(visible: isLoading, child: CustomProgressIndicatorWidget())
+              Visibility(
+                visible: isLoading,
+                child: CustomProgressIndicatorWidget(),
+              ),
             ],
           ),
         ),

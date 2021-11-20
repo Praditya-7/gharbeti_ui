@@ -706,7 +706,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
       preferences: preferencesDropdownValue,
       description: _additionalDescription.text.toString(),
       email: pref.getString("email"),
-      status: "vacant",
+      status: "Vacant",
       lat: _latLng.latitude,
       long: _latLng.longitude,
       imageName: fileName,

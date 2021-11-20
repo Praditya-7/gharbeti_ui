@@ -3,14 +3,14 @@ import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/owner/listings/service/storage_service.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
 
-class RoomWidget extends StatelessWidget {
+class ListingWidget extends StatelessWidget {
   final int index;
   final double width;
   final double height;
   final Room data;
   final Function(int index) onTap;
 
-  const RoomWidget({
+  const ListingWidget({
     Key? key,
     required this.index,
     required this.width,
@@ -22,7 +22,7 @@ class RoomWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+      margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -68,17 +68,40 @@ class RoomWidget extends StatelessWidget {
               ),
               BuildText(
                 text: "Floor: ${data.floor}",
-                weight: FontWeight.w300,
+                weight: FontWeight.normal,
                 fontSize: 14,
               ),
               SizedBox(
                 height: 5,
               ),
-              BuildText(
-                text: "Preferences: ${data.preferences}",
-                weight: FontWeight.w300,
-                fontSize: 14,
-              )
+              Row(
+                children: [
+                  Text(
+                    'Status : ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: data.status == 'Vacant' ? Color(0xff30d472) : Colors.orange,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(
+                          data.status.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ],
