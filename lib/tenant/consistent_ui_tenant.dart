@@ -5,7 +5,7 @@ import 'package:gharbeti_ui/tenant/profile/profile_screen.dart';
 
 import 'billing/billing_screen.dart';
 import 'discover/discover_screen.dart';
-import 'home_screen_registered.dart';
+import 'tenant_home_screen.dart';
 
 class ConsistentUITenant extends StatefulWidget {
   const ConsistentUITenant({Key? key}) : super(key: key);
@@ -19,7 +19,7 @@ class _ConsistentUITenantState extends State<ConsistentUITenant> {
   int currentIndex = 0;
 
   final screens = [
-    TenantHomeScreenRegistered(),
+    TenantHomeScreen(),
     BillingTenantScreen(),
     DiscoverTenantScreen(),
     ProfileTenantScreen(),

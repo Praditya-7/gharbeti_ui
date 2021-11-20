@@ -710,6 +710,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
       lat: _latLng.latitude,
       long: _latLng.longitude,
       imageName: fileName,
+      tenantEmail: "",
     );
 
     var query = _fireStore.collection('Rooms').get();
@@ -768,6 +769,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
       "Latitude": model.lat,
       "Longitude": model.long,
       "ImageName": model.imageName,
+      "Tenant Email": model.tenantEmail,
     };
     return data;
   }

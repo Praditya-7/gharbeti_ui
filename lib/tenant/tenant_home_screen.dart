@@ -4,23 +4,35 @@ import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class TenantHomeScreenRegistered extends StatefulWidget {
+class TenantHomeScreen extends StatefulWidget {
   static String route = '/homeScreenRegistered';
 
-  const TenantHomeScreenRegistered({Key? key}) : super(key: key);
+  const TenantHomeScreen({Key? key}) : super(key: key);
 
   @override
-  _TenantHomeScreenRegisteredState createState() =>
-      _TenantHomeScreenRegisteredState();
+  _TenantHomeScreenState createState() => _TenantHomeScreenState();
 }
 
-class _TenantHomeScreenRegisteredState
-    extends State<TenantHomeScreenRegistered> {
+class _TenantHomeScreenState extends State<TenantHomeScreen> {
   String tenantStatus = "unregistered";
   int dueBalance = 8000;
   String status = 'Paid';
   late String balance = dueBalance.toString();
+  final pref = SharedPreferences.getInstance();
+  String roomName = "";
+
+  @override
+  void initState() {
+    setData();
+    super.initState();
+  }
+
+  setData() async {
+    final pref = await SharedPreferences.getInstance();
+    roomName = pref.getString("roomName").toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,72 +42,13 @@ class _TenantHomeScreenRegisteredState
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              tenantStatus == 'unregistered'
-                  ? _getNoLeaseWidget("No active lease")
-                  : Container(
-                      color: Colors.white,
-                      margin: EdgeInsets.fromLTRB(10, 15.0, 10, 10),
-                      padding: EdgeInsets.fromLTRB(0, 15.0, 0, 0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text('Balance Due'),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            'Rs. ' + balance + '.00',
-                            style: TextStyle(
-                              color: Color(0xff09548c),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 25,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('Status: '),
-                              Text(
-                                status,
-                                style: TextStyle(
-                                  color: status == 'Paid'
-                                      ? Colors.green
-                                      : Colors.red,
-                                ),
-                              ),
-                            ],
-                          ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              primary: Colors.white, // <-- Button color
-                            ),
-                            child: Container(
-                              height: 35,
-                              color: Colors.deepOrangeAccent,
-                              child: Center(
-                                child: Text(
-                                  'Pay Now',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-              SizedBox(height: 10.0),
-              tenantStatus == 'unregistered'
-                  ? Expanded(
+          child: roomName == ""
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    _getNoLeaseWidget("No active lease"),
+                    SizedBox(height: 10.0),
+                    Expanded(
                       child: Container(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -126,8 +79,7 @@ class _TenantHomeScreenRegisteredState
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              DiscoverTenantScreen()));
+                                          builder: (context) => DiscoverTenantScreen()));
                                 },
                                 child: Text("find New"),
                               )
@@ -135,8 +87,70 @@ class _TenantHomeScreenRegisteredState
                           ),
                         ),
                       ),
-                    )
-                  : Container(
+                    ),
+                  ],
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      color: Colors.white,
+                      margin: EdgeInsets.fromLTRB(10, 15.0, 10, 10),
+                      padding: EdgeInsets.fromLTRB(0, 15.0, 0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text('Balance Due'),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Rs. ' + balance + '.00',
+                            style: TextStyle(
+                              color: Color(0xff09548c),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 25,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Status: '),
+                              Text(
+                                status,
+                                style: TextStyle(
+                                  color: status == 'Paid' ? Colors.green : Colors.red,
+                                ),
+                              ),
+                            ],
+                          ),
+                          ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              primary: Colors.white, // <-- Button color
+                            ),
+                            child: Container(
+                              height: 35,
+                              color: Colors.deepOrangeAccent,
+                              child: Center(
+                                child: Text(
+                                  'Pay Now',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10.0),
+                    Container(
                       color: Colors.white,
                       margin: EdgeInsets.fromLTRB(10, 0.0, 10, 15),
                       padding: EdgeInsets.fromLTRB(0, 15.0, 0, 15),
@@ -216,8 +230,8 @@ class _TenantHomeScreenRegisteredState
                         ],
                       ),
                     ),
-            ],
-          ),
+                  ],
+                ),
         ),
       ),
     );

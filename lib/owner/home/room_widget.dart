@@ -29,8 +29,9 @@ class _RoomWidgetState extends State<RoomWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context)
-            .pushNamed(VacantRoom.route, arguments: widget.data);
+        setState(() {
+          var abc = Navigator.of(context).pushNamed(VacantRoom.route, arguments: widget.data);
+        });
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
@@ -46,8 +47,7 @@ class _RoomWidgetState extends State<RoomWidget> {
               future: Storage(listingNo: widget.data.listingNo)
                   .downloadURL(widget.data.imageName.toString()),
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.connectionState == ConnectionState.done &&
-                    snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
                   return ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.network(
@@ -58,8 +58,7 @@ class _RoomWidgetState extends State<RoomWidget> {
                     ),
                   );
                 }
-                if (snapshot.connectionState == ConnectionState.waiting ||
-                    !snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
                   return const CircularProgressIndicator();
                 }
                 return Container();

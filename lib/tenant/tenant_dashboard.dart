@@ -4,8 +4,8 @@ import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/shared/tenant_dashboard_icons.dart';
 import 'package:gharbeti_ui/tenant/billing/billing_screen.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_screen.dart';
-import 'package:gharbeti_ui/tenant/home_screen_registered.dart';
 import 'package:gharbeti_ui/tenant/profile/profile_screen.dart';
+import 'package:gharbeti_ui/tenant/tenant_home_screen.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class TenantDashboardScreen extends StatefulWidget {
@@ -68,7 +68,7 @@ class _TenantDashboardScreenState extends State<TenantDashboardScreen> {
       controller: pageController,
       onPageChanged: (value) => onPageChange(value),
       children: const [
-        TenantHomeScreenRegistered(),
+        TenantHomeScreen(),
         BillingTenantScreen(),
         DiscoverTenantScreen(),
         ProfileTenantScreen(),

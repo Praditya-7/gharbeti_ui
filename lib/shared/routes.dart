@@ -6,8 +6,8 @@ import 'package:gharbeti_ui/owner/owner_dashboard.dart';
 import 'package:gharbeti_ui/owner/tenants/tenants_screen.dart';
 import 'package:gharbeti_ui/signup/screen/signup_screen.dart';
 import 'package:gharbeti_ui/splash_screen/intro_screen.dart';
-import 'package:gharbeti_ui/tenant/home_screen_registered.dart';
 import 'package:gharbeti_ui/tenant/tenant_dashboard.dart';
+import 'package:gharbeti_ui/tenant/tenant_home_screen.dart';
 
 class Routes {
   static var routes = {
@@ -16,8 +16,7 @@ class Routes {
     SignUpScreen.route: (ctx) => const SignUpScreen(),
     TenantsScreen.route: (ctx) => const TenantsScreen(),
     AddListingsScreen.route: (ctx) => const AddListingsScreen(),
-    TenantHomeScreenRegistered.route: (ctx) =>
-        const TenantHomeScreenRegistered(),
+    TenantHomeScreen.route: (ctx) => const TenantHomeScreen(),
     OwnerHomeScreen.route: (ctx) => const OwnerHomeScreen(),
     OwnerDashboardScreen.route: (ctx) => const OwnerDashboardScreen(),
     TenantDashboardScreen.route: (ctx) => const TenantDashboardScreen(),

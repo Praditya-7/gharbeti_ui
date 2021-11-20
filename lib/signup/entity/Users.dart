@@ -6,6 +6,7 @@ class Users {
     this.phone,
     this.type,
     this.email,
+    this.roomName,
   });
 
   String? name;
@@ -14,4 +15,5 @@ class Users {
   String? phone;
   String? type;
   String? email;
+  String? roomName;
 }

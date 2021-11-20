@@ -17,6 +17,7 @@ class Rooms {
     this.lat,
     this.long,
     this.imageName,
+    this.tenantEmail,
   });
 
   final String? negotiable;
@@ -37,4 +38,5 @@ class Rooms {
   final double? lat;
   final double? long;
   final String? imageName;
+  final String? tenantEmail;
 }

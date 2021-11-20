@@ -330,6 +330,7 @@ class InitState extends State<SignUpScreen> {
       password: _password.text.toString(),
       dateOfBirth: _dateOfBirth.text.toString(),
       type: selectedUserType,
+      roomName: "",
     );
     var query = _fireStore.collection('Users').get();
     await query.then((value) {
@@ -377,6 +378,7 @@ class InitState extends State<SignUpScreen> {
       "Phone Number": model.phone,
       "Type": model.type,
       "Date of Birth": model.dateOfBirth,
+      "Room Name": model.roomName,
     };
     return data;
   }
