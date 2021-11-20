@@ -65,8 +65,9 @@ class StartState extends State<LoginScreen> {
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius:
-                    BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15)),
               ),
               child: _createLoginBody(),
             ),
@@ -97,7 +98,10 @@ class StartState extends State<LoginScreen> {
             //border: Border.all(color: new Color(0xff09548c), width: 1),
             color: Colors.grey[200],
             boxShadow: const [
-              BoxShadow(offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
+              BoxShadow(
+                  offset: Offset(0, 10),
+                  blurRadius: 50,
+                  color: Color(0xffEEEEEE)),
             ],
           ),
           child: TextField(
@@ -124,7 +128,10 @@ class StartState extends State<LoginScreen> {
             //border: Border.all(color: new Color(0xff09548c), width: 1),
             color: const Color(0xffEEEEEE),
             boxShadow: const [
-              BoxShadow(offset: Offset(0, 20), blurRadius: 100, color: Color(0xffEEEEEE)),
+              BoxShadow(
+                  offset: Offset(0, 20),
+                  blurRadius: 100,
+                  color: Color(0xffEEEEEE)),
             ],
           ),
           child: TextField(
@@ -175,7 +182,10 @@ class StartState extends State<LoginScreen> {
                 color: const Color(0xff09548c),
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: const [
-                  BoxShadow(offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
+                  BoxShadow(
+                      offset: Offset(0, 10),
+                      blurRadius: 50,
+                      color: Color(0xffEEEEEE)),
                 ],
               ),
               child: const Text(
@@ -197,7 +207,8 @@ class StartState extends State<LoginScreen> {
                   style: TextStyle(color: Color(0xff09548c)),
                 ),
                 onTap: () {
-                  Navigator.pushNamed(context, SignUpScreen.route); // Write Tap Code Here.
+                  Navigator.pushNamed(
+                      context, SignUpScreen.route); // Write Tap Code Here.
                 },
               )
             ],
@@ -229,6 +240,7 @@ class StartState extends State<LoginScreen> {
       showErrorMessage("Password can not be empty", context);
     } else {
       var type = "";
+      var roomName = "";
       var query = _fireStore.collection('Users').get();
       await query.then((value) {
         Map<String, dynamic> addUser = {};
@@ -241,6 +253,7 @@ class StartState extends State<LoginScreen> {
             var passwordDatabase = value.docs[i]["Password"];
             if (email == emailDatabase && pass == passwordDatabase) {
               type = value.docs[i]["Type"];
+              roomName = value.docs[i]["Room Name"];
               count += 1;
               break;
             }
@@ -250,10 +263,14 @@ class StartState extends State<LoginScreen> {
               isLoading = false;
             });
             if (type == "tenant") {
-              Navigator.pushReplacementNamed(context, TenantDashboardScreen.route);
+              pref.setString('roomName', roomName);
+              Navigator.pushReplacementNamed(
+                  context, TenantDashboardScreen.route,
+                  arguments: roomName);
             } else {
               pref.setString('email', email);
-              Navigator.pushReplacementNamed(context, OwnerDashboardScreen.route);
+              Navigator.pushReplacementNamed(
+                  context, OwnerDashboardScreen.route);
             }
           } else {
             setState(() {
