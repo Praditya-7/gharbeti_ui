@@ -16,6 +16,7 @@ class Room {
   final String? email;
   String? documentId;
   final String? imageName;
+  final String? tenantEmail;
   final double latitude;
   final double longitude;
 
@@ -33,6 +34,7 @@ class Room {
     this.status,
     this.type,
     this.email,
+    this.tenantEmail,
     this.imageName,
     required this.latitude,
     required this.longitude,
@@ -51,6 +53,7 @@ class Room {
         preferences: json['Preferences'],
         status: json['Status'],
         type: json['Type'],
+        tenantEmail: json['Tenant Email'],
         email: json['OwnerEmail'],
         negotiable: json['Negotiable'],
         imageName: json['ImageName'],
@@ -72,6 +75,7 @@ class Room {
         type = snap.get('Type'),
         status = snap.get('Status'),
         negotiable = snap.get('Negotiable'),
+        tenantEmail = snap.get('Tenant Email'),
         imageName = snap.get('ImageName'),
         latitude = snap.get('Latitude'),
         longitude = snap.get('Longitude'),
@@ -87,6 +91,7 @@ class Room {
       'ListingNo': listingNo,
       'Rent': rent,
       'Parking': parking,
+      'Tenant Email': tenantEmail,
       'Preferences': preferences,
       'Type': type,
       'Status': status,

@@ -29,8 +29,8 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
 
   Future<String> _getPlace() async {
     String add;
-    List<Placemark> newPlace =
-        await placemarkFromCoordinates(widget.data.latitude, widget.data.longitude);
+    List<Placemark> newPlace = await placemarkFromCoordinates(
+        widget.data.latitude, widget.data.longitude);
 
     // this is all you need
     Placemark placeMark = newPlace[0];
@@ -51,13 +51,23 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
         administrativeArea +
         "," +
         country;
+    print(add);
     return add;
+  }
+
+  String getAddress() {
+    String address = "";
+    _getPlace().then((value) {
+      address = value;
+    });
+    return address;
   }
 
   @override
   Widget build(BuildContext context) {
-    including = widget.data.kitchen.toString() == 'Yes' ? ' | Room including Kitchen' : ' ';
-    String address = _getPlace().value;
+    including = widget.data.kitchen.toString() == 'Yes'
+        ? ' | Room including Kitchen'
+        : ' ';
 
     return InkWell(
       onTap: () {
@@ -70,12 +80,15 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
           children: [
             //Image Here
             FutureBuilder(
-              future: DiscoverStorage(listingNo: widget.data.listingNo, email: widget.data.email)
+              future: DiscoverStorage(
+                      listingNo: widget.data.listingNo,
+                      email: widget.data.email)
                   .downloadURL(
                 widget.data.imageName.toString(),
               ),
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.hasData) {
                   return Container(
                     child: Image.network(
                       snapshot.data!,
@@ -85,7 +98,8 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
                     ),
                   );
                 }
-                if (snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.waiting ||
+                    !snapshot.hasData) {
                   return const CircularProgressIndicator();
                 }
                 return Container();
@@ -149,7 +163,7 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
                         child: SizedBox(
                           width: 200,
                           child: Text(
-                            address,
+                            getAddress(),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 3,
                             softWrap: false,
