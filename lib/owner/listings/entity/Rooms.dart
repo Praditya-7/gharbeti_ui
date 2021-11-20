@@ -14,6 +14,9 @@ class Rooms {
     this.email,
     this.negotiable,
     this.preferences,
+    this.lat,
+    this.long,
+    this.imageName,
   });
 
   final String? negotiable;
@@ -31,4 +34,7 @@ class Rooms {
   final String? preferences;
   final String? email;
   String? documentId;
+  final double? lat;
+  final double? long;
+  final String? imageName;
 }

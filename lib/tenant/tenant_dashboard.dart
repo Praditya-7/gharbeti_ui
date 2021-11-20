@@ -90,7 +90,7 @@ class _TenantDashboardScreenState extends State<TenantDashboardScreen> {
           tabs: [
             gTabs("Home", TenantDashboard.home),
             gTabs("Billing", TenantDashboard.wallet),
-            gTabs("Discover", TenantDashboard.discover),
+            gTabs("Discover", Icons.search),
             gTabs("Profile", TenantDashboard.profile),
           ],
           selectedIndex: _selectedIndex,

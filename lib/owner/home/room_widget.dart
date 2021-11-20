@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
+import 'package:gharbeti_ui/owner/listings/service/storage_service.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
 
@@ -31,15 +32,22 @@ class RoomWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Container(
-            width: width * 20,
-            height: width * 30,
-            decoration: BoxDecoration(
-              color: index % 2 == 0
-                  ? Colors.green.withOpacity(0.5)
-                  : Colors.red.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(10),
-            ),
+          FutureBuilder(
+            future: Storage(listingNo: data.listingNo).downloadURL(data.imageName.toString()),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                return Expanded(
+                    child: Image.network(
+                  snapshot.data!,
+                  width: 300,
+                  height: 300,
+                ));
+              }
+              if (snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
+                return const CircularProgressIndicator();
+              }
+              return Container();
+            },
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
