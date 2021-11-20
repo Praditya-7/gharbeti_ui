@@ -250,10 +250,10 @@ class StartState extends State<LoginScreen> {
               isLoading = false;
             });
             if (type == "tenant") {
-              Navigator.pushNamed(context, TenantDashboardScreen.route);
+              Navigator.pushReplacementNamed(context, TenantDashboardScreen.route);
             } else {
               pref.setString('email', email);
-              Navigator.pushNamed(context, OwnerDashboardScreen.route);
+              Navigator.pushReplacementNamed(context, OwnerDashboardScreen.route);
             }
           } else {
             setState(() {

@@ -15,6 +15,9 @@ class Room {
   final String? type;
   final String? email;
   String? documentId;
+  final String? imageName;
+  final double latitude;
+  final double longitude;
 
   Room({
     this.negotiable,
@@ -30,24 +33,29 @@ class Room {
     this.status,
     this.type,
     this.email,
+    this.imageName,
+    required this.latitude,
+    required this.longitude,
   });
 
   factory Room.fromJson(Map<String, dynamic> json) {
     return Room(
-      bathroom: json['Bathrooms'],
-      description: json['Description'],
-      floor: json['Floor'],
-      internet: json['Internet'],
-      kitchen: json['Kitchen'],
-      listingNo: json['ListingNo'],
-      rent: json['MonthlyRent'],
-      parking: json['Parking'],
-      preferences: json['Preferences'],
-      status: json['Status'],
-      type: json['Type'],
-      email: json['OwnerEmail'],
-      negotiable: json['Negotiable'],
-    );
+        bathroom: json['Bathrooms'],
+        description: json['Description'],
+        floor: json['Floor'],
+        internet: json['Internet'],
+        kitchen: json['Kitchen'],
+        listingNo: json['ListingNo'],
+        rent: json['MonthlyRent'],
+        parking: json['Parking'],
+        preferences: json['Preferences'],
+        status: json['Status'],
+        type: json['Type'],
+        email: json['OwnerEmail'],
+        negotiable: json['Negotiable'],
+        imageName: json['ImageName'],
+        latitude: json['Latitude'],
+        longitude: json['Longitude']);
   }
 
   Room.fromFireStoreSnapshot(DocumentSnapshot snap)
@@ -64,6 +72,9 @@ class Room {
         type = snap.get('Type'),
         status = snap.get('Status'),
         negotiable = snap.get('Negotiable'),
+        imageName = snap.get('ImageName'),
+        latitude = snap.get('Latitude'),
+        longitude = snap.get('Longitude'),
         email = snap.get('OwnerEmail');
 
   toJson() {
@@ -81,6 +92,9 @@ class Room {
       'Status': status,
       'OwnerEmail': email,
       'Negotiable': negotiable,
+      'Latitude': latitude,
+      'Longitude': longitude,
+      'ImageName': imageName,
     };
   }
 }

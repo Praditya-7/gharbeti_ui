@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/tenant/billing/paynow_screen.dart';
 import 'package:gharbeti_ui/tenant/billing/pending_bills.dart';
 import 'package:gharbeti_ui/tenant/billing/recent_payments.dart';
 
@@ -70,7 +71,8 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                           Text(
                             status,
                             style: TextStyle(
-                              color: status == 'Paid' ? Colors.green : Colors.red,
+                              color:
+                                  status == 'Paid' ? Colors.green : Colors.red,
                             ),
                           ),
                         ],
@@ -81,7 +83,12 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                       InkWell(
                         onTap: (
                             //ROUTE TO PAY NOW HERE!!
-                            ) {},
+                            ) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PayNow()));
+                        },
                         child: Container(
                           height: 35,
                           color: Colors.deepOrangeAccent,
@@ -276,7 +283,9 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                           Text(
                             paymentStatus,
                             style: TextStyle(
-                              color: paymentStatus == 'Complete' ? Colors.green : Colors.orange,
+                              color: paymentStatus == 'Complete'
+                                  ? Colors.green
+                                  : Colors.orange,
                             ),
                           ),
                         ],
@@ -356,7 +365,9 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                           Text(
                             paymentStatus,
                             style: TextStyle(
-                              color: paymentStatus == 'Complete' ? Colors.green : Colors.orange,
+                              color: paymentStatus == 'Complete'
+                                  ? Colors.green
+                                  : Colors.orange,
                             ),
                           ),
                         ],

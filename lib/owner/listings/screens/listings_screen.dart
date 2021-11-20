@@ -1,11 +1,17 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
+import 'package:gharbeti_ui/owner/listings/screens/listing_widget.dart';
+import 'package:gharbeti_ui/shared/screen_config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'add_listings_screen.dart';
-import 'listing_detail.dart';
+
+final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
 class ListingsScreen extends StatefulWidget {
   const ListingsScreen({Key? key}) : super(key: key);
@@ -15,9 +21,16 @@ class ListingsScreen extends StatefulWidget {
 }
 
 class _ListingsScreenState extends State<ListingsScreen> {
-  String listingType = 'Flat';
+  int roomCount = 0;
+  List<Room> roomList = [];
+  double width = 0.0;
+  double height = 0.0;
+
+  String listingType = 'ROOM';
   String listingNumber = '1';
   String listingStatus = 'Occupied';
+  String floor = "First";
+  bool isLoading = true;
 
   List<String> entries = <String>[
     '1',
@@ -26,7 +39,34 @@ class _ListingsScreenState extends State<ListingsScreen> {
   ];
 
   @override
+  void initState() {
+    setData();
+    super.initState();
+  }
+
+  setData() async {
+    roomList.clear();
+    final pref = await SharedPreferences.getInstance();
+    var email = pref.getString("email");
+    var query = _fireStore.collection('Rooms').where("OwnerEmail", isEqualTo: email).get();
+    await query.then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var doc in value.docs) {
+          roomList.add(Room.fromFireStoreSnapshot(doc));
+        }
+      }
+    });
+    setState(() {
+      roomCount = roomList.length;
+      isLoading = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    width = SizeConfig.safeBlockHorizontal!;
+    height = SizeConfig.safeBlockVertical!;
     return Scaffold(
       backgroundColor: Color.fromRGBO(240, 240, 240, 1),
       floatingActionButton: FloatingActionButton(
@@ -43,106 +83,21 @@ class _ListingsScreenState extends State<ListingsScreen> {
         child: ListView.separated(
           shrinkWrap: true,
           physics: BouncingScrollPhysics(),
-          itemCount: entries.length,
+          itemCount: roomCount,
           separatorBuilder: (BuildContext context, int index) => Divider(
             height: 0.1,
             indent: 0,
             thickness: 0.1,
           ),
           itemBuilder: (BuildContext context, int index) {
-            return InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ListingDetail(),
-                  ),
-                );
+            return ListingWidget(
+              height: height,
+              width: width,
+              data: roomList[index],
+              index: index,
+              onTap: (index) {
+                //ROUTE CODE HERE
               },
-              child: Container(
-                margin: EdgeInsets.all(12),
-                height: 150,
-                color: Colors.white,
-                padding: EdgeInsets.all(8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(
-                      Icons.meeting_room,
-                      color: Color(0xff09548c),
-                      size: 100,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          listingType + ' No ' + entries[index],
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Status : ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color:
-                                    listingStatus == 'Vacant' ? Color(0xff30d472) : Colors.orange,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: Text(
-                                    listingStatus,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color:
-                                listingStatus == 'Vacant' ? Color(0xff09548c) : Color(0xffa7a7a7),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              //List room Button
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(30, 8, 30, 8),
-                              child: Center(
-                                child: Text(
-                                  'List Room',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
             );
           },
         ),
