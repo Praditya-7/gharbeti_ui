@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
+import 'package:gharbeti_ui/tenant/discover/discover_listing_detail.dart';
 import 'package:gharbeti_ui/tenant/discover/service/discover_storage_service.dart';
 
 class DiscoverWidget extends StatefulWidget {
@@ -29,8 +30,8 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
 
   Future<String> _getPlace() async {
     String add;
-    List<Placemark> newPlace = await placemarkFromCoordinates(
-        widget.data.latitude, widget.data.longitude);
+    List<Placemark> newPlace =
+        await placemarkFromCoordinates(widget.data.latitude, widget.data.longitude);
 
     // this is all you need
     Placemark placeMark = newPlace[0];
@@ -65,13 +66,11 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
 
   @override
   Widget build(BuildContext context) {
-    including = widget.data.kitchen.toString() == 'Yes'
-        ? ' | Room including Kitchen'
-        : ' ';
+    including = widget.data.kitchen.toString() == 'Yes' ? ' | Room including Kitchen' : ' ';
 
     return InkWell(
       onTap: () {
-        //onTap Code here
+        Navigator.of(context).pushNamed(DiscoverListingDetail.route);
       },
       child: Container(
         color: Colors.white,
@@ -80,15 +79,12 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
           children: [
             //Image Here
             FutureBuilder(
-              future: DiscoverStorage(
-                      listingNo: widget.data.listingNo,
-                      email: widget.data.email)
+              future: DiscoverStorage(listingNo: widget.data.listingNo, email: widget.data.email)
                   .downloadURL(
                 widget.data.imageName.toString(),
               ),
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.connectionState == ConnectionState.done &&
-                    snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
                   return Container(
                     child: Image.network(
                       snapshot.data!,
@@ -98,8 +94,7 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
                     ),
                   );
                 }
-                if (snapshot.connectionState == ConnectionState.waiting ||
-                    !snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
                   return const CircularProgressIndicator();
                 }
                 return Container();

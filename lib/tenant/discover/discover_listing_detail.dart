@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 class DiscoverListingDetail extends StatefulWidget {
+  static String route = '/discoverListingDetail';
   const DiscoverListingDetail({Key? key}) : super(key: key);
 
   @override
@@ -123,8 +124,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                       ),
                       Text(
                         'Rs.' + price.toString() + '/month',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
                       ),
                     ],
                   ),
@@ -142,9 +142,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Owner",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black)),
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
                           Text(name),
                         ],
                       ),
@@ -154,9 +152,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Preferences",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black)),
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
                           Text(preference),
                         ],
                       ),
@@ -166,9 +162,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Floor",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black)),
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
                           Text(floor),
                         ],
                       )
@@ -201,9 +195,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         text: TextSpan(
                           text: "BathRooms : ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14.0,
-                              color: Colors.black),
+                              fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
                           children: [
                             TextSpan(
                                 text: " " + bathroomNo.toString(),
@@ -222,9 +214,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         text: TextSpan(
                           text: "Kitchen : ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14.0,
-                              color: Colors.black),
+                              fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
                           children: [
                             TextSpan(
                                 text: " " + bathroomNo.toString(),
@@ -243,9 +233,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         text: TextSpan(
                           text: "Internet : ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14.0,
-                              color: Colors.black),
+                              fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
                           children: [
                             TextSpan(
                                 text: " " + intOption,
@@ -264,9 +252,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         text: TextSpan(
                           text: "Parking : ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14.0,
-                              color: Colors.black),
+                              fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
                           children: [
                             TextSpan(
                                 text: " " + parkingOption,
