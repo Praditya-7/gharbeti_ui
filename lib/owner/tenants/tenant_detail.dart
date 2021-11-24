@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 class TenantDetail extends StatefulWidget {
+  static String route = '/tenantDetail';
   const TenantDetail({Key? key}) : super(key: key);
 
   @override

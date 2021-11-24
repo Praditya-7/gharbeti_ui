@@ -26,17 +26,7 @@ class _ListingsScreenState extends State<ListingsScreen> {
   double width = 0.0;
   double height = 0.0;
 
-  String listingType = 'ROOM';
-  String listingNumber = '1';
-  String listingStatus = 'Occupied';
-  String floor = "First";
   bool isLoading = true;
-
-  List<String> entries = <String>[
-    '1',
-    '2',
-    '3',
-  ];
 
   @override
   void initState() {

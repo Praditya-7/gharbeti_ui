@@ -1,9 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gharbeti_ui/owner/tenants/tenant_detail.dart';
+import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
+import 'package:gharbeti_ui/owner/listings/entity/user_container.dart';
+import 'package:gharbeti_ui/owner/tenants/tenant_widget.dart';
+import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
+import 'package:gharbeti_ui/shared/screen_config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'add_tenants_screen.dart';
+final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
 class TenantsScreen extends StatefulWidget {
   static String route = '/tenantScreen';
@@ -14,6 +20,14 @@ class TenantsScreen extends StatefulWidget {
 }
 
 class _TenantsScreenState extends State<TenantsScreen> {
+  List<User> tenantList = [];
+  bool isLoading = true;
+  int tenantCount = 0;
+  List<Room> roomList = [];
+  List<Room> tenantRoomList = [];
+  double width = 0.0;
+  double height = 0.0;
+
   List<String> entries = <String>[
     '1',
     '2',
@@ -27,112 +41,95 @@ class _TenantsScreenState extends State<TenantsScreen> {
     0,
     1600,
   ];
+
+  @override
+  void initState() {
+    setData();
+    super.initState();
+  }
+
+  setData() async {
+    roomList.clear();
+    final pref = await SharedPreferences.getInstance();
+    var email = pref.getString("email");
+    var query1 = _fireStore.collection('Rooms').where("OwnerEmail", isEqualTo: email).get();
+    await query1.then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var doc in value.docs) {
+          roomList.add(Room.fromFireStoreSnapshot(doc));
+        }
+      }
+    });
+
+    if (roomList.isNotEmpty) {
+      for (int i = 0; i < roomList.length; i++) {
+        var query2 =
+            _fireStore.collection('Users').where("Email", isEqualTo: roomList[i].tenantEmail).get();
+        await query2.then((value) {
+          if (value.docs.isNotEmpty) {
+            for (var doc in value.docs) {
+              tenantList.add(User.fromFireStoreSnapshot(doc));
+              tenantRoomList.add(roomList[i]);
+            }
+          }
+        });
+      }
+    }
+
+    setState(() {
+      tenantCount = tenantList.length;
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color.fromRGBO(240, 240, 240, 1),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-        backgroundColor: Color(0xff09548c),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddTenantsScreen()),
-          );
-        },
-      ),
-      body: SafeArea(
-        child: ListView.separated(
-          shrinkWrap: true,
-          physics: BouncingScrollPhysics(),
-          itemCount: entries.length,
-          separatorBuilder: (BuildContext context, int index) => Divider(
-            height: 0.1,
-            indent: 0,
-            thickness: 0.1,
-          ),
-          itemBuilder: (BuildContext context, int index) {
-            return InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TenantDetail()),
-                );
-              },
-              child: Container(
-                margin: EdgeInsets.all(12),
-                height: 140,
-                color: Colors.white,
-                padding: EdgeInsets.all(8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        Icon(
-                          Icons.person,
-                          color: Color(0xff09548c),
-                          size: 100,
+    SizeConfig().init(context);
+    width = SizeConfig.safeBlockHorizontal!;
+    height = SizeConfig.safeBlockVertical!;
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Color.fromRGBO(240, 240, 240, 1),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: tenantCount == 0
+                  ? Container(
+                      margin: EdgeInsets.all(12),
+                      color: Colors.white,
+                      padding: EdgeInsets.all(8),
+                      child: Center(
+                        child: Text(
+                          "No Tenants Available",
                         ),
-                        Text(
-                          tenantName,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                      ),
+                    )
+                  : ListView.separated(
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      itemCount: tenantCount,
+                      separatorBuilder: (BuildContext context, int index) => Divider(
+                        height: 0.1,
+                        indent: 0,
+                        thickness: 0.1,
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return TenantScreenWidget(
+                          index: index,
+                          width: width,
+                          height: height,
+                          tenantData: tenantList[index],
+                          roomData: tenantRoomList[index],
+                          onTap: (index) {},
+                        );
+                      },
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          listingType + ' No ' + entries[index],
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Due: ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Container(
-                              //ERROR HERE IN DUE VALUE
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: (dueRemaining[index] == 0)
-                                    ? Color(0xff30d472)
-                                    : Colors.orange,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: Text(
-                                    dueRemaining[index].toString(),
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
+            ),
+            Visibility(
+              visible: isLoading,
+              child: CustomProgressIndicatorWidget(),
+            ),
+          ],
         ),
       ),
     );

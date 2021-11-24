@@ -4,6 +4,7 @@ import 'package:gharbeti_ui/owner/home/vacant_room.dart';
 import 'package:gharbeti_ui/owner/listings/screens/add_listings_screen.dart';
 import 'package:gharbeti_ui/owner/listings/screens/listing_detail.dart';
 import 'package:gharbeti_ui/owner/owner_dashboard.dart';
+import 'package:gharbeti_ui/owner/tenants/tenant_detail.dart';
 import 'package:gharbeti_ui/owner/tenants/tenants_screen.dart';
 import 'package:gharbeti_ui/signup/screen/signup_screen.dart';
 import 'package:gharbeti_ui/splash_screen/intro_screen.dart';
@@ -25,5 +26,6 @@ class Routes {
     VacantRoom.route: (ctx) => const VacantRoom(),
     DiscoverListingDetail.route: (ctx) => const DiscoverListingDetail(),
     ListingDetail.route: (ctx) => const ListingDetail(),
+    TenantDetail.route: (ctx) => const TenantDetail(),
   };
 }

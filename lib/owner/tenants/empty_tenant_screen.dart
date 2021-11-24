@@ -32,12 +32,15 @@ class _TenantsScreenState extends State<TenantsScreen> {
       ),
       body: SafeArea(
         child: Container(
-            margin: EdgeInsets.all(12),
-            color: Colors.white,
-            padding: EdgeInsets.all(8),
-            child: Center(
-              child: Text("No Tenants Available"),
-            )),
+          margin: EdgeInsets.all(12),
+          color: Colors.white,
+          padding: EdgeInsets.all(8),
+          child: Center(
+            child: Text(
+              "No Tenants Available",
+            ),
+          ),
+        ),
       ),
     );
   }
