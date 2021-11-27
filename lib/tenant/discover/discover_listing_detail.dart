@@ -18,7 +18,6 @@ class DiscoverListingDetail extends StatefulWidget {
 class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
   Room args = Room(latitude: 0, longitude: 0);
   late GoogleMapController _googleMapController;
-  Set<Marker> _marker = <Marker>{};
 
   double width = 0.0;
   double height = 0.0;
@@ -33,24 +32,8 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
   String addDescription = "This is additional Description";
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void didChangeDependencies() {
     args = ModalRoute.of(context)!.settings.arguments as Room;
-
-    _marker.add(
-      Marker(
-        markerId: MarkerId('Location'),
-        position: LatLng(
-          args.latitude,
-          args.longitude,
-        ),
-      ),
-    );
-
     super.didChangeDependencies();
   }
 
@@ -380,20 +363,21 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                     mapToolbarEnabled: false,
                     onMapCreated: (GoogleMapController controller) {
                       _googleMapController = controller;
-                      _marker.add(Marker(
-                        markerId: MarkerId('Location'),
-                        position: LatLng(
-                          args.latitude,
-                          args.longitude,
-                        ),
-                      ));
                     },
                     gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
                       Factory<OneSequenceGestureRecognizer>(
                         () => EagerGestureRecognizer(),
                       ),
                     },
-                    markers: _marker,
+                    markers: {
+                      Marker(
+                        markerId: MarkerId('Location'),
+                        position: LatLng(
+                          args.latitude,
+                          args.longitude,
+                        ),
+                      )
+                    },
                     initialCameraPosition: CameraPosition(
                       bearing: 0.0,
                       target: LatLng(
