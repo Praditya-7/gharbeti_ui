@@ -67,10 +67,9 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
   @override
   Widget build(BuildContext context) {
     including = widget.data.kitchen.toString() == 'Yes' ? ' | Room including Kitchen' : ' ';
-
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(DiscoverListingDetail.route);
+        Navigator.of(context).pushNamed(DiscoverListingDetail.route, arguments: widget.data);
       },
       child: Container(
         color: Colors.white,

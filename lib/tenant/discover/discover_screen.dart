@@ -113,7 +113,8 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                 });
                 setData();
               },
-              child: ListView.separated(
+              child: SingleChildScrollView(
+                  child: ListView.separated(
                 shrinkWrap: true,
                 physics: BouncingScrollPhysics(),
                 itemCount: roomCount,
@@ -133,7 +134,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                     },
                   );
                 },
-              ),
+              )),
             ),
             Visibility(visible: isLoading, child: CustomProgressIndicatorWidget())
           ],

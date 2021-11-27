@@ -24,7 +24,7 @@ class ListingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(ListingDetail.route);
+        Navigator.of(context).pushNamed(ListingDetail.route, arguments: data);
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),

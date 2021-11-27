@@ -82,7 +82,7 @@ class _VacantRoomState extends State<VacantRoom> {
       backgroundColor: Color.fromRGBO(240, 240, 240, 1),
       appBar: AppBar(
         backgroundColor: ColorData.primaryColor,
-        title: Text("Room Detail"),
+        title: Text("Listing Detail"),
       ),
       body: Stack(
         children: [
@@ -324,7 +324,7 @@ class _VacantRoomState extends State<VacantRoom> {
             width: 40,
           ),
           BuildText(
-            text: "ROOM NO 132",
+            text: args.type.toString() + " No. " + args.listingNo.toString(),
             textAlign: TextAlign.center,
             fontSize: 24.0,
           ),

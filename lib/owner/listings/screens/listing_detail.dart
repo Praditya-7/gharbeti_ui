@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 
 class ListingDetail extends StatefulWidget {
   static String route = '/listingDetail';
@@ -10,6 +11,8 @@ class ListingDetail extends StatefulWidget {
 }
 
 class _ListingDetailState extends State<ListingDetail> {
+  Room args = Room(latitude: 0, longitude: 0);
+
   String name = 'Ram Shrestha';
   int tid = 1001;
   int roomNo = 420;
@@ -22,6 +25,13 @@ class _ListingDetailState extends State<ListingDetail> {
   int lastMeterReading = 230;
   int waterCharge = 500;
   int internetCharge = 1500;
+
+  @override
+  void didChangeDependencies() {
+    args = ModalRoute.of(context)!.settings.arguments as Room;
+
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +79,7 @@ class _ListingDetailState extends State<ListingDetail> {
                           ),
                           title: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text("Room No " + roomNo.toString(),
+                            child: Text("Room No " + args.listingNo.toString(),
                                 style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
                           ),
                           subtitle: Row(
@@ -86,7 +96,7 @@ class _ListingDetailState extends State<ListingDetail> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    "Occupied",
+                                    args.status.toString(),
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
@@ -140,7 +150,7 @@ class _ListingDetailState extends State<ListingDetail> {
                                   fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
                               children: [
                                 TextSpan(
-                                    text: " " + floor,
+                                    text: " " + args.floor.toString(),
                                     style: TextStyle(
                                         fontWeight: FontWeight.normal,
                                         fontSize: 16.0,
@@ -158,7 +168,7 @@ class _ListingDetailState extends State<ListingDetail> {
                                   fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
                               children: [
                                 TextSpan(
-                                    text: " " + bathroom.toString(),
+                                    text: " " + args.bathroom.toString(),
                                     style: TextStyle(
                                         fontWeight: FontWeight.normal,
                                         fontSize: 16.0,
@@ -176,7 +186,7 @@ class _ListingDetailState extends State<ListingDetail> {
                                   fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
                               children: [
                                 TextSpan(
-                                    text: " " + kitchen.toString(),
+                                    text: " " + args.kitchen.toString(),
                                     style: TextStyle(
                                         fontWeight: FontWeight.normal,
                                         fontSize: 16.0,
@@ -187,6 +197,9 @@ class _ListingDetailState extends State<ListingDetail> {
                           SizedBox(
                             height: 5.0,
                           ),
+
+                          //ADD START DATE WHEN ADDING TENANT
+
                           RichText(
                             text: TextSpan(
                               text: "Start Date : ",
@@ -212,7 +225,7 @@ class _ListingDetailState extends State<ListingDetail> {
                                   fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
                               children: [
                                 TextSpan(
-                                    text: " Rs." + rent.toString(),
+                                    text: " Rs." + args.rent.toString(),
                                     style: TextStyle(
                                         fontWeight: FontWeight.normal,
                                         fontSize: 16.0,

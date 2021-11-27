@@ -1,5 +1,11 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
+import 'package:gharbeti_ui/shared/screen_config.dart';
+import 'package:gharbeti_ui/tenant/discover/service/discover_storage_service.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DiscoverListingDetail extends StatefulWidget {
   static String route = '/discoverListingDetail';
@@ -10,6 +16,12 @@ class DiscoverListingDetail extends StatefulWidget {
 }
 
 class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
+  Room args = Room(latitude: 0, longitude: 0);
+  late GoogleMapController _googleMapController;
+  Set<Marker> _marker = <Marker>{};
+
+  double width = 0.0;
+  double height = 0.0;
   int price = 9000;
   String address = "Shakti Bhakti Marga, Gongabu, Kathmandu";
   String floor = "First";
@@ -21,7 +33,32 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
   String addDescription = "This is additional Description";
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    args = ModalRoute.of(context)!.settings.arguments as Room;
+
+    _marker.add(
+      Marker(
+        markerId: MarkerId('Location'),
+        position: LatLng(
+          args.latitude,
+          args.longitude,
+        ),
+      ),
+    );
+
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    width = SizeConfig.safeBlockHorizontal!;
+    height = SizeConfig.safeBlockVertical!;
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
       appBar: AppBar(
@@ -90,9 +127,33 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
               children: [
                 Container(
                   color: Colors.white,
-                  child: Image(
-                      image: NetworkImage(
-                          "https://media.gettyimages.com/photos/fresh-and-modern-white-style-living-room-interior-picture-id598928736?s=612x612")),
+                  child: FutureBuilder(
+                    future:
+                        DiscoverStorage(listingNo: args.listingNo, email: args.email).downloadURL(
+                      args.imageName.toString(),
+                    ),
+                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                        return Container(
+                          child: Image.network(
+                            snapshot.data!,
+                            fit: BoxFit.fitWidth,
+                            width: double.infinity,
+                            height: height * 30,
+                          ),
+                        );
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting ||
+                          !snapshot.hasData) {
+                        return const CircularProgressIndicator();
+                      }
+                      return Container();
+                    },
+                  ),
+
+                  // Image(
+                  //     image: NetworkImage(
+                  //         "https://media.gettyimages.com/photos/fresh-and-modern-white-style-living-room-interior-picture-id598928736?s=612x612")),
                 ),
                 SizedBox(height: 5.0),
                 Container(
@@ -123,7 +184,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         ],
                       ),
                       Text(
-                        'Rs.' + price.toString() + '/month',
+                        'Rs.' + args.rent.toString() + '/month',
                         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
                       ),
                     ],
@@ -141,6 +202,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          //TO BE IMPLEMENTED
                           Text("Owner",
                               style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
                           Text(name),
@@ -153,7 +215,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         children: [
                           Text("Preferences",
                               style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-                          Text(preference),
+                          Text(args.preferences.toString()),
                         ],
                       ),
                       //Floor
@@ -163,7 +225,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         children: [
                           Text("Floor",
                               style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-                          Text(floor),
+                          Text(args.floor.toString()),
                         ],
                       )
                     ],
@@ -198,7 +260,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                               fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
                           children: [
                             TextSpan(
-                                text: " " + bathroomNo.toString(),
+                                text: " " + args.bathroom.toString(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 14.0,
@@ -217,7 +279,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                               fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
                           children: [
                             TextSpan(
-                                text: " " + bathroomNo.toString(),
+                                text: " " + args.kitchen.toString(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 14.0,
@@ -236,7 +298,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                               fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
                           children: [
                             TextSpan(
-                                text: " " + intOption,
+                                text: " " + args.internet.toString(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 14.0,
@@ -255,7 +317,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                               fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
                           children: [
                             TextSpan(
-                                text: " " + parkingOption,
+                                text: " " + args.parking.toString(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 14.0,
@@ -287,7 +349,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                   width: double.infinity,
                   color: Colors.white,
                   padding: EdgeInsets.all(10.0),
-                  child: Text(addDescription),
+                  child: Text(args.description.toString()),
                 ),
                 SizedBox(
                   height: 5.0,
@@ -302,9 +364,44 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                 SizedBox(
                   height: 5.0,
                 ),
-                Image(
-                  image: NetworkImage(
-                    "https://www.google.com/maps/d/u/0/thumbnail?mid=1YeV-CBqH1wi1X9q1UyoHyl-5ais",
+                // Image(
+                //   image: NetworkImage(
+                //     "https://www.google.com/maps/d/u/0/thumbnail?mid=1YeV-CBqH1wi1X9q1UyoHyl-5ais",
+                //   ),
+                // ),
+                Container(
+                  height: 400,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.grey[200],
+                  ),
+                  child: GoogleMap(
+                    liteModeEnabled: true,
+                    compassEnabled: false,
+                    mapType: MapType.normal,
+                    myLocationEnabled: true,
+                    trafficEnabled: false,
+                    buildingsEnabled: false,
+                    mapToolbarEnabled: false,
+                    onMapCreated: (GoogleMapController controller) {
+                      _googleMapController = controller;
+                    },
+                    gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                      Factory<OneSequenceGestureRecognizer>(
+                        () => EagerGestureRecognizer(),
+                      ),
+                    },
+                    myLocationButtonEnabled: true,
+                    markers: _marker,
+                    initialCameraPosition: CameraPosition(
+                      bearing: 0.0,
+                      target: LatLng(
+                        args.latitude,
+                        args.longitude,
+                      ),
+                      zoom: 12.0,
+                    ),
                   ),
                 ),
                 SizedBox(

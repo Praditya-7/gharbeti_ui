@@ -28,11 +28,7 @@ class _TenantsScreenState extends State<TenantsScreen> {
   double width = 0.0;
   double height = 0.0;
 
-  List<String> entries = <String>[
-    '1',
-    '2',
-    '3',
-  ];
+
 
   String tenantName = 'Ram Shrestha';
   String listingType = 'Flat';

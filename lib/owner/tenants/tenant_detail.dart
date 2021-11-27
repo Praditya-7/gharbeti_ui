@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/owner/listings/entity/user_container.dart';
 
 class TenantDetail extends StatefulWidget {
   static String route = '/tenantDetail';
@@ -11,6 +12,8 @@ class TenantDetail extends StatefulWidget {
 }
 
 class _TenantDetailState extends State<TenantDetail> {
+  User args = User();
+
   late String name = 'Ram Shrestha';
   late String address = 'Kathmandu';
   late String email = 'shrestharam@gmail.com';
@@ -21,6 +24,14 @@ class _TenantDetailState extends State<TenantDetail> {
   late int listingNo = 402;
   late int tid = 1001;
   String paymentStatus = 'pending';
+
+  @override
+  void didChangeDependencies() {
+    args = ModalRoute.of(context)!.settings.arguments as User;
+
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,65 +73,6 @@ class _TenantDetailState extends State<TenantDetail> {
           ),
         ],
       ),
-
-      // Row(
-      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //   children: [
-      //     InkWell(
-      //       onTap: () {},
-      //       child: Container(
-      //         height: 38,
-      //         padding: EdgeInsets.all(10),
-      //         decoration: BoxDecoration(
-      //           borderRadius: BorderRadius.circular(5),
-      //           color: Color(0xff09548c),
-      //         ),
-      //         child: Row(
-      //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //           children: [
-      //             Icon(
-      //               Icons.call,
-      //               color: Colors.white,
-      //             ),
-      //             SizedBox(width: 5),
-      //             Text(
-      //               'Call Now',
-      //               style: TextStyle(
-      //                 color: Colors.white,
-      //               ),
-      //             )
-      //           ],
-      //         ),
-      //       ),
-      //     ),
-      //     InkWell(
-      //       onTap: () {},
-      //       child: Container(
-      //         padding: EdgeInsets.all(10),
-      //         decoration: BoxDecoration(
-      //           borderRadius: BorderRadius.circular(5),
-      //           color: Color(0xff09548c),
-      //         ),
-      //         child: Row(
-      //           children: [
-      //             Icon(
-      //               Icons.message,
-      //               color: Colors.white,
-      //             ),
-      //             SizedBox(width: 5),
-      //             Text(
-      //               'Message',
-      //               style: TextStyle(
-      //                 color: Colors.white,
-      //               ),
-      //             )
-      //           ],
-      //         ),
-      //       ),
-      //     ),
-      //   ],
-      // ),
-
       appBar: AppBar(
         backgroundColor: Color(0xff09548c),
         title: Text("Tenant Details"),
@@ -165,10 +117,15 @@ class _TenantDetailState extends State<TenantDetail> {
                           ),
                         ),
                       ),
-                      title:
-                          Text(name, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                      title: Text(
+                        args.name.toString(),
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       subtitle: Text(
-                        "TID" + tid.toString(),
+                        args.email.toString(),
                         style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -211,24 +168,7 @@ class _TenantDetailState extends State<TenantDetail> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        //Email
-                        RichText(
-                          text: TextSpan(
-                            text: "Email : ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
-                            children: [
-                              TextSpan(
-                                  text: " " + email,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 16.0,
-                                      color: Color(0xff494949)))
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 8.0),
-                        //Address
+                        //Address(TO BE REVIEWED)
                         RichText(
                           text: TextSpan(
                             text: "Address : ",
@@ -245,7 +185,7 @@ class _TenantDetailState extends State<TenantDetail> {
                           ),
                         ),
                         SizedBox(height: 8.0),
-                        //Gender
+                        //Gender(Add to Sign Up Form)
                         RichText(
                           text: TextSpan(
                             text: "Gender : ",
@@ -270,24 +210,7 @@ class _TenantDetailState extends State<TenantDetail> {
                                 fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
                             children: [
                               TextSpan(
-                                  text: " " + contact.toString(),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 16.0,
-                                      color: Color(0xff494949)))
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 8.0),
-                        //Emergency Contact
-                        RichText(
-                          text: TextSpan(
-                            text: "Emergency Contact : ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
-                            children: [
-                              TextSpan(
-                                  text: " " + emContact.toString(),
+                                  text: " " + args.phoneNumber.toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.normal,
                                       fontSize: 16.0,
@@ -321,7 +244,7 @@ class _TenantDetailState extends State<TenantDetail> {
                                 fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
                             children: [
                               TextSpan(
-                                  text: " " + listingNo.toString(),
+                                  text: " " + args.roomName.toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.normal,
                                       fontSize: 16.0,
