@@ -364,13 +364,8 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                 SizedBox(
                   height: 5.0,
                 ),
-                // Image(
-                //   image: NetworkImage(
-                //     "https://www.google.com/maps/d/u/0/thumbnail?mid=1YeV-CBqH1wi1X9q1UyoHyl-5ais",
-                //   ),
-                // ),
                 Container(
-                  height: 400,
+                  height: height * 25,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
@@ -380,19 +375,24 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                     liteModeEnabled: true,
                     compassEnabled: false,
                     mapType: MapType.normal,
-                    myLocationEnabled: true,
                     trafficEnabled: false,
                     buildingsEnabled: false,
                     mapToolbarEnabled: false,
                     onMapCreated: (GoogleMapController controller) {
                       _googleMapController = controller;
+                      _marker.add(Marker(
+                        markerId: MarkerId('Location'),
+                        position: LatLng(
+                          args.latitude,
+                          args.longitude,
+                        ),
+                      ));
                     },
                     gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
                       Factory<OneSequenceGestureRecognizer>(
                         () => EagerGestureRecognizer(),
                       ),
                     },
-                    myLocationButtonEnabled: true,
                     markers: _marker,
                     initialCameraPosition: CameraPosition(
                       bearing: 0.0,
@@ -400,7 +400,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         args.latitude,
                         args.longitude,
                       ),
-                      zoom: 12.0,
+                      zoom: 14.0,
                     ),
                   ),
                 ),
