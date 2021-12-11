@@ -719,20 +719,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
       if (value.docs.isEmpty) {
         addRoom = addData(model);
       } else {
-        // var count = 0;
-        // for (int i = 0; i < value.docs.length; i++) {
-        //   var listingID = value.docs[i]["ListingNo"];
-        //   if (model.listingNo == listingID) {
-        //     count += 1;
-        //     break;
-        //   }
-        // }
-        // if (count > 0) {
-        //   setState(() {
-        //     isLoading = false;
-        //   });
-        //   //show message
-        // } else {
         addRoom = addData(model);
         // }
       }

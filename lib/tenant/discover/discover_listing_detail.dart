@@ -384,7 +384,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         args.latitude,
                         args.longitude,
                       ),
-                      zoom: 14.0,
+                      zoom: 15.0,
                     ),
                   ),
                 ),

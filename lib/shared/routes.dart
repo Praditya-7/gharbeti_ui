@@ -9,6 +9,7 @@ import 'package:gharbeti_ui/owner/tenants/tenants_screen.dart';
 import 'package:gharbeti_ui/signup/screen/signup_screen.dart';
 import 'package:gharbeti_ui/splash_screen/intro_screen.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_listing_detail.dart';
+import 'package:gharbeti_ui/tenant/discover/discover_near_you.dart';
 import 'package:gharbeti_ui/tenant/tenant_dashboard.dart';
 import 'package:gharbeti_ui/tenant/tenant_home_screen.dart';
 
@@ -27,5 +28,6 @@ class Routes {
     DiscoverListingDetail.route: (ctx) => const DiscoverListingDetail(),
     ListingDetail.route: (ctx) => const ListingDetail(),
     TenantDetail.route: (ctx) => const TenantDetail(),
+    DiscoverNearYou.route: (ctx) => const DiscoverNearYou(),
   };
 }

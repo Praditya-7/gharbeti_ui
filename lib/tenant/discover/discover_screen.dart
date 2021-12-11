@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
+import 'package:gharbeti_ui/tenant/discover/discover_near_you.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_widget.dart';
 
 final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
@@ -88,7 +89,9 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(DiscoverNearYou.route);
+            },
             icon: Icon(
               Icons.location_on_outlined,
               color: Color(0xff09548c),
