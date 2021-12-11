@@ -1,11 +1,16 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/billing/entity/billing_container.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:shared_preferences/shared_preferences.dart';
 
 final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
@@ -37,6 +42,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
   List<String?> tenantList = [];
   List<String?> rentList = [];
   final TextEditingController currentMeterReading = TextEditingController();
+  final pdf = pw.Document();
 
   @override
   void initState() {
@@ -48,7 +54,10 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
     roomList.clear();
     final pref = await SharedPreferences.getInstance();
     var email = pref.getString("email");
-    var query = _fireStore.collection('Rooms').where("OwnerEmail", isEqualTo: email).get();
+    var query = _fireStore
+        .collection('Rooms')
+        .where("OwnerEmail", isEqualTo: email)
+        .get();
     await query.then((value) {
       if (value.docs.isNotEmpty) {
         for (var doc in value.docs) {
@@ -142,7 +151,8 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                                       index = i;
                                     }
                                   }
-                                  rentCharge = int.parse(rentList[index!].toString());
+                                  rentCharge =
+                                      int.parse(rentList[index!].toString());
                                 });
                               },
                               icon: Icon(Icons.arrow_drop_down_sharp),
@@ -191,7 +201,8 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                                     'October',
                                     'November',
                                     'December',
-                                  ].map<DropdownMenuItem<String>>((String value) {
+                                  ].map<DropdownMenuItem<String>>(
+                                      (String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
                                       child: Text(value),
@@ -331,10 +342,14 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                                     cursorColor: Color(0xff09548c),
                                     onChanged: (value) {
                                       setState(() {
-                                        current = int.parse(currentMeterReading.text);
+                                        current =
+                                            int.parse(currentMeterReading.text);
                                         diff = current - lastMeterReading;
                                         cost = diff * perUnitElectricityCharge;
-                                        total = cost + waterCharge + internetCharge + rentCharge;
+                                        total = cost +
+                                            waterCharge +
+                                            internetCharge +
+                                            rentCharge;
                                       });
                                     },
                                     decoration: InputDecoration(
@@ -533,7 +548,14 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                       ),
                       child: InkWell(
                         onTap: () async {
-                          setState(() {
+                          setState(() async {
+                            writeOnPdf();
+                            await savePdf();
+                            /* Directory? documentDirectory =
+                                await getExternalStorageDirectory();
+                            String documentPath = documentDirectory!.path;
+                            String fullPath = "$documentPath/example.pdf";
+                            print(fullPath);*/
                             setBillData();
                           });
                         },
@@ -563,6 +585,45 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
         ),
       ),
     );
+  }
+
+  writeOnPdf() {
+    pdf.addPage(pw.MultiPage(
+      pageFormat: PdfPageFormat.a4,
+      margin: pw.EdgeInsets.all(32),
+      build: (pw.Context context) {
+        return <pw.Widget>[
+          pw.Header(level: 0, child: pw.Text("Easy Approach Document")),
+          pw.Paragraph(
+              text:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
+          pw.Paragraph(
+              text:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
+          pw.Header(level: 1, child: pw.Text("Second Heading")),
+          pw.Paragraph(
+              text:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
+          pw.Paragraph(
+              text:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
+          pw.Paragraph(
+              text:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
+        ];
+      },
+    ));
+  }
+
+  Future savePdf() async {
+    Directory? documentDirectory = await getExternalStorageDirectory();
+
+    String documentPath = documentDirectory!.path;
+
+    File file = File("$documentPath/example.pdf");
+
+    file.writeAsBytesSync(List.from(await pdf.save()));
+    print(file.path.toString());
   }
 
   void setBillData() async {

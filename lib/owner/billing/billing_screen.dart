@@ -31,8 +31,10 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
                 padding: const EdgeInsets.fromLTRB(10.0, 10.0, 0, 0),
                 child: Text(
                   "Issued Bill",
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0, color: Colors.black),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0,
+                      color: Colors.black),
                 ),
               ),
               Container(
@@ -84,7 +86,14 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
                             Icons.picture_as_pdf,
                             color: Color(0xff09548c),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            /* Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PdfPreviewScreen(
+                                          path: fullPath,
+                                        )));*/
+                          },
                         ),
                         SizedBox(
                           height: 20,
@@ -106,7 +115,9 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
                         Text(
                           billStatus,
                           style: TextStyle(
-                            color: billStatus == 'issued' ? Colors.green : Color(0xffF6821E),
+                            color: billStatus == 'issued'
+                                ? Colors.green
+                                : Color(0xffF6821E),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -116,7 +127,9 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
                         InkWell(
                           onTap: () {
                             Navigator.push(
-                                context, MaterialPageRoute(builder: (context) => IssuedBills()));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => IssuedBills()));
                           },
                           child: Text(
                             "View All >",
@@ -132,8 +145,10 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
                 padding: const EdgeInsets.fromLTRB(10.0, 10.0, 0, 0),
                 child: Text(
                   "Recent Payments",
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0, color: Colors.black),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0,
+                      color: Colors.black),
                 ),
               ),
               //Recent Payment
@@ -197,7 +212,9 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
                         Text(
                           paymentStatus,
                           style: TextStyle(
-                            color: paymentStatus == 'Complete' ? Colors.green : Color(0xffF6821E),
+                            color: paymentStatus == 'Complete'
+                                ? Colors.green
+                                : Color(0xffF6821E),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
