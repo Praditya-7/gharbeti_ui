@@ -63,7 +63,7 @@ class StartState extends State<LoginScreen> {
           ),
           Expanded(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius:
                     BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),

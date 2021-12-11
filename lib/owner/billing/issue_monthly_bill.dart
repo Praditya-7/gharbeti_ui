@@ -62,7 +62,6 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
         occupiedList.add(item);
         tenantList.add(item.tenantEmail);
         rentList.add(item.rent);
-
         print(tenantList[0]);
       }
     }
@@ -141,7 +140,6 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                                   for (int i = 0; i < tenantList.length; i++) {
                                     if (tenantDropdownValue == tenantList[i]) {
                                       index = i;
-                                      print(index);
                                     }
                                   }
                                   rentCharge = int.parse(rentList[index!].toString());
@@ -254,6 +252,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                     SizedBox(
                       height: 5,
                     ),
+
                     Container(
                       color: Colors.white,
                       padding: EdgeInsets.all(20),
@@ -263,7 +262,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                           //Per Unit Charge
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
-                            padding: EdgeInsets.fromLTRB(18, 18, 30, 18),
+                            padding: EdgeInsets.fromLTRB(18, 2, 30, 2),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               color: Colors.grey[200],
@@ -272,10 +271,29 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('Per Unit Charge(in Rs.)'),
-                                Text('Rs. ' + perUnitElectricityCharge.toString()),
+                                SizedBox(
+                                  width: 100,
+                                  child: TextField(
+                                    textAlign: TextAlign.end,
+                                    keyboardType: TextInputType.number,
+                                    controller: currentMeterReading,
+                                    cursorColor: Color(0xff09548c),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        perUnitElectricityCharge = value as int;
+                                      });
+                                    },
+                                    decoration: InputDecoration(
+                                      hintText: "Enter Here",
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
+
                           //Last Meter Reading
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
@@ -388,7 +406,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                           //Water Charge
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            padding: EdgeInsets.fromLTRB(18, 18, 30, 18),
+                            padding: EdgeInsets.fromLTRB(18, 2, 30, 2),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               color: Colors.grey[200],
@@ -396,12 +414,29 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Water Charge'),
-                                Text('Rs. ' + waterCharge.toString()),
+                                Text('Water Charge(in Rs.)'),
+                                SizedBox(
+                                  width: 100,
+                                  child: TextField(
+                                    textAlign: TextAlign.end,
+                                    keyboardType: TextInputType.number,
+                                    controller: currentMeterReading,
+                                    cursorColor: Color(0xff09548c),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        waterCharge = value as int;
+                                      });
+                                    },
+                                    decoration: InputDecoration(
+                                      hintText: "Enter Here",
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                          //Last Meter Reading
                         ],
                       ),
                     ),
@@ -430,7 +465,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                           //Water Charge
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            padding: EdgeInsets.fromLTRB(18, 18, 30, 18),
+                            padding: EdgeInsets.fromLTRB(18, 2, 30, 2),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               color: Colors.grey[200],
@@ -438,8 +473,26 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Internet Charge'),
-                                Text('Rs. ' + internetCharge.toString()),
+                                Text('Internet Charge(in Rs.)'),
+                                SizedBox(
+                                  width: 100,
+                                  child: TextField(
+                                    textAlign: TextAlign.end,
+                                    keyboardType: TextInputType.number,
+                                    controller: currentMeterReading,
+                                    cursorColor: Color(0xff09548c),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        internetCharge = value as int;
+                                      });
+                                    },
+                                    decoration: InputDecoration(
+                                      hintText: "Enter Here",
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -519,7 +572,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
       ownerEmail: pref.getString("email"),
       month: billMonthDropdownValue,
       remainingDues: dueRemaining,
-      electricityPerUnitCharge: 15,
+      electricityPerUnitCharge: perUnitElectricityCharge,
       lastMeterReading: lastMeterReading,
       currentMeterReading: int.parse(currentMeterReading.text),
       rent: rentCharge,
@@ -541,6 +594,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
       }
       _fireStore.collection('Billings').add(addBill).then((value) {
         print("Data Updated");
+
         Navigator.pop(context);
       }).catchError((error) {
         print("Failed to add data: $error");

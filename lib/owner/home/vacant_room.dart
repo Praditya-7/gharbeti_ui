@@ -101,22 +101,22 @@ class _VacantRoomState extends State<VacantRoom> {
         margin: EdgeInsets.all(10.0),
         child: Column(crossAxisAlignment: (CrossAxisAlignment.start), children: [
           _createRoomWidget(),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          BuildText(
+          const BuildText(
             text: "Location",
             weight: FontWeight.bold,
             fontSize: 16.0,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           _createLocationWidget(),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          BuildText(
+          const BuildText(
             text: "Add Tenant",
             weight: FontWeight.bold,
             fontSize: 16.0,
@@ -149,9 +149,9 @@ class _VacantRoomState extends State<VacantRoom> {
                   height: width * 15,
                   decoration: BoxDecoration(
                       color: ColorData.primaryColor,
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(5), bottomRight: Radius.circular(5))),
-                  child: Center(
+                  child: const Center(
                     child: Icon(
                       Icons.search_outlined,
                       color: Colors.white,
