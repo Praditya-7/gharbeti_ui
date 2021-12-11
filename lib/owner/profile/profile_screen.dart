@@ -2,6 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/login/screen/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreenOwner extends StatefulWidget {
   const ProfileScreenOwner({Key? key}) : super(key: key);
@@ -138,6 +140,22 @@ class _ProfileScreenOwnerState extends State<ProfileScreenOwner> {
                     title: 'About',
                     trailingIconData: CupertinoIcons.chevron_forward,
                     leadingIconData: Icons.alternate_email,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  div,
+                  GetListTile(
+                    onTap: () async {
+                      //ROUTE CODE HERE
+                      final pref = await SharedPreferences.getInstance();
+                      pref.setString('email', '');
+                      Navigator.pushReplacementNamed(
+                          context, LoginScreen.route);
+                    },
+                    title: 'Logout',
+                    trailingIconData: CupertinoIcons.chevron_forward,
+                    leadingIconData: Icons.logout,
                   ),
                   SizedBox(
                     height: 10,

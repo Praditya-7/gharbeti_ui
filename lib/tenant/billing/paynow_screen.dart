@@ -11,7 +11,7 @@ class PayNow extends StatefulWidget {
 
 class _PayNowState extends State<PayNow> {
   int billAmount = 8000;
-  String owner = "Owner";
+  String owner = "Ram shrestha";
   String paymentStatus = "overdue";
   @override
   Widget build(BuildContext context) {
@@ -24,31 +24,7 @@ class _PayNowState extends State<PayNow> {
       body: Column(
         children: [
           //Total Payment Info
-          Container(
-            height: 200,
-            padding: EdgeInsets.all(10.0),
-            color: ColorData.primaryColor,
-            child: Center(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                  Text(
-                    "Total Amount to be Paid",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    "Rs. " + billAmount.toString(),
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24.0),
-                  ),
-                ])),
-          ),
+          show_payment_info(),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -57,90 +33,60 @@ class _PayNowState extends State<PayNow> {
               width: double.infinity,
               margin: EdgeInsets.all(5.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 15,
+                  BuildText(
+                    text: "Payment To",
+                    fontSize: 16,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: BuildText(
-                      text: "Payment To",
-                      fontSize: 16,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: BuildText(
-                      text: owner,
-                      color: Colors.orange,
-                      fontSize: 16,
-                    ),
+                  BuildText(
+                    text: owner,
+                    color: Colors.orange,
+                    fontSize: 16,
                   ),
                   SizedBox(
                     height: 25,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: BuildText(
-                      text: "Payment Type",
-                      fontSize: 16,
-                    ),
+                  BuildText(
+                    text: "Payment Type",
+                    fontSize: 16,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: BuildText(
-                      text: paymentStatus,
-                      color: paymentStatus == "overdue"
-                          ? Colors.orange
-                          : Colors.green,
-                      fontSize: 16,
-                    ),
+                  BuildText(
+                    text: paymentStatus,
+                    color: paymentStatus == "overdue"
+                        ? Colors.orange
+                        : Colors.green,
+                    fontSize: 16,
                   ),
                   SizedBox(
                     height: 25,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: BuildText(
-                      text: "Payment Option",
-                      fontSize: 16,
-                    ),
+                  BuildText(
+                    text: "Payment Option",
+                    fontSize: 16,
                   ),
+                  //Payment Options
                   Container(
-                    child: Row(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        InkWell(
-                          child: Image(
-                            image: AssetImage("assets/image/esewa.png"),
-                            width: 100,
-                            height: 100,
-                          ),
-                          onTap: () {},
-                        ),
                         SizedBox(
                           width: 30,
                         ),
-                        InkWell(
-                          child: Image(
-                            image: AssetImage("assets/image/khalti.png"),
-                            width: 100,
-                            height: 100,
-                          ),
-                          onTap: () {},
+                        Image(
+                          image: AssetImage("assets/image/khalti.png"),
+                          width: 100,
+                          height: 100,
                         ),
                       ],
                     ),
                   ),
                   // cah in hand
-                  InkWell(
-                    child: BuildText(
-                      text: "CASH IN HAND",
-                      fontSize: 18,
-                      weight: FontWeight.bold,
-                    ),
-                    onTap: () {},
+                  BuildText(
+                    text: "CASH IN HAND",
+                    fontSize: 18,
+                    weight: FontWeight.bold,
                   ),
                 ],
               ),
@@ -157,6 +103,35 @@ class _PayNowState extends State<PayNow> {
         child: Text("Pay Now"),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  //Payment Detail
+  Widget show_payment_info() {
+    return Container(
+      height: 200,
+      padding: EdgeInsets.all(10.0),
+      color: ColorData.primaryColor,
+      child: Center(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+            Text(
+              "Total Amount to be Paid",
+              style: TextStyle(color: Colors.white),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              "Rs. " + billAmount.toString(),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24.0),
+            ),
+          ])),
     );
   }
 }

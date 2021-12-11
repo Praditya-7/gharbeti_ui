@@ -2,6 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/login/screen/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileTenantScreen extends StatefulWidget {
   const ProfileTenantScreen({Key? key}) : super(key: key);
@@ -114,29 +116,6 @@ class _ProfileTenantScreenState extends State<ProfileTenantScreen> {
               color: Colors.white,
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 40,
-                    child: SwitchListTile(
-                      activeColor: Color(0xff09548c),
-                      title: Text(
-                        'Dark Mode',
-                        style: TextStyle(
-                          color: Color(0xff09548c),
-                        ),
-                      ),
-                      value: _toggleDarkMode,
-                      onChanged: (bool value) {
-                        setState(() {
-                          _toggleDarkMode = value;
-                        });
-                      },
-                      secondary: Icon(
-                        Icons.dark_mode,
-                        color: Color(0xff09548c),
-                      ),
-                    ),
-                  ),
-                  div,
                   GetListTile(
                     onTap: () {
                       //ROUTE CODE HERE
@@ -162,6 +141,22 @@ class _ProfileTenantScreenState extends State<ProfileTenantScreen> {
                     title: 'About',
                     trailingIconData: CupertinoIcons.chevron_forward,
                     leadingIconData: Icons.alternate_email,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  div,
+                  GetListTile(
+                    onTap: () async {
+                      //ROUTE CODE HERE
+                      final pref = await SharedPreferences.getInstance();
+                      pref.setString('roomName', '');
+                      Navigator.pushReplacementNamed(
+                          context, LoginScreen.route);
+                    },
+                    title: 'Logout',
+                    trailingIconData: CupertinoIcons.chevron_forward,
+                    leadingIconData: Icons.logout,
                   ),
                   SizedBox(
                     height: 10,
