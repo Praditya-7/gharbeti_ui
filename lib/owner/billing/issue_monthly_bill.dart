@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gharbeti_ui/owner/billing/entity/billing_container.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
@@ -587,30 +589,322 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
     );
   }
 
-  writeOnPdf() {
-    pdf.addPage(pw.MultiPage(
+  writeOnPdf() async {
+    final profileImage = pw.MemoryImage(
+        (await rootBundle.load('assets/image/logo_image.png'))
+            .buffer
+            .asUint8List());
+    pdf.addPage(pw.Page(
       pageFormat: PdfPageFormat.a4,
       margin: pw.EdgeInsets.all(32),
       build: (pw.Context context) {
-        return <pw.Widget>[
-          pw.Header(level: 0, child: pw.Text("Easy Approach Document")),
-          pw.Paragraph(
-              text:
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
-          pw.Paragraph(
-              text:
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
-          pw.Header(level: 1, child: pw.Text("Second Heading")),
-          pw.Paragraph(
-              text:
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
-          pw.Paragraph(
-              text:
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
-          pw.Paragraph(
-              text:
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
-        ];
+        return pw.Container(
+            child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.center,
+                children: [
+              pw.Image(profileImage, width: 175, height: 175),
+              pw.SizedBox(height: 10.0),
+              pw.Text(
+                "INVOICE",
+                style: pw.TextStyle(
+                  fontSize: 28.0,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),
+              pw.SizedBox(height: 15.0),
+              //HEADER 1
+              pw.Container(
+                  child: pw.Column(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+                      children: [
+                    pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+                          pw.Text(
+                            "Bill To",
+                            style: pw.TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: pw.FontWeight.bold,
+                            ),
+                          ),
+                          pw.Text(
+                            "Invoice No",
+                            style: pw.TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: pw.FontWeight.bold,
+                            ),
+                          ),
+                        ]),
+                    pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+                          pw.Text(
+                            "Praditya Manandhar",
+                            style: pw.TextStyle(
+                              fontSize: 12.0,
+                            ),
+                          ),
+                          pw.Text(
+                            "101",
+                            style: pw.TextStyle(
+                              fontSize: 12.0,
+                            ),
+                          ),
+                        ]),
+                    pw.SizedBox(height: 10.0),
+                    //HEADER 2
+                    pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+                          pw.Text(
+                            "Listing",
+                            style: pw.TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: pw.FontWeight.bold,
+                            ),
+                          ),
+                          pw.Text(
+                            "Month",
+                            style: pw.TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: pw.FontWeight.bold,
+                            ),
+                          ),
+                        ]),
+                    pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+                          pw.Text(
+                            "Room 1011",
+                            style: pw.TextStyle(
+                              fontSize: 12.0,
+                            ),
+                          ),
+                          pw.Text(
+                            "January",
+                            style: pw.TextStyle(
+                              fontSize: 12.0,
+                            ),
+                          ),
+                        ]),
+                  ])),
+              pw.SizedBox(height: 15.0),
+              //METER READING & UNIT COST
+              pw.Text("Meter Reading | Per unit Cost : Rs 10.0",
+                  style: pw.TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: pw.FontWeight.bold,
+                  )),
+              pw.SizedBox(height: 10.0),
+              pw.Container(
+                  padding: pw.EdgeInsets.all(10.0),
+                  decoration: pw.BoxDecoration(
+                      border: pw.Border.all(),
+                      borderRadius: pw.BorderRadius.circular(5.0)),
+                  child: pw.Row(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.Text("Prev Reading: 250",
+                            style: pw.TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: pw.FontWeight.bold,
+                            )),
+                        pw.Text("Curr Reading: 500",
+                            style: pw.TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: pw.FontWeight.bold,
+                            )),
+                        pw.Text("Consumed Units: 250",
+                            style: pw.TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: pw.FontWeight.bold,
+                            )),
+                      ])),
+              pw.SizedBox(height: 10.0),
+              //BILL HEADING
+              pw.Container(
+                padding: pw.EdgeInsets.all(10.0),
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(),
+                ),
+                child: pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      //BILL HEADINGS
+                      pw.Row(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                          children: [
+                            pw.Text("Expenses",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: pw.FontWeight.bold,
+                                )),
+                            pw.Text("    Unit",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: pw.FontWeight.bold,
+                                )),
+                            pw.Text("Rate",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: pw.FontWeight.bold,
+                                )),
+                            pw.Text("Amount",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: pw.FontWeight.bold,
+                                )),
+                          ]),
+                      pw.Divider(thickness: 0.5),
+                      //MONTHLYRENT
+                      pw.Row(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                          children: [
+                            pw.Text("Monthly Rent",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text(" ",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text(" ",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text("Rs 9000",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                          ]),
+                      pw.SizedBox(height: 8.0),
+                      //ELECTRICITY CHARGE
+                      pw.Row(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                          children: [
+                            pw.Text("Electricity Chrg.",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text("15",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text("Rs.15",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text("Rs 1500",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                          ]),
+                      //WATER CHARGE
+                      pw.SizedBox(height: 8.0),
+                      pw.Row(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                          children: [
+                            pw.Text("Water Chrg.",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text(" ",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text(" ",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text("Rs 9000",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                          ]),
+                      //INTERNET CHARGE
+                      pw.SizedBox(height: 8.0),
+                      pw.Row(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                          children: [
+                            pw.Text("Internet Chrg.",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text(" ",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text(" ",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text("Rs 9000",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                          ]),
+                      //Previous Due
+                      pw.SizedBox(height: 8.0),
+                      pw.Row(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                          children: [
+                            pw.Text("Previous Dues",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text(" ",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text(" ",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text("Rs 9000",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                          ]),
+                      pw.Divider(thickness: 0.5),
+                      //TOTAL
+                      pw.Row(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                          children: [
+                            pw.Text("Total",
+                                style: pw.TextStyle(
+                                    fontSize: 12.0,
+                                    fontWeight: pw.FontWeight.bold)),
+                            pw.Text(" ",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text(" ",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                            pw.Text("Rs 9000",
+                                style: pw.TextStyle(
+                                  fontSize: 12.0,
+                                )),
+                          ]),
+                    ]),
+              ),
+              //BILLCONTENTS
+              pw.SizedBox(height: 10.0),
+              pw.Align(
+                  alignment: pw.Alignment.bottomRight,
+                  child: pw.Text("Bill From\n Shrijay Tuladhar",
+                      style: pw.TextStyle(
+                          fontSize: 12.0, fontWeight: pw.FontWeight.bold))),
+            ]));
       },
     ));
   }
@@ -620,7 +914,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
 
     String documentPath = documentDirectory!.path;
 
-    File file = File("$documentPath/example.pdf");
+    File file = File("$documentPath/example3.pdf");
 
     file.writeAsBytesSync(List.from(await pdf.save()));
     print(file.path.toString());
