@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:io';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gharbeti_ui/owner/billing/entity/billing_container.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
+import 'package:gharbeti_ui/owner/listings/service/storage_service.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -25,25 +27,35 @@ class IssueMonthlyBill extends StatefulWidget {
 }
 
 class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
+  Billings document = Billings();
+  String pdfURL = '';
+  String randomFileName = '';
+  final _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  final Random _rnd = Random();
+  String listingNo = '';
+  List<String?> listingNoList = [];
   bool isLoading = true;
   int? index;
   String? tenantDropdownValue;
   String? billMonthDropdownValue = 'January';
   int rentCharge = 0;
   int? dueRemaining = 0;
-  int perUnitElectricityCharge = 15;
+  int perUnitElectricityCharge = 0;
   int lastMeterReading = 230;
-  int diff = 0;
+  int consumedUnit = 0;
   int current = 0;
-  int cost = 0;
-  int waterCharge = 500;
-  int internetCharge = 1500;
+  int electricityCost = 0;
+  int waterCharge = 0;
+  int internetCharge = 0;
   int total = 0;
   List<Room> roomList = [];
   List<Room> occupiedList = [];
   List<String?> tenantList = [];
   List<String?> rentList = [];
-  final TextEditingController currentMeterReading = TextEditingController();
+  final TextEditingController currentMeterReadingController = TextEditingController();
+  final TextEditingController perUnitChargeController = TextEditingController();
+  final TextEditingController waterChargeController = TextEditingController();
+  final TextEditingController internetController = TextEditingController();
   final pdf = pw.Document();
 
   @override
@@ -56,10 +68,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
     roomList.clear();
     final pref = await SharedPreferences.getInstance();
     var email = pref.getString("email");
-    var query = _fireStore
-        .collection('Rooms')
-        .where("OwnerEmail", isEqualTo: email)
-        .get();
+    var query = _fireStore.collection('Rooms').where("OwnerEmail", isEqualTo: email).get();
     await query.then((value) {
       if (value.docs.isNotEmpty) {
         for (var doc in value.docs) {
@@ -72,6 +81,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
       if (item.status == "Occupied") {
         occupiedList.add(item);
         tenantList.add(item.tenantEmail);
+        listingNoList.add(item.listingNo);
         rentList.add(item.rent);
         print(tenantList[0]);
       }
@@ -153,8 +163,9 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                                       index = i;
                                     }
                                   }
-                                  rentCharge =
-                                      int.parse(rentList[index!].toString());
+                                  rentCharge = int.parse(rentList[index!].toString());
+                                  print(rentCharge);
+                                  listingNo = listingNoList[index!].toString();
                                 });
                               },
                               icon: Icon(Icons.arrow_drop_down_sharp),
@@ -203,8 +214,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                                     'October',
                                     'November',
                                     'December',
-                                  ].map<DropdownMenuItem<String>>(
-                                      (String value) {
+                                  ].map<DropdownMenuItem<String>>((String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
                                       child: Text(value),
@@ -289,11 +299,12 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                                   child: TextField(
                                     textAlign: TextAlign.end,
                                     keyboardType: TextInputType.number,
-                                    controller: currentMeterReading,
+                                    controller: perUnitChargeController,
                                     cursorColor: Color(0xff09548c),
                                     onChanged: (value) {
                                       setState(() {
-                                        perUnitElectricityCharge = value as int;
+                                        perUnitElectricityCharge =
+                                            int.parse(perUnitChargeController.text);
                                       });
                                     },
                                     decoration: InputDecoration(
@@ -340,18 +351,13 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                                   child: TextField(
                                     textAlign: TextAlign.end,
                                     keyboardType: TextInputType.number,
-                                    controller: currentMeterReading,
+                                    controller: currentMeterReadingController,
                                     cursorColor: Color(0xff09548c),
                                     onChanged: (value) {
                                       setState(() {
-                                        current =
-                                            int.parse(currentMeterReading.text);
-                                        diff = current - lastMeterReading;
-                                        cost = diff * perUnitElectricityCharge;
-                                        total = cost +
-                                            waterCharge +
-                                            internetCharge +
-                                            rentCharge;
+                                        current = int.parse(currentMeterReadingController.text);
+                                        consumedUnit = current - lastMeterReading;
+                                        electricityCost = consumedUnit * perUnitElectricityCharge;
                                       });
                                     },
                                     decoration: InputDecoration(
@@ -376,7 +382,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('Consumed Unit'),
-                                Text(diff.toString()),
+                                Text(consumedUnit.toString()),
                               ],
                             ),
                           ),
@@ -391,8 +397,8 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Total Cost'),
-                                Text('Rs.' + cost.toString()),
+                                Text('Electricity Cost'),
+                                Text('Rs.' + electricityCost.toString()),
                               ],
                             ),
                           ),
@@ -437,11 +443,11 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                                   child: TextField(
                                     textAlign: TextAlign.end,
                                     keyboardType: TextInputType.number,
-                                    controller: currentMeterReading,
+                                    controller: waterChargeController,
                                     cursorColor: Color(0xff09548c),
                                     onChanged: (value) {
                                       setState(() {
-                                        waterCharge = value as int;
+                                        waterCharge = int.parse(waterChargeController.text);
                                       });
                                     },
                                     decoration: InputDecoration(
@@ -496,11 +502,16 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                                   child: TextField(
                                     textAlign: TextAlign.end,
                                     keyboardType: TextInputType.number,
-                                    controller: currentMeterReading,
+                                    controller: internetController,
                                     cursorColor: Color(0xff09548c),
                                     onChanged: (value) {
                                       setState(() {
-                                        internetCharge = value as int;
+                                        internetCharge = int.parse(internetController.text);
+
+                                        total = electricityCost +
+                                            waterCharge +
+                                            internetCharge +
+                                            rentCharge;
                                       });
                                     },
                                     decoration: InputDecoration(
@@ -551,8 +562,6 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                       child: InkWell(
                         onTap: () async {
                           setState(() async {
-                            writeOnPdf();
-                            await savePdf();
                             /* Directory? documentDirectory =
                                 await getExternalStorageDirectory();
                             String documentPath = documentDirectory!.path;
@@ -589,335 +598,336 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
     );
   }
 
-  writeOnPdf() async {
-    final profileImage = pw.MemoryImage(
-        (await rootBundle.load('assets/image/logo_image.png'))
-            .buffer
-            .asUint8List());
+  writeOnPdf(Billings model) async {
+    final profileImage =
+        pw.MemoryImage((await rootBundle.load('assets/image/logo_image.png')).buffer.asUint8List());
     pdf.addPage(pw.Page(
       pageFormat: PdfPageFormat.a4,
       margin: pw.EdgeInsets.all(32),
       build: (pw.Context context) {
-        return pw.Container(
-            child: pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.center,
-                children: [
-              pw.Image(profileImage, width: 175, height: 175),
-              pw.SizedBox(height: 10.0),
+        return pw.Expanded(
+            child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.center, children: [
+          pw.Image(profileImage, width: 175, height: 175),
+          pw.SizedBox(height: 10.0),
+          pw.Text(
+            "INVOICE",
+            style: pw.TextStyle(
+              fontSize: 28.0,
+              fontWeight: pw.FontWeight.bold,
+            ),
+          ),
+          pw.SizedBox(height: 15.0),
+          //HEADER 1
+          pw.Container(
+              child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly, children: [
+            pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
               pw.Text(
-                "INVOICE",
+                "Bill To",
                 style: pw.TextStyle(
-                  fontSize: 28.0,
+                  fontSize: 12.0,
                   fontWeight: pw.FontWeight.bold,
                 ),
               ),
-              pw.SizedBox(height: 15.0),
-              //HEADER 1
-              pw.Container(
-                  child: pw.Column(
-                      mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
-                      children: [
-                    pw.Row(
-                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                        children: [
-                          pw.Text(
-                            "Bill To",
-                            style: pw.TextStyle(
-                              fontSize: 12.0,
-                              fontWeight: pw.FontWeight.bold,
-                            ),
-                          ),
-                          pw.Text(
-                            "Invoice No",
-                            style: pw.TextStyle(
-                              fontSize: 12.0,
-                              fontWeight: pw.FontWeight.bold,
-                            ),
-                          ),
-                        ]),
-                    pw.Row(
-                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                        children: [
-                          pw.Text(
-                            "Praditya Manandhar",
-                            style: pw.TextStyle(
-                              fontSize: 12.0,
-                            ),
-                          ),
-                          pw.Text(
-                            "101",
-                            style: pw.TextStyle(
-                              fontSize: 12.0,
-                            ),
-                          ),
-                        ]),
-                    pw.SizedBox(height: 10.0),
-                    //HEADER 2
-                    pw.Row(
-                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                        children: [
-                          pw.Text(
-                            "Listing",
-                            style: pw.TextStyle(
-                              fontSize: 12.0,
-                              fontWeight: pw.FontWeight.bold,
-                            ),
-                          ),
-                          pw.Text(
-                            "Month",
-                            style: pw.TextStyle(
-                              fontSize: 12.0,
-                              fontWeight: pw.FontWeight.bold,
-                            ),
-                          ),
-                        ]),
-                    pw.Row(
-                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                        children: [
-                          pw.Text(
-                            "Room 1011",
-                            style: pw.TextStyle(
-                              fontSize: 12.0,
-                            ),
-                          ),
-                          pw.Text(
-                            "January",
-                            style: pw.TextStyle(
-                              fontSize: 12.0,
-                            ),
-                          ),
-                        ]),
+              pw.Text(
+                "Invoice No",
+                style: pw.TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),
+            ]),
+            pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+              pw.Text(
+                model.tenantEmail.toString(),
+                style: pw.TextStyle(
+                  fontSize: 12.0,
+                ),
+              ),
+              pw.Text(
+                "101",
+                style: pw.TextStyle(
+                  fontSize: 12.0,
+                ),
+              ),
+            ]),
+            pw.SizedBox(height: 10.0),
+            //HEADER 2
+            pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+              pw.Text(
+                "Listing",
+                style: pw.TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),
+              pw.Text(
+                "Month",
+                style: pw.TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),
+            ]),
+            pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+              pw.Text(
+                listingNo,
+                style: pw.TextStyle(
+                  fontSize: 12.0,
+                ),
+              ),
+              pw.Text(
+                model.month.toString(),
+                style: pw.TextStyle(
+                  fontSize: 12.0,
+                ),
+              ),
+            ]),
+          ])),
+          pw.SizedBox(height: 15.0),
+          //METER READING & UNIT COST
+          pw.Text("Meter Reading | Per unit Cost : Rs. ${model.electricityPerUnitCharge}.0",
+              style: pw.TextStyle(
+                fontSize: 12.0,
+                fontWeight: pw.FontWeight.bold,
+              )),
+          pw.SizedBox(height: 10.0),
+          pw.Container(
+              padding: pw.EdgeInsets.all(10.0),
+              decoration: pw.BoxDecoration(
+                  border: pw.Border.all(), borderRadius: pw.BorderRadius.circular(5.0)),
+              child: pw.Row(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Text("Prev Reading: ${model.lastMeterReading}",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: pw.FontWeight.bold,
+                        )),
+                    pw.Text("Curr Reading: ${model.currentMeterReading}",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: pw.FontWeight.bold,
+                        )),
+                    pw.Text("Consumed Units: ${model.consumedUnit}",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: pw.FontWeight.bold,
+                        )),
                   ])),
-              pw.SizedBox(height: 15.0),
-              //METER READING & UNIT COST
-              pw.Text("Meter Reading | Per unit Cost : Rs 10.0",
+          pw.SizedBox(height: 10.0),
+          //BILL HEADING
+          pw.Container(
+            padding: pw.EdgeInsets.all(10.0),
+            decoration: pw.BoxDecoration(
+              border: pw.Border.all(),
+            ),
+            child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+              //BILL HEADINGS
+              pw.Row(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Text("Expenses",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: pw.FontWeight.bold,
+                        )),
+                    pw.Text("\tUnit",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: pw.FontWeight.bold,
+                        )),
+                    pw.Text("Rate",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: pw.FontWeight.bold,
+                        )),
+                    pw.Text("Amount",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: pw.FontWeight.bold,
+                        )),
+                  ]),
+              pw.Divider(thickness: 0.5),
+              //MONTHLYRENT
+              pw.Row(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Text("Monthly Rent",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text(" ",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text(" ",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text("Rs. ${model.rent}",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                  ]),
+              pw.SizedBox(height: 8.0),
+              //ELECTRICITY CHARGE
+              pw.Row(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Text("Electric Charge",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text(model.consumedUnit.toString(),
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text("Rs.${model.electricityPerUnitCharge}",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text("Rs. ${model.totalElectricityCost}",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                  ]),
+              //WATER CHARGE
+              pw.SizedBox(height: 8.0),
+              pw.Row(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Text("Water Charge.",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text(" ",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text(" ",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text("Rs. ${model.waterCharge}",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                  ]),
+              //INTERNET CHARGE
+              pw.SizedBox(height: 8.0),
+              pw.Row(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Text("Internet Charge",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text(" ",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text(" ",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text("Rs. ${model.internetCharge}",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                  ]),
+              //Previous Due
+              pw.SizedBox(height: 8.0),
+              pw.Row(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Text("Previous Dues",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text(" ",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text(" ",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text("Rs. ${model.remainingDues}",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                  ]),
+              pw.Divider(thickness: 0.5),
+              //TOTAL
+              pw.Row(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Text("Total",
+                        style: pw.TextStyle(fontSize: 12.0, fontWeight: pw.FontWeight.bold)),
+                    pw.Text(" ",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text(" ",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                    pw.Text("Rs. ${model.total}",
+                        style: pw.TextStyle(
+                          fontSize: 12.0,
+                        )),
+                  ]),
+            ]),
+          ),
+          //BILLCONTENTS
+          pw.SizedBox(height: 10.0),
+          pw.Align(
+            alignment: pw.Alignment.bottomRight,
+            child: pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Text(
+                  "Bill From",
+                  style: pw.TextStyle(fontSize: 12.0, fontWeight: pw.FontWeight.bold),
+                ),
+                pw.Text(
+                  "${model.ownerEmail}",
                   style: pw.TextStyle(
                     fontSize: 12.0,
-                    fontWeight: pw.FontWeight.bold,
-                  )),
-              pw.SizedBox(height: 10.0),
-              pw.Container(
-                  padding: pw.EdgeInsets.all(10.0),
-                  decoration: pw.BoxDecoration(
-                      border: pw.Border.all(),
-                      borderRadius: pw.BorderRadius.circular(5.0)),
-                  child: pw.Row(
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                      children: [
-                        pw.Text("Prev Reading: 250",
-                            style: pw.TextStyle(
-                              fontSize: 12.0,
-                              fontWeight: pw.FontWeight.bold,
-                            )),
-                        pw.Text("Curr Reading: 500",
-                            style: pw.TextStyle(
-                              fontSize: 12.0,
-                              fontWeight: pw.FontWeight.bold,
-                            )),
-                        pw.Text("Consumed Units: 250",
-                            style: pw.TextStyle(
-                              fontSize: 12.0,
-                              fontWeight: pw.FontWeight.bold,
-                            )),
-                      ])),
-              pw.SizedBox(height: 10.0),
-              //BILL HEADING
-              pw.Container(
-                padding: pw.EdgeInsets.all(10.0),
-                decoration: pw.BoxDecoration(
-                  border: pw.Border.all(),
+                  ),
                 ),
-                child: pw.Column(
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                    children: [
-                      //BILL HEADINGS
-                      pw.Row(
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                          children: [
-                            pw.Text("Expenses",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                  fontWeight: pw.FontWeight.bold,
-                                )),
-                            pw.Text("    Unit",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                  fontWeight: pw.FontWeight.bold,
-                                )),
-                            pw.Text("Rate",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                  fontWeight: pw.FontWeight.bold,
-                                )),
-                            pw.Text("Amount",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                  fontWeight: pw.FontWeight.bold,
-                                )),
-                          ]),
-                      pw.Divider(thickness: 0.5),
-                      //MONTHLYRENT
-                      pw.Row(
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                          children: [
-                            pw.Text("Monthly Rent",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text(" ",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text(" ",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text("Rs 9000",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                          ]),
-                      pw.SizedBox(height: 8.0),
-                      //ELECTRICITY CHARGE
-                      pw.Row(
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                          children: [
-                            pw.Text("Electricity Chrg.",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text("15",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text("Rs.15",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text("Rs 1500",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                          ]),
-                      //WATER CHARGE
-                      pw.SizedBox(height: 8.0),
-                      pw.Row(
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                          children: [
-                            pw.Text("Water Chrg.",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text(" ",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text(" ",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text("Rs 9000",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                          ]),
-                      //INTERNET CHARGE
-                      pw.SizedBox(height: 8.0),
-                      pw.Row(
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                          children: [
-                            pw.Text("Internet Chrg.",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text(" ",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text(" ",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text("Rs 9000",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                          ]),
-                      //Previous Due
-                      pw.SizedBox(height: 8.0),
-                      pw.Row(
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                          children: [
-                            pw.Text("Previous Dues",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text(" ",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text(" ",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text("Rs 9000",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                          ]),
-                      pw.Divider(thickness: 0.5),
-                      //TOTAL
-                      pw.Row(
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                          children: [
-                            pw.Text("Total",
-                                style: pw.TextStyle(
-                                    fontSize: 12.0,
-                                    fontWeight: pw.FontWeight.bold)),
-                            pw.Text(" ",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text(" ",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                            pw.Text("Rs 9000",
-                                style: pw.TextStyle(
-                                  fontSize: 12.0,
-                                )),
-                          ]),
-                    ]),
-              ),
-              //BILLCONTENTS
-              pw.SizedBox(height: 10.0),
-              pw.Align(
-                  alignment: pw.Alignment.bottomRight,
-                  child: pw.Text("Bill From\n Shrijay Tuladhar",
-                      style: pw.TextStyle(
-                          fontSize: 12.0, fontWeight: pw.FontWeight.bold))),
-            ]));
+              ],
+            ),
+          ),
+        ]));
       },
     ));
   }
 
+  String getRandomString(int length) => String.fromCharCodes(
+      Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+
   Future savePdf() async {
     Directory? documentDirectory = await getExternalStorageDirectory();
+    randomFileName = getRandomString(10);
 
     String documentPath = documentDirectory!.path;
 
-    File file = File("$documentPath/example3.pdf");
-
+    File file = File("$documentPath/$randomFileName");
     file.writeAsBytesSync(List.from(await pdf.save()));
-    print(file.path.toString());
+
+    await Storage(listingNo: listingNo).uploadPDF(file, randomFileName).then((value) async {
+      print('File Uploaded');
+      pdfURL = await Storage(listingNo: listingNo).downloadPDFURL(randomFileName);
+    });
   }
 
   void setBillData() async {
@@ -929,15 +939,20 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
       remainingDues: dueRemaining,
       electricityPerUnitCharge: perUnitElectricityCharge,
       lastMeterReading: lastMeterReading,
-      currentMeterReading: int.parse(currentMeterReading.text),
+      currentMeterReading: int.parse(currentMeterReadingController.text),
       rent: rentCharge,
-      consumedUnit: diff,
-      totalElectricityCost: cost,
+      consumedUnit: consumedUnit,
+      totalElectricityCost: electricityCost,
       waterCharge: waterCharge,
       total: total,
       tenantEmail: tenantDropdownValue,
       status: "Pending",
+      pdfLink: "",
+      internetCharge: internetCharge,
     );
+
+    writeOnPdf(model);
+    await savePdf().then((value) => null).catchError((e) => print(e));
 
     var query = _fireStore.collection('Billings').get();
     await query.then((value) {
@@ -947,10 +962,41 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
       } else {
         addBill = addData(model);
       }
-      _fireStore.collection('Billings').add(addBill).then((value) {
+      _fireStore.collection('Billings').add(addBill).then((value) async {
         print("Data Updated");
 
-        Navigator.pop(context);
+        // _fireStore
+        //     .collection('Users')
+        //     .where("Type", isEqualTo: "tenant")
+        //     .where("Email", isEqualTo: email)
+        //     .get()
+
+        var query = _fireStore
+            .collection('Billings')
+            .where("OwnerEmail", isEqualTo: model.ownerEmail)
+            .where("TenantEmail", isEqualTo: model.tenantEmail)
+            .where("Month", isEqualTo: model.month)
+            .where("LastMeterReading", isEqualTo: model.lastMeterReading)
+            .where("CurrentMeterReading", isEqualTo: model.currentMeterReading)
+            .get();
+        await query.then((value) {
+          if (value.docs.isNotEmpty) {
+            for (var doc in value.docs) {
+              // userList.add(User.fromFireStoreSnapshot(doc));
+              document = Billings.fromFireStoreSnapshot(doc);
+            }
+          }
+        });
+
+        await _fireStore
+            .collection('Billings')
+            .doc(document.documentId)
+            .update({"PDFLink": pdfURL}).then((value) {
+          print(pdfURL.toString());
+          Navigator.pop(context);
+        }).catchError(
+          (error) => print("Failed to add data: $error"),
+        );
       }).catchError((error) {
         print("Failed to add data: $error");
       });
@@ -972,6 +1018,8 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
       'WaterCharge': model.waterCharge,
       'TotalCost': model.total,
       'Status': model.status,
+      'PDFLink': model.pdfLink,
+      'InternetCharge': model.internetCharge,
     };
     return data;
   }

@@ -24,6 +24,16 @@ class Storage {
     }
   }
 
+  Future<void> uploadPDF(File file, String randomFileName) async {
+    final pref = await SharedPreferences.getInstance();
+    String? email = pref.getString("email");
+    try {
+      await storage.ref('Billings/$email/$randomFileName').putFile(file);
+    } on firebase_core.FirebaseException catch (e) {
+      print(e);
+    }
+  }
+
   Future<firebase_storage.ListResult> listFiles() async {
     final pref = await SharedPreferences.getInstance();
     String? email = pref.getString("email");
@@ -41,6 +51,13 @@ class Storage {
     final pref = await SharedPreferences.getInstance();
     String? email = pref.getString("email");
     String downloadURL = await storage.ref('$email/$listingNo/$imageName').getDownloadURL();
+    return downloadURL;
+  }
+
+  Future<String> downloadPDFURL(String fileName) async {
+    final pref = await SharedPreferences.getInstance();
+    String? email = pref.getString("email");
+    String downloadURL = await storage.ref('Billings/$email/$fileName').getDownloadURL();
     return downloadURL;
   }
 }

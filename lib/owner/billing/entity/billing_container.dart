@@ -11,10 +11,12 @@ class Billings {
   final int? consumedUnit;
   final int? rent;
   final int? totalElectricityCost;
+  final int? internetCharge;
   final int? waterCharge;
   String? documentId;
   final String? tenantEmail;
   final int? total;
+  final String? pdfLink;
 
   Billings({
     this.waterCharge,
@@ -30,24 +32,27 @@ class Billings {
     this.totalElectricityCost,
     this.tenantEmail,
     this.total,
+    this.pdfLink,
+    this.internetCharge,
   });
 
   factory Billings.fromJson(Map<String, dynamic> json) {
     return Billings(
-      ownerEmail: json['Bathrooms'],
-      month: json['Description'],
-      remainingDues: json['Floor'],
-      electricityPerUnitCharge: json['Internet'],
-      lastMeterReading: json['Kitchen'],
-      status: json['Status'],
-      currentMeterReading: json['ListingNo'],
-      rent: json['MonthlyRent'],
-      consumedUnit: json['Parking'],
-      totalElectricityCost: json['Preferences'],
-      tenantEmail: json['Tenant Email'],
-      waterCharge: json['Negotiable'],
-      total: json['TotalCost'],
-    );
+        ownerEmail: json['Bathrooms'],
+        month: json['Description'],
+        remainingDues: json['Floor'],
+        electricityPerUnitCharge: json['Internet'],
+        lastMeterReading: json['Kitchen'],
+        status: json['Status'],
+        currentMeterReading: json['ListingNo'],
+        rent: json['MonthlyRent'],
+        consumedUnit: json['Parking'],
+        totalElectricityCost: json['Preferences'],
+        tenantEmail: json['Tenant Email'],
+        waterCharge: json['Negotiable'],
+        total: json['TotalCost'],
+        pdfLink: json['PDFLink'],
+        internetCharge: json['InternetCharge']);
   }
 
   Billings.fromFireStoreSnapshot(DocumentSnapshot snap)
@@ -64,6 +69,8 @@ class Billings {
         totalElectricityCost = snap.get('TotalElectricityCost'),
         waterCharge = snap.get('WaterCharge'),
         tenantEmail = snap.get('TenantEmail'),
+        pdfLink = snap.get('PDFLink'),
+        internetCharge = snap.get('InternetCharge'),
         total = snap.get('TotalCost');
   toJson() {
     return {
@@ -79,6 +86,8 @@ class Billings {
       'TenantEmail': tenantEmail,
       'TotalElectricityCost': totalElectricityCost,
       'WaterCharge': waterCharge,
+      'PDFLink': pdfLink,
+      'InternetCharge': internetCharge,
       'TotalCost': total,
     };
   }
