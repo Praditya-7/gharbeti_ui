@@ -1,9 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/login/screen/login_screen.dart';
+import 'package:gharbeti_ui/owner/listings/entity/user_container.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
 class ProfileTenantScreen extends StatefulWidget {
   const ProfileTenantScreen({Key? key}) : super(key: key);
@@ -15,11 +19,39 @@ class ProfileTenantScreen extends StatefulWidget {
 class _ProfileTenantScreenState extends State<ProfileTenantScreen> {
   bool _toggleDarkMode = false;
   bool _toggleNotifications = false;
-  late String name = 'Sarthak Shrestha';
-  late String email = 'stha.sarthak@gmail.com';
+  List<User> userDataList = [];
+  User userData = User();
+  bool isLoading = true;
   var div = Divider(
     thickness: 0.9,
   );
+
+  @override
+  void initState() {
+    setData();
+    super.initState();
+  }
+
+  setData() async {
+    final pref = await SharedPreferences.getInstance();
+    var email = pref.getString("email");
+
+    var query1 = _fireStore.collection('Users').where("Email", isEqualTo: email).get();
+    await query1.then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var doc in value.docs) {
+          userDataList.add(User.fromFireStoreSnapshot(doc));
+        }
+      }
+    }).catchError((e) {
+      print(e);
+    });
+
+    setState(() {
+      userData = userDataList.first;
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +81,8 @@ class _ProfileTenantScreenState extends State<ProfileTenantScreen> {
                         ),
                       ),
                     ),
-                    title: Text(name),
-                    subtitle: Text(email),
+                    title: Text(userData.name.toString()),
+                    subtitle: Text(userData.email.toString()),
                   ),
                   SizedBox(
                     height: 20,
@@ -151,8 +183,8 @@ class _ProfileTenantScreenState extends State<ProfileTenantScreen> {
                       //ROUTE CODE HERE
                       final pref = await SharedPreferences.getInstance();
                       pref.setString('roomName', '');
-                      Navigator.pushReplacementNamed(
-                          context, LoginScreen.route);
+                      pref.setString('email', '');
+                      Navigator.pushReplacementNamed(context, LoginScreen.route);
                     },
                     title: 'Logout',
                     trailingIconData: CupertinoIcons.chevron_forward,

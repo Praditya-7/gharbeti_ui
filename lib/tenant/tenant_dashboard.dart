@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/shared/tenant_dashboard_icons.dart';
-import 'package:gharbeti_ui/tenant/billing/billing_screen.dart';
+import 'package:gharbeti_ui/tenant/billing/tenant_billing_screen.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_screen.dart';
 import 'package:gharbeti_ui/tenant/profile/profile_screen.dart';
 import 'package:gharbeti_ui/tenant/tenant_home_screen.dart';

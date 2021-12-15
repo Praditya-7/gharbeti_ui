@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gharbeti_ui/owner/billing/billing_screen.dart';
+import 'package:gharbeti_ui/owner/billing/owner_billing_screen.dart';
 import 'package:gharbeti_ui/owner/listings/screens/listings_screen.dart';
 import 'package:gharbeti_ui/owner/profile/profile_screen.dart';
 import 'package:gharbeti_ui/owner/tenants/tenants_screen.dart';

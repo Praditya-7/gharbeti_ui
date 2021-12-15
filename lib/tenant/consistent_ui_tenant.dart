@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/tenant/profile/profile_screen.dart';
 
-import 'billing/billing_screen.dart';
+import 'billing/tenant_billing_screen.dart';
 import 'discover/discover_screen.dart';
 import 'tenant_home_screen.dart';
 

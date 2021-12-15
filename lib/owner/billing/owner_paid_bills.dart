@@ -10,23 +10,21 @@ import 'entity/billing_container.dart';
 
 final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-class PendingBills extends StatefulWidget {
-  static String route = '/pendingBills';
-  const PendingBills({Key? key}) : super(key: key);
+class OwnerPaidBills extends StatefulWidget {
+  static String route = '/ownerPaidBills';
+  const OwnerPaidBills({Key? key}) : super(key: key);
 
   @override
-  _PendingBillsState createState() => _PendingBillsState();
+  _OwnerPaidBillsState createState() => _OwnerPaidBillsState();
 }
 
-class _PendingBillsState extends State<PendingBills> {
+class _OwnerPaidBillsState extends State<OwnerPaidBills> {
   double width = 0.0;
   double height = 0.0;
   List<Billings> billingList = [];
-  List<Billings> pendingList = [];
-
+  List<Billings> paidList = [];
   bool isLoading = true;
-  int pendingCount = 0;
-
+  int paidCount = 0;
   int billCount = 0;
 
   @override
@@ -47,17 +45,15 @@ class _PendingBillsState extends State<PendingBills> {
         }
       }
     });
-    pendingList.clear();
-
+    paidList.clear();
     for (var item in billingList) {
-      if (item.status.toString() == 'Pending') {
-        pendingList.add(item);
+      if (item.status.toString() == 'Paid') {
+        paidList.add(item);
       }
     }
-
     setState(() {
       billCount = billingList.length;
-      pendingCount = pendingList.length;
+      paidCount = paidList.length;
       isLoading = false;
     });
   }
@@ -71,7 +67,7 @@ class _PendingBillsState extends State<PendingBills> {
       backgroundColor: Color(0xffE5E5E5),
       appBar: AppBar(
         backgroundColor: Color(0xff09548c),
-        title: Text("Pending Bills"),
+        title: Text("Paid Bills"),
         actions: <Widget>[
           IconButton(
             onPressed: () {},
@@ -98,7 +94,7 @@ class _PendingBillsState extends State<PendingBills> {
                 child: ListView.separated(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  itemCount: pendingList.length,
+                  itemCount: paidList.length,
                   separatorBuilder: (BuildContext context, int index) => Divider(
                     height: 0.1,
                     indent: 0,
@@ -108,7 +104,7 @@ class _PendingBillsState extends State<PendingBills> {
                     return BillingWidget(
                       height: height,
                       width: width,
-                      data: pendingList[index],
+                      data: paidList[index],
                     );
                   },
                 ),

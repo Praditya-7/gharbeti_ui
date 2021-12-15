@@ -1,30 +1,33 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gharbeti_ui/owner/billing/billing_widget.dart';
+import 'package:gharbeti_ui/owner/billing/entity/billing_container.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
+import 'package:gharbeti_ui/tenant/billing/billing_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'entity/billing_container.dart';
 
 final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-class PaidBills extends StatefulWidget {
-  static String route = '/paidBills';
-  const PaidBills({Key? key}) : super(key: key);
+class TenantPendingBills extends StatefulWidget {
+  static String route = '/tenantPendingBills';
+  const TenantPendingBills({Key? key}) : super(key: key);
 
   @override
-  _PaidBillsState createState() => _PaidBillsState();
+  _TenantPendingBillsState createState() => _TenantPendingBillsState();
 }
 
-class _PaidBillsState extends State<PaidBills> {
+class _TenantPendingBillsState extends State<TenantPendingBills> {
   double width = 0.0;
   double height = 0.0;
   List<Billings> billingList = [];
-  List<Billings> paidList = [];
+  List<Billings> pendingList = [];
+
   bool isLoading = true;
-  int paidCount = 0;
+  int pendingCount = 0;
+
   int billCount = 0;
 
   @override
@@ -37,7 +40,7 @@ class _PaidBillsState extends State<PaidBills> {
     billingList.clear();
     final pref = await SharedPreferences.getInstance();
     var email = pref.getString("email");
-    var query = _fireStore.collection('Billings').where("OwnerEmail", isEqualTo: email).get();
+    var query = _fireStore.collection('Billings').where("TenantEmail", isEqualTo: email).get();
     await query.then((value) {
       if (value.docs.isNotEmpty) {
         for (var doc in value.docs) {
@@ -45,15 +48,17 @@ class _PaidBillsState extends State<PaidBills> {
         }
       }
     });
-    paidList.clear();
+    pendingList.clear();
+
     for (var item in billingList) {
-      if (item.status.toString() == 'Paid') {
-        paidList.add(item);
+      if (item.status.toString() == 'Pending') {
+        pendingList.add(item);
       }
     }
+
     setState(() {
       billCount = billingList.length;
-      paidCount = paidList.length;
+      pendingCount = pendingList.length;
       isLoading = false;
     });
   }
@@ -67,7 +72,7 @@ class _PaidBillsState extends State<PaidBills> {
       backgroundColor: Color(0xffE5E5E5),
       appBar: AppBar(
         backgroundColor: Color(0xff09548c),
-        title: Text("Paid Bills"),
+        title: Text("Pending Bills"),
         actions: <Widget>[
           IconButton(
             onPressed: () {},
@@ -94,7 +99,7 @@ class _PaidBillsState extends State<PaidBills> {
                 child: ListView.separated(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  itemCount: paidList.length,
+                  itemCount: pendingList.length,
                   separatorBuilder: (BuildContext context, int index) => Divider(
                     height: 0.1,
                     indent: 0,
@@ -104,7 +109,7 @@ class _PaidBillsState extends State<PaidBills> {
                     return BillingWidget(
                       height: height,
                       width: width,
-                      data: paidList[index],
+                      data: pendingList[index],
                     );
                   },
                 ),

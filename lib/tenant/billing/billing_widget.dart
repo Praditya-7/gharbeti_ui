@@ -53,7 +53,7 @@ class _BillingWidgetState extends State<BillingWidget> {
               const SizedBox(
                 height: 10,
               ),
-              const Text('Bill Issued To'),
+              const Text('Bill Issued By'),
               const SizedBox(
                 height: 10,
               ),
@@ -88,7 +88,7 @@ class _BillingWidgetState extends State<BillingWidget> {
                 height: 10,
               ),
               Text(
-                widget.data.tenantEmail.toString(),
+                widget.data.ownerEmail.toString(),
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ), //Type of Payment
               const SizedBox(
@@ -106,6 +106,34 @@ class _BillingWidgetState extends State<BillingWidget> {
               const SizedBox(
                 height: 10,
               ),
+              widget.data.status.toString() == "Pending"
+                  ? Align(
+                      alignment: Alignment.bottomRight,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.deepOrangeAccent,
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            //Add room Function
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Text(
+                              'Pay Now',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(),
             ],
           ),
         ],

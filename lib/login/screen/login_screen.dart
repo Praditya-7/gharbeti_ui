@@ -253,6 +253,7 @@ class StartState extends State<LoginScreen> {
             });
             if (type == "tenant") {
               pref.setString('roomName', roomName);
+              pref.setString('email', email);
               Navigator.pushReplacementNamed(context, TenantDashboardScreen.route,
                   arguments: roomName);
             } else {
