@@ -73,7 +73,7 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
       },
       child: Container(
         color: Colors.white,
-        margin: EdgeInsets.fromLTRB(15, 15, 15, 0),
+        margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
         child: Column(
           children: [
             //Image Here
@@ -84,13 +84,11 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
               ),
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-                  return Container(
-                    child: Image.network(
-                      snapshot.data!,
-                      fit: BoxFit.fitWidth,
-                      width: double.infinity,
-                      height: widget.height * 15,
-                    ),
+                  return Image.network(
+                    snapshot.data!,
+                    fit: BoxFit.fitWidth,
+                    width: double.infinity,
+                    height: widget.height * 15,
                   );
                 }
                 if (snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
@@ -99,11 +97,11 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
                 return Container();
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -132,7 +130,7 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
                     onPressed: () {
                       //Share function
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.share,
                       color: Color(0xff09548c),
                     ),
@@ -141,19 +139,19 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
               ),
             ),
             Container(
-              margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-              padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
+              margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              padding: const EdgeInsets.fromLTRB(5, 0, 10, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.location_on,
                         color: Color(0xff09548c),
                       ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                         child: SizedBox(
                           width: 200,
                           child: Text(
@@ -168,7 +166,7 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
                   ),
                   Text(
                     'Rs.' + widget.data.rent.toString() + '/month',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -176,9 +174,9 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
               ),
             ),
             Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+              margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
               alignment: Alignment.bottomLeft,
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: Text(
                 widget.data.floor.toString() +
                     ' Floor' +
@@ -186,7 +184,7 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
                     widget.data.preferences.toString() +
                     ' Preferred' +
                     including,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 11,
                   fontStyle: FontStyle.italic,
                 ),
@@ -200,13 +198,13 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
 
   Widget getRoundedIconWithLabel(String available, IconData iconData) {
     return Container(
-      margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+      margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: Color(0xff09548c),
+              color: const Color(0xff09548c),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Icon(
@@ -215,12 +213,12 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
               color: Colors.white,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Text(
             available,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 11,
             ),
           ),

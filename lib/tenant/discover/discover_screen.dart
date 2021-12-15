@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -58,21 +56,21 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
     width = SizeConfig.safeBlockHorizontal!;
     height = SizeConfig.safeBlockVertical!;
     return Scaffold(
-      backgroundColor: Color.fromRGBO(240, 240, 240, 1),
+      backgroundColor: const Color.fromRGBO(240, 240, 240, 1),
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Container(
-          margin: EdgeInsets.only(left: 0, right: 0, top: 20, bottom: 20),
-          padding: EdgeInsets.only(left: 5, right: 20),
+          margin: const EdgeInsets.only(left: 0, right: 0, top: 20, bottom: 20),
+          padding: const EdgeInsets.only(left: 5, right: 20),
           height: 40,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: Color(0xffEEEEEE),
+            color: const Color(0xffEEEEEE),
           ),
           child: TextField(
             controller: _destinationController,
-            cursorColor: Color(0xff09548c),
-            decoration: InputDecoration(
+            cursorColor: const Color(0xff09548c),
+            decoration: const InputDecoration(
               focusColor: Color(0xff09548c),
               fillColor: Color.fromRGBO(240, 240, 240, 1),
               filled: true,
@@ -92,14 +90,14 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
             onPressed: () {
               Navigator.of(context).pushNamed(DiscoverNearYou.route);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.location_on_outlined,
               color: Color(0xff09548c),
             ),
           ),
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               CupertinoIcons.slider_horizontal_3,
               color: Color(0xff09548c),
             ),
@@ -121,7 +119,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                 shrinkWrap: true,
                 physics: BouncingScrollPhysics(),
                 itemCount: roomCount,
-                separatorBuilder: (BuildContext context, int index) => Divider(
+                separatorBuilder: (BuildContext context, int index) => const Divider(
                   height: 0.1,
                   indent: 0,
                   thickness: 0.1,

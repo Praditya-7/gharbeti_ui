@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/billing/entity/billing_container.dart';
 import 'package:intl/intl.dart';
 
-class BillingWidget extends StatefulWidget {
+class OwnerBillingWidget extends StatefulWidget {
   final double width;
   final double height;
   final Billings data;
 
-  const BillingWidget({
+  const OwnerBillingWidget({
     Key? key,
     required this.width,
     required this.height,
@@ -15,10 +15,10 @@ class BillingWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<BillingWidget> createState() => _BillingWidgetState();
+  State<OwnerBillingWidget> createState() => _OwnerBillingWidgetState();
 }
 
-class _BillingWidgetState extends State<BillingWidget> {
+class _OwnerBillingWidgetState extends State<OwnerBillingWidget> {
   @override
   Widget build(BuildContext context) {
     var unformattedDate = widget.data.billDate?.toDate();

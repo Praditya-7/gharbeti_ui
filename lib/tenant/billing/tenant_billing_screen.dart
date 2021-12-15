@@ -4,8 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/billing/entity/billing_container.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
-import 'package:gharbeti_ui/tenant/billing/billing_widget.dart';
+import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/tenant/billing/paynow_screen.dart';
+import 'package:gharbeti_ui/tenant/billing/tenant_billing_widget.dart';
 import 'package:gharbeti_ui/tenant/billing/tenant_paid_bills.dart';
 import 'package:gharbeti_ui/tenant/billing/tenant_pending_bills.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,23 +22,10 @@ class BillingTenantScreen extends StatefulWidget {
 
 class _BillingTenantScreenState extends State<BillingTenantScreen> {
   int totalDueBalance = 8000;
-  int monthlyRent = 4000;
   String status = 'Paid';
-  String tenantName = 'Sarthak Shrestha';
-  String paymentStatus = 'Paid';
-  String paymentOption = 'Khalti';
-  String rentMonth = 'October';
-  final List<String> entries = <String>[
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-  ];
+
   double width = 0.0;
   double height = 0.0;
-  String billStatus = "Issued";
   List<Billings> billingList = [];
   List<Billings> paidList = [];
   List<Billings> pendingList = [];
@@ -60,6 +48,7 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
 
     final pref = await SharedPreferences.getInstance();
     var email = pref.getString("email");
+    print(email);
     var query1 = _fireStore
         .collection('Billings')
         .where("TenantEmail", isEqualTo: email)
@@ -72,6 +61,7 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
         }
       }
     }).catchError((e) {
+      pendingList.clear();
       print(e);
     });
 
@@ -87,20 +77,26 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
         }
       }
     }).catchError((e) {
+      paidList.clear();
       print(e);
     });
 
     setState(() {
+      print(pendingList.length);
       pendingList.isNotEmpty ? pendingData = pendingList.first : null;
       paidList.isNotEmpty ? paidData = paidList.first : null;
       pendingCount = pendingList.length;
       paidCount = paidList.length;
+
       isLoading = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    width = SizeConfig.safeBlockHorizontal!;
+    height = SizeConfig.safeBlockVertical!;
     return Scaffold(
       backgroundColor: Color.fromRGBO(240, 240, 240, 1),
       body: SafeArea(
@@ -183,7 +179,7 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                     SizedBox(height: 10),
 
                     pendingList.isNotEmpty
-                        ? BillingWidget(
+                        ? TenantBillingWidget(
                             width: width,
                             height: height,
                             data: pendingData,
@@ -224,7 +220,7 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                     ),
                     SizedBox(height: 10),
                     paidList.isNotEmpty
-                        ? BillingWidget(
+                        ? TenantBillingWidget(
                             width: width,
                             height: height,
                             data: paidData,

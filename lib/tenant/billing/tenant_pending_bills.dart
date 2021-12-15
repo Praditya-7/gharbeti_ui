@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/billing/entity/billing_container.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
-import 'package:gharbeti_ui/tenant/billing/billing_widget.dart';
+import 'package:gharbeti_ui/tenant/billing/tenant_billing_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
@@ -106,7 +106,7 @@ class _TenantPendingBillsState extends State<TenantPendingBills> {
                     thickness: 0.1,
                   ),
                   itemBuilder: (BuildContext context, int index) {
-                    return BillingWidget(
+                    return TenantBillingWidget(
                       height: height,
                       width: width,
                       data: pendingList[index],

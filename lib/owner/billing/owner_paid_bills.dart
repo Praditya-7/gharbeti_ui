@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gharbeti_ui/owner/billing/billing_widget.dart';
+import 'package:gharbeti_ui/owner/billing/owner_billing_widget.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -101,7 +101,7 @@ class _OwnerPaidBillsState extends State<OwnerPaidBills> {
                     thickness: 0.1,
                   ),
                   itemBuilder: (BuildContext context, int index) {
-                    return BillingWidget(
+                    return OwnerBillingWidget(
                       height: height,
                       width: width,
                       data: paidList[index],

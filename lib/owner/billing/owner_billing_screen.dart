@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gharbeti_ui/owner/billing/billing_widget.dart';
+import 'package:gharbeti_ui/owner/billing/owner_billing_widget.dart';
 import 'package:gharbeti_ui/owner/billing/owner_paid_bills.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
@@ -116,7 +116,7 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
                       ),
                     ),
                     pendingList.isNotEmpty
-                        ? BillingWidget(
+                        ? OwnerBillingWidget(
                             width: width,
                             height: height,
                             data: pendingData,
@@ -157,7 +157,7 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
                     ),
                     //Paid Bills
                     paidList.isNotEmpty
-                        ? BillingWidget(
+                        ? OwnerBillingWidget(
                             width: width,
                             height: height,
                             data: paidData,
