@@ -17,6 +17,7 @@ class Billings {
   final String? tenantEmail;
   final int? total;
   final String? pdfLink;
+  final Timestamp? billDate;
 
   Billings({
     this.waterCharge,
@@ -34,6 +35,7 @@ class Billings {
     this.total,
     this.pdfLink,
     this.internetCharge,
+    this.billDate,
   });
 
   factory Billings.fromJson(Map<String, dynamic> json) {
@@ -52,6 +54,7 @@ class Billings {
         waterCharge: json['Negotiable'],
         total: json['TotalCost'],
         pdfLink: json['PDFLink'],
+        billDate: json['BillDate'],
         internetCharge: json['InternetCharge']);
   }
 
@@ -71,6 +74,7 @@ class Billings {
         tenantEmail = snap.get('TenantEmail'),
         pdfLink = snap.get('PDFLink'),
         internetCharge = snap.get('InternetCharge'),
+        billDate = snap.get('BillDate'),
         total = snap.get('TotalCost');
   toJson() {
     return {
@@ -88,6 +92,7 @@ class Billings {
       'WaterCharge': waterCharge,
       'PDFLink': pdfLink,
       'InternetCharge': internetCharge,
+      'BillDate': billDate,
       'TotalCost': total,
     };
   }

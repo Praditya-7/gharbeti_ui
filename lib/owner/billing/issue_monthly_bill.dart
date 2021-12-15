@@ -179,6 +179,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                           ),
                           //Select Tenant End
                           //Bill Month Start
+
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
                             padding: EdgeInsets.only(left: 20, right: 20),
@@ -932,6 +933,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
 
   void setBillData() async {
     final pref = await SharedPreferences.getInstance();
+    Timestamp time = Timestamp.fromDate(DateTime.now());
 
     var model = Billings(
       ownerEmail: pref.getString("email"),
@@ -949,6 +951,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
       status: "Pending",
       pdfLink: "",
       internetCharge: internetCharge,
+      billDate: time,
     );
 
     writeOnPdf(model);
@@ -1020,6 +1023,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
       'Status': model.status,
       'PDFLink': model.pdfLink,
       'InternetCharge': model.internetCharge,
+      'BillDate': model.billDate,
     };
     return data;
   }
