@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/billing/entity/billing_container.dart';
+import 'package:gharbeti_ui/owner/billing/pdfView.dart';
 import 'package:intl/intl.dart';
 
 class OwnerBillingWidget extends StatefulWidget {
@@ -22,7 +23,8 @@ class _OwnerBillingWidgetState extends State<OwnerBillingWidget> {
   @override
   Widget build(BuildContext context) {
     var unformattedDate = widget.data.billDate?.toDate();
-    String formattedDate = DateFormat.yMMMMd().format(unformattedDate!).toString();
+    String formattedDate =
+        DateFormat.yMMMMd().format(unformattedDate!).toString();
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10),
       padding: const EdgeInsets.all(10.0),
@@ -74,7 +76,9 @@ class _OwnerBillingWidgetState extends State<OwnerBillingWidget> {
                   //
                   //PDF OPENER HERE
                   //
-                  // widget.data.pdfLink.toString()
+                  String pdfURL = widget.data.pdfLink.toString();
+                  Navigator.of(context)
+                      .pushNamed(ViewPdfBill.route, arguments: pdfURL);
                 },
               ),
               const SizedBox(
