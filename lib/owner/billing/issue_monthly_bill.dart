@@ -41,7 +41,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
   int rentCharge = 0;
   int? dueRemaining = 0;
   int perUnitElectricityCharge = 0;
-  int lastMeterReading = 230;
+  int lastMeterReading = 0;
   int consumedUnit = 0;
   int current = 0;
   int electricityCost = 0;
@@ -52,10 +52,12 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
   List<Room> occupiedList = [];
   List<String?> tenantList = [];
   List<String?> rentList = [];
+  List<String?> lastMeterReadingList = [];
   final TextEditingController currentMeterReadingController = TextEditingController();
   final TextEditingController perUnitChargeController = TextEditingController();
   final TextEditingController waterChargeController = TextEditingController();
   final TextEditingController internetController = TextEditingController();
+
   final pdf = pw.Document();
 
   @override
@@ -82,6 +84,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
         occupiedList.add(item);
         tenantList.add(item.tenantEmail);
         listingNoList.add(item.listingNo);
+        lastMeterReadingList.add(item.lastMeterReading);
         rentList.add(item.rent);
         print(tenantList[0]);
       }
@@ -166,6 +169,8 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                                   rentCharge = int.parse(rentList[index!].toString());
                                   print(rentCharge);
                                   listingNo = listingNoList[index!].toString();
+                                  lastMeterReading =
+                                      int.parse(lastMeterReadingList[index!].toString());
                                 });
                               },
                               icon: Icon(Icons.arrow_drop_down_sharp),
@@ -179,7 +184,6 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                           ),
                           //Select Tenant End
                           //Bill Month Start
-
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
                             padding: EdgeInsets.only(left: 20, right: 20),
@@ -562,14 +566,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                       ),
                       child: InkWell(
                         onTap: () async {
-                          setState(() async {
-                            /* Directory? documentDirectory =
-                                await getExternalStorageDirectory();
-                            String documentPath = documentDirectory!.path;
-                            String fullPath = "$documentPath/example.pdf";
-                            print(fullPath);*/
-                            setBillData();
-                          });
+                          setBillData();
                         },
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(30, 8, 30, 8),

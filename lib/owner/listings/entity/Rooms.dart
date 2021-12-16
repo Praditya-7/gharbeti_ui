@@ -18,6 +18,7 @@ class Rooms {
     this.long,
     this.imageName,
     this.tenantEmail,
+    this.lastMeterReading,
   });
 
   final String? negotiable;
@@ -39,4 +40,5 @@ class Rooms {
   final double? long;
   final String? imageName;
   final String? tenantEmail;
+  final String? lastMeterReading;
 }

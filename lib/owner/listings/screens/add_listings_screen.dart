@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -46,25 +44,25 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
 
   late GoogleMapController _googleMapController;
   final TextEditingController _listingNo = TextEditingController();
-
+  final TextEditingController lastMeterReadingController = TextEditingController();
   final TextEditingController _additionalDescription = TextEditingController();
   final TextEditingController _price = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(240, 240, 240, 1),
+      backgroundColor: const Color.fromRGBO(240, 240, 240, 1),
       appBar: AppBar(
-        backgroundColor: Color(0xff09548c),
-        title: Text('Add Listings'),
+        backgroundColor: const Color(0xff09548c),
+        title: const Text('Add Listings'),
         actions: <Widget>[
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.message),
+            icon: const Icon(Icons.message),
           ),
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
           ),
         ],
       ),
@@ -76,34 +74,34 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //General Information
-                Text(
+                const Text(
                   'General Information',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 //GENERAL INFORMATION START
                 Container(
                   color: Colors.white,
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       //TYPE*//
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
-                        padding: EdgeInsets.only(left: 20, right: 20),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200],
                         ),
                         child: DropdownButton<String>(
                           isExpanded: true,
-                          hint: Text('Type*'),
+                          hint: const Text('Type*'),
                           underline: Container(
                             height: 0,
                           ),
@@ -113,7 +111,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                               listingTypeDropdownValue = newValue!;
                             });
                           },
-                          icon: Icon(Icons.arrow_drop_down_sharp),
+                          icon: const Icon(Icons.arrow_drop_down_sharp),
                           items: <String>[
                             'Flat',
                             'Room',
@@ -127,17 +125,17 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                       ),
                       //Listing No//
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
                         alignment: Alignment.center,
-                        padding: EdgeInsets.only(left: 20, right: 20),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200],
                         ),
                         child: TextField(
                           controller: _listingNo,
-                          cursorColor: Color(0xff09548c),
-                          decoration: InputDecoration(
+                          cursorColor: const Color(0xff09548c),
+                          decoration: const InputDecoration(
                             hintText: "Listing No*",
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
@@ -145,15 +143,15 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
-                        padding: EdgeInsets.only(left: 20, right: 20),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200],
                         ),
                         child: DropdownButton<String>(
                           isExpanded: true,
-                          hint: Text('Floor*'),
+                          hint: const Text('Floor*'),
                           underline: Container(
                             height: 0,
                           ),
@@ -163,7 +161,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                               floorDropdownValue = newValue!;
                             });
                           },
-                          icon: Icon(Icons.arrow_drop_down_sharp),
+                          icon: const Icon(Icons.arrow_drop_down_sharp),
                           items: <String>[
                             'Ground',
                             'First',
@@ -183,28 +181,28 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                   ),
                 ), //End of General Information//FIRST COLUMN GENERAL INFORMATION END
                 //Basic Amenities
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Text(
+                const Text(
                   'Basic Amenities',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Container(
                   color: Colors.white,
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
                       //Parking
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
-                        padding: EdgeInsets.only(left: 20, right: 20),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200],
@@ -212,7 +210,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Parking'),
+                            const Text('Parking'),
                             DropdownButton<String>(
                               underline: Container(
                                 height: 0,
@@ -223,7 +221,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                                   parkingDropdownValue = newValue!;
                                 });
                               },
-                              icon: Icon(Icons.arrow_drop_down_sharp),
+                              icon: const Icon(Icons.arrow_drop_down_sharp),
                               items: <String>[
                                 'No',
                                 'Bike',
@@ -240,8 +238,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                       ),
                       //Bathroom
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
-                        padding: EdgeInsets.only(left: 20, right: 20),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200],
@@ -249,7 +247,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Bathroom'),
+                            const Text('Bathroom'),
                             DropdownButton<String>(
                               underline: Container(
                                 height: 0,
@@ -260,7 +258,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                                   bathroomDropdownValue = newValue!;
                                 });
                               },
-                              icon: Icon(Icons.arrow_drop_down_sharp),
+                              icon: const Icon(Icons.arrow_drop_down_sharp),
                               items: <String>[
                                 '1',
                                 '2',
@@ -277,8 +275,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                       ),
                       //Kitchen
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
-                        padding: EdgeInsets.only(left: 20, right: 20),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200],
@@ -286,7 +284,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Kitchen'),
+                            const Text('Kitchen'),
                             DropdownButton<String>(
                               underline: Container(
                                 height: 0,
@@ -297,7 +295,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                                   kitchenDropdownValue = newValue!;
                                 });
                               },
-                              icon: Icon(Icons.arrow_drop_down_sharp),
+                              icon: const Icon(Icons.arrow_drop_down_sharp),
                               items: <String>[
                                 'Yes',
                                 'No',
@@ -313,7 +311,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                       ),
                       //Internet
                       Container(
-                        padding: EdgeInsets.only(left: 20, right: 20),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200],
@@ -321,7 +319,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Internet'),
+                            const Text('Internet'),
                             DropdownButton<String>(
                               underline: Container(
                                 height: 0,
@@ -332,7 +330,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                                   internetDropdownValue = newValue!;
                                 });
                               },
-                              icon: Icon(Icons.arrow_drop_down_sharp),
+                              icon: const Icon(Icons.arrow_drop_down_sharp),
                               items: <String>[
                                 'Yes',
                                 'No',
@@ -350,36 +348,36 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                   ),
                 ),
                 //Price(Monthly)
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Text(
+                const Text(
                   'Rent Price(Monthly)',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Container(
                   color: Colors.white,
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
                         alignment: Alignment.center,
-                        padding: EdgeInsets.only(left: 20, right: 20),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200],
                         ),
                         child: TextField(
                           controller: _price,
-                          cursorColor: Color(0xff09548c),
-                          decoration: InputDecoration(
+                          cursorColor: const Color(0xff09548c),
+                          decoration: const InputDecoration(
                             hintText: "Rent Price(in Rs.)",
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
@@ -387,7 +385,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.only(left: 20, right: 20),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200],
@@ -395,7 +393,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Negotiable'),
+                            const Text('Negotiable'),
                             DropdownButton<String>(
                               underline: Container(
                                 height: 0,
@@ -406,7 +404,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                                   negotiableDropdownValue = newValue!;
                                 });
                               },
-                              icon: Icon(Icons.arrow_drop_down_sharp),
+                              icon: const Icon(Icons.arrow_drop_down_sharp),
                               items: <String>[
                                 'Yes',
                                 'No',
@@ -424,27 +422,28 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                   ),
                 ), //End of Price(Monthly)
                 //Additional Description
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Text(
+                const Text(
                   'Additional Description',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
+
                 Container(
                   color: Colors.white,
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
-                        padding: EdgeInsets.only(left: 20, right: 20),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        padding: const EdgeInsets.fromLTRB(18, 2, 30, 2),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200],
@@ -452,7 +451,35 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Preferences'),
+                            const Text('Last Meter Reading'),
+                            SizedBox(
+                              width: 100,
+                              child: TextField(
+                                textAlign: TextAlign.end,
+                                keyboardType: TextInputType.number,
+                                controller: lastMeterReadingController,
+                                cursorColor: const Color(0xff09548c),
+                                decoration: const InputDecoration(
+                                  hintText: "Enter Here",
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.grey[200],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Preferences'),
                             DropdownButton<String>(
                               underline: Container(
                                 height: 0,
@@ -463,7 +490,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                                   preferencesDropdownValue = newValue!;
                                 });
                               },
-                              icon: Icon(Icons.arrow_drop_down_sharp),
+                              icon: const Icon(Icons.arrow_drop_down_sharp),
                               items: <String>[
                                 'Family',
                                 'Individual',
@@ -479,7 +506,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                       ),
                       Container(
                         alignment: Alignment.center,
-                        padding: EdgeInsets.only(left: 20, right: 20),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200],
@@ -488,8 +515,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           maxLines: 15,
                           minLines: 5,
                           controller: _additionalDescription,
-                          cursorColor: Color(0xff09548c),
-                          decoration: InputDecoration(
+                          cursorColor: const Color(0xff09548c),
+                          decoration: const InputDecoration(
                             hintText: "Additional Description",
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
@@ -500,22 +527,22 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                   ),
                 ), //End of Additional Description
                 //Pin Location
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Text(
+                const Text(
                   'Pin Listing Location',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Container(
                   color: Colors.white,
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
                       Container(
@@ -545,7 +572,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                             setState(() {
                               _marker = {
                                 Marker(
-                                  markerId: MarkerId('Pin'),
+                                  markerId: const MarkerId('Pin'),
                                   icon: BitmapDescriptor.defaultMarker,
                                   position: point,
                                 )
@@ -556,12 +583,9 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           },
                           myLocationButtonEnabled: true,
                           markers: _marker,
-                          initialCameraPosition: CameraPosition(
+                          initialCameraPosition: const CameraPosition(
                             bearing: 0.0,
-                            target: LatLng(
-                              27.7172,
-                              85.3240,
-                            ),
+                            target: LatLng(27.7172, 85.3240),
                             zoom: 12.0,
                           ),
                         ),
@@ -570,24 +594,23 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                   ),
                 ),
                 //End of Pin Location
-
                 //Room Photos
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Text(
+                const Text(
                   'Room Photos',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Container(
                   color: Colors.white,
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
                       ElevatedButton(
@@ -599,19 +622,18 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           );
                           if (results == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text('No image selected.'),
                               ),
                             );
                           }
-
                           path = results!.files.single.path!;
                           fileName = results.files.single.name;
                           setState(() {
                             imageSelected = true;
                           });
                         },
-                        child: Center(
+                        child: const Center(
                           child: ListTile(
                             leading: Icon(
                               Icons.upload,
@@ -626,36 +648,23 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           ),
                         ),
                       ),
-                      imageSelected == false ? Text('No image selected') : Image.file(File(path)),
-                      //
-                      // imageSelected == false
-                      //     ? Text('No image selected')
-                      //     : GridView.builder(
-                      //         padding: EdgeInsets.all(10),
-                      //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      //           crossAxisCount: 2,
-                      //           mainAxisSpacing: 8,
-                      //           crossAxisSpacing: 8,
-                      //         ),
-                      //         itemCount: img.length,
-                      //         itemBuilder: (context, int index) {
-                      //           return Image.file(File(img[index].path!));
-                      //         },
-                      //       ),
+                      imageSelected == false
+                          ? const Text('No image selected')
+                          : Image.file(
+                              File(path),
+                            ),
                     ],
                   ),
                 ),
                 //End of Room Photos
-
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-
                 //Add
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: Color(0xff09548c),
+                    color: const Color(0xff09548c),
                   ),
                   child: InkWell(
                     onTap: () async {
@@ -664,8 +673,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         setData();
                       });
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 8, 30, 8),
+                    child: const Padding(
+                      padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
                       child: Center(
                         child: Text(
                           'Add Listing',
@@ -688,7 +697,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
 
   void setData() async {
     final pref = await SharedPreferences.getInstance();
-
     await Storage(listingNo: _listingNo.text.toString())
         .uploadImage(path, fileName)
         .then((value) => print('Uploaded'));
@@ -710,6 +718,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
       lat: _latLng.latitude,
       long: _latLng.longitude,
       imageName: fileName,
+      lastMeterReading: lastMeterReadingController.text.toString(),
       tenantEmail: "",
     );
 
@@ -756,6 +765,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
       "Longitude": model.long,
       "ImageName": model.imageName,
       "Tenant Email": model.tenantEmail,
+      "LastMeterReading": model.lastMeterReading,
     };
     return data;
   }

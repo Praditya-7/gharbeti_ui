@@ -19,6 +19,7 @@ class Room {
   final String? tenantEmail;
   final double latitude;
   final double longitude;
+  final String? lastMeterReading;
 
   Room({
     this.negotiable,
@@ -36,6 +37,7 @@ class Room {
     this.email,
     this.tenantEmail,
     this.imageName,
+    this.lastMeterReading,
     required this.latitude,
     required this.longitude,
   });
@@ -58,6 +60,7 @@ class Room {
         negotiable: json['Negotiable'],
         imageName: json['ImageName'],
         latitude: json['Latitude'],
+        lastMeterReading: json['LastMeterReading'],
         longitude: json['Longitude']);
   }
 
@@ -79,6 +82,7 @@ class Room {
         imageName = snap.get('ImageName'),
         latitude = snap.get('Latitude'),
         longitude = snap.get('Longitude'),
+        lastMeterReading = snap.get('LastMeterReading'),
         email = snap.get('OwnerEmail');
 
   toJson() {
@@ -99,6 +103,7 @@ class Room {
       'Negotiable': negotiable,
       'Latitude': latitude,
       'Longitude': longitude,
+      'LastMeterReading': lastMeterReading,
       'ImageName': imageName,
     };
   }
