@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+import 'package:gharbeti_ui/shared/color.dart';
 
 class ViewPdfBill extends StatefulWidget {
   static String route = '/viewPdfBill';
@@ -26,7 +27,8 @@ class _ViewPdfBillState extends State<ViewPdfBill> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Bill Pdf"),
+        title: Text("Bill Pdf View"),
+        backgroundColor: ColorData.primaryColor,
       ),
       body: SafeArea(
         child: PDF(
