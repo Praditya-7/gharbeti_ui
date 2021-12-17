@@ -15,6 +15,7 @@ import 'package:gharbeti_ui/tenant/billing/tenant_paid_bills.dart';
 import 'package:gharbeti_ui/tenant/billing/tenant_pending_bills.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_listing_detail.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_near_you.dart';
+import 'package:gharbeti_ui/tenant/discover/filter_listing.dart';
 import 'package:gharbeti_ui/tenant/tenant_dashboard.dart';
 import 'package:gharbeti_ui/tenant/tenant_home_screen.dart';
 
@@ -39,5 +40,6 @@ class Routes {
     TenantPendingBills.route: (ctx) => const TenantPendingBills(),
     TenantPaidBills.route: (ctx) => const TenantPaidBills(),
     ViewPdfBill.route: (ctx) => const ViewPdfBill(),
+    ListingFilterPage.route: (ctx) => const ListingFilterPage(),
   };
 }
