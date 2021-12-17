@@ -124,7 +124,10 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
                         : Container(
                             margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10),
                             height: height * 16,
-                            color: Colors.white,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             padding: EdgeInsets.all(40),
                             child: Center(
                               child: Text('No Pending Bills found'),
@@ -164,7 +167,10 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
                           )
                         : Container(
                             margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10),
-                            color: Colors.white,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             height: height * 16,
                             padding: EdgeInsets.all(40),
                             child: Center(

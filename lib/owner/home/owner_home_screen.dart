@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/owner/home/room_widget.dart';
-import 'package:gharbeti_ui/owner/home/vacant_room.dart';
 import 'package:gharbeti_ui/owner/listings/screens/add_listings_screen.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
@@ -44,10 +43,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
     roomList.clear();
     final pref = await SharedPreferences.getInstance();
     var email = pref.getString("email");
-    var query = _fireStore
-        .collection('Rooms')
-        .where("OwnerEmail", isEqualTo: email)
-        .get();
+    var query = _fireStore.collection('Rooms').where("OwnerEmail", isEqualTo: email).get();
     await query.then((value) {
       if (value.docs.isNotEmpty) {
         for (var doc in value.docs) {
@@ -161,9 +157,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
     return vacantList.isNotEmpty
         ? ListView.builder(
             itemBuilder: (context, index) => Padding(
-              padding: index == 0
-                  ? const EdgeInsets.only(top: 20.0)
-                  : const EdgeInsets.all(0),
+              padding: index == 0 ? const EdgeInsets.only(top: 20.0) : const EdgeInsets.all(0),
               child: RoomWidget(
                 index: index,
                 onTap: (index) {
@@ -172,6 +166,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                 data: vacantList[index],
                 width: width,
                 height: height,
+                status: "Vacant",
               ),
             ),
             itemCount: vacantList.length,
@@ -186,9 +181,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
     return occupiedList.isNotEmpty
         ? ListView.builder(
             itemBuilder: (context, index) => Padding(
-              padding: index == 0
-                  ? const EdgeInsets.only(top: 20.0)
-                  : const EdgeInsets.all(0),
+              padding: index == 0 ? const EdgeInsets.only(top: 20.0) : const EdgeInsets.all(0),
               child: RoomWidget(
                 index: index,
                 data: occupiedList[index],
@@ -197,6 +190,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                 },
                 width: width,
                 height: height,
+                status: "Occupied",
               ),
             ),
             itemCount: occupiedList.length,
@@ -249,11 +243,9 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _getRoomStatus(ColorData.vacantColor,
-                        vacantCount.toString(), "Vacant"),
+                    _getRoomStatus(ColorData.vacantColor, vacantCount.toString(), "Vacant"),
                     SizedBox(height: 20),
-                    _getRoomStatus(ColorData.occupiedColor,
-                        occupiedCount.toString(), "Occupied"),
+                    _getRoomStatus(ColorData.occupiedColor, occupiedCount.toString(), "Occupied"),
                   ],
                 ),
               )

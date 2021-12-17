@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/owner/home/vacant_room.dart';
+import 'package:gharbeti_ui/owner/listings/screens/listing_detail.dart';
 import 'package:gharbeti_ui/owner/listings/service/storage_service.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
 
@@ -10,6 +11,7 @@ class RoomWidget extends StatefulWidget {
   final double height;
   final Room data;
   final Function(int index) onTap;
+  final String status;
 
   const RoomWidget({
     Key? key,
@@ -18,6 +20,7 @@ class RoomWidget extends StatefulWidget {
     required this.height,
     required this.data,
     required this.onTap,
+    required this.status,
   }) : super(key: key);
 
   @override
@@ -30,7 +33,9 @@ class _RoomWidgetState extends State<RoomWidget> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          var abc = Navigator.of(context).pushNamed(VacantRoom.route, arguments: widget.data);
+          widget.status == "Vacant"
+              ? Navigator.of(context).pushNamed(VacantRoom.route, arguments: widget.data)
+              : Navigator.of(context).pushNamed(ListingDetail.route, arguments: widget.data);
         });
       },
       child: Container(
