@@ -12,7 +12,7 @@ class DiscoverWidget extends StatefulWidget {
   final Room data;
   final Function(int index) onTap;
 
-  DiscoverWidget({
+  const DiscoverWidget({
     Key? key,
     required this.index,
     required this.width,
@@ -27,41 +27,36 @@ class DiscoverWidget extends StatefulWidget {
 
 class _DiscoverWidgetState extends State<DiscoverWidget> {
   String including = '';
+  String address = "";
+
+  @override
+  void initState() {
+    getAddress();
+    super.initState();
+  }
 
   Future<String> _getPlace() async {
     String add;
-    List<Placemark> newPlace =
-        await placemarkFromCoordinates(widget.data.latitude, widget.data.longitude);
+    List<Placemark> newPlace = await placemarkFromCoordinates(
+        widget.data.latitude, widget.data.longitude,
+        localeIdentifier: 'ne_NP');
 
-    // this is all you need
     Placemark placeMark = newPlace[0];
-    String name = placeMark.name.toString();
+    String street = placeMark.street.toString();
     String subLocality = placeMark.subLocality.toString();
     String locality = placeMark.locality.toString();
-    String administrativeArea = placeMark.administrativeArea.toString();
-    String postalCode = placeMark.postalCode.toString();
-    String country = placeMark.country.toString();
-    add = name +
-        "," +
-        subLocality +
-        ",\n" +
-        locality +
-        "," +
-        postalCode +
-        ",\n" +
-        administrativeArea +
-        "," +
-        country;
+    add = street + "," + subLocality + "," + locality;
     print(add);
     return add;
   }
 
-  String getAddress() {
-    String address = "";
+  void getAddress() {
     _getPlace().then((value) {
-      address = value;
+      setState(() {
+        address = value.toString();
+        print(address);
+      });
     });
-    return address;
   }
 
   @override
@@ -113,7 +108,10 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
                         Icons.wifi,
                       ),
                       getRoundedIconWithLabel(
-                        widget.data.parking == 'Yes' ? 'Available' : 'None',
+                        widget.data.parking.toString() == "Bike" ||
+                                widget.data.parking.toString() == "Car"
+                            ? 'Available'
+                            : 'None',
                         Icons.local_parking,
                       ),
                       getRoundedIconWithLabel(
@@ -126,15 +124,15 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
                       ),
                     ],
                   ),
-                  IconButton(
-                    onPressed: () {
-                      //Share function
-                    },
-                    icon: const Icon(
-                      Icons.share,
-                      color: Color(0xff09548c),
-                    ),
-                  ),
+                  // IconButton(
+                  //   onPressed: () {
+                  //     //Share function
+                  //   },
+                  //   icon: const Icon(
+                  //     Icons.share,
+                  //     color: Color(0xff09548c),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -155,7 +153,7 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
                         child: SizedBox(
                           width: 200,
                           child: Text(
-                            getAddress(),
+                            address.toString(),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 3,
                             softWrap: false,

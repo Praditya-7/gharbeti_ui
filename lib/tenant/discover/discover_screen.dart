@@ -20,7 +20,6 @@ class DiscoverTenantScreen extends StatefulWidget {
 
 class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
   final TextEditingController _destinationController = TextEditingController();
-
   double width = 0.0;
   double height = 0.0;
   List<Room> roomList = [];
@@ -117,7 +116,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
               child: SingleChildScrollView(
                   child: ListView.separated(
                 shrinkWrap: true,
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: roomCount,
                 separatorBuilder: (BuildContext context, int index) => const Divider(
                   height: 0.1,
