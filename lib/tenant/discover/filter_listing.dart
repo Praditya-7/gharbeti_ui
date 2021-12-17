@@ -12,6 +12,7 @@ class ListingFilterPage extends StatefulWidget {
 
 class _ListingFilterPageState extends State<ListingFilterPage> {
   int price = 0;
+  String priceDropdownValue = 'Above';
   String listingTypeDropdownValue = 'Room';
   String parkingDropdownValue = 'Bike';
   String internetDropdownValue = 'Yes';
@@ -67,9 +68,34 @@ class _ListingFilterPageState extends State<ListingFilterPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Max Price (in Rs.)'),
+                    const Text('Price(in Rs.)'),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    DropdownButton<String>(
+                      menuMaxHeight: 75,
+                      underline: Container(
+                        height: 0,
+                      ),
+                      value: priceDropdownValue,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          priceDropdownValue = newValue!;
+                        });
+                      },
+                      icon: const Icon(Icons.arrow_drop_down_sharp),
+                      items: <String>[
+                        'Above',
+                        'Below',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
                     SizedBox(
-                      width: 100,
+                      width: 50,
                       child: TextField(
                         textAlign: TextAlign.end,
                         keyboardType: TextInputType.number,
