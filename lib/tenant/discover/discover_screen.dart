@@ -1,17 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
+import 'package:gharbeti_ui/tenant/discover/discover_filter.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_near_you.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_widget.dart';
 
-import 'filter_listing.dart';
-
 final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-final FirebaseStorage _storage = FirebaseStorage.instance;
 
 class DiscoverTenantScreen extends StatefulWidget {
   const DiscoverTenantScreen({Key? key}) : super(key: key);
@@ -98,8 +95,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
           ),
           IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ListingFilterPage()));
+              Navigator.of(context).pushNamed(DiscoverFilter.route);
             },
             icon: const Icon(
               CupertinoIcons.slider_horizontal_3,
@@ -123,8 +119,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 itemCount: roomCount,
-                separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(
+                separatorBuilder: (BuildContext context, int index) => const Divider(
                   height: 0.1,
                   indent: 0,
                   thickness: 0.1,
@@ -142,8 +137,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                 },
               )),
             ),
-            Visibility(
-                visible: isLoading, child: CustomProgressIndicatorWidget())
+            Visibility(visible: isLoading, child: const CustomProgressIndicatorWidget())
           ],
         ),
       ),
