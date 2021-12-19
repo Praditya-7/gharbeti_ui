@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_listing_detail.dart';
+import 'package:gharbeti_ui/tenant/discover/service/discover_storage_service.dart';
 
 class DiscoverWidget extends StatefulWidget {
   final int index;
@@ -60,10 +61,13 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
 
   @override
   Widget build(BuildContext context) {
-    including = widget.data.kitchen.toString() == 'Yes' ? ' | Room including Kitchen' : ' ';
+    including = widget.data.kitchen.toString() == 'Yes'
+        ? ' | Room including Kitchen'
+        : ' ';
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(DiscoverListingDetail.route, arguments: widget.data);
+        Navigator.of(context)
+            .pushNamed(DiscoverListingDetail.route, arguments: widget.data);
       },
       child: Container(
         color: Colors.white,
@@ -71,26 +75,30 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
         child: Column(
           children: [
             //Image Here
-            // FutureBuilder(
-            //   future: DiscoverStorage(listingNo: widget.data.listingNo, email: widget.data.email)
-            //       .downloadURL(
-            //     widget.data.imageName.toString(),
-            //   ),
-            //   builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            //     if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-            //       return Image.network(
-            //         snapshot.data!,
-            //         fit: BoxFit.fitWidth,
-            //         width: double.infinity,
-            //         height: widget.height * 15,
-            //       );
-            //     }
-            //     if (snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
-            //       return const CircularProgressIndicator();
-            //     }
-            //     return Container();
-            //   },
-            // ),
+            FutureBuilder(
+              future: DiscoverStorage(
+                      listingNo: widget.data.listingNo,
+                      email: widget.data.email)
+                  .downloadURL(
+                widget.data.imageName.toString(),
+              ),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.hasData) {
+                  return Image.network(
+                    snapshot.data!,
+                    fit: BoxFit.fitWidth,
+                    width: double.infinity,
+                    height: widget.height * 15,
+                  );
+                }
+                if (snapshot.connectionState == ConnectionState.waiting ||
+                    !snapshot.hasData) {
+                  return const CircularProgressIndicator();
+                }
+                return Container();
+              },
+            ),
             const SizedBox(
               height: 10,
             ),

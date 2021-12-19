@@ -151,7 +151,9 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                               shrinkWrap: true,
                               physics: const BouncingScrollPhysics(),
                               itemCount: roomCount,
-                              separatorBuilder: (BuildContext context, int index) => const Divider(
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      const Divider(
                                 height: 0.1,
                                 indent: 0,
                                 thickness: 0.1,
@@ -173,9 +175,9 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                 ),
                 //Filter
                 Positioned(
-                  left: 50,
-                  right: 50,
-                  top: height * 5,
+                  left: width * 3,
+                  right: width * 3,
+                  top: height * 9,
                   child: BackdropFilter(
                     filter: ImageFilter.blur(
                       sigmaX: blurValue,
@@ -217,22 +219,24 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                 ),
                                 color: Colors.white,
                               ),
-                              height: height * 48,
                               child: Column(
                                 children: [
                                   //Price
                                   Container(
-                                    padding: const EdgeInsets.only(left: 20, right: 20),
+                                    padding: const EdgeInsets.only(
+                                        left: 20, right: 20),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       // color: Colors.grey[200],
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         const Text('Price'),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
                                           children: [
                                             DropdownButton<String>(
                                               underline: Container(
@@ -241,14 +245,17 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                               value: priceDropdownValue,
                                               onChanged: (String? newValue) {
                                                 setState(() {
-                                                  priceDropdownValue = newValue!;
+                                                  priceDropdownValue =
+                                                      newValue!;
                                                 });
                                               },
-                                              icon: const Icon(Icons.arrow_drop_down_sharp),
+                                              icon: const Icon(
+                                                  Icons.arrow_drop_down_sharp),
                                               items: <String>[
                                                 'Above',
                                                 'Below',
-                                              ].map<DropdownMenuItem<String>>((String value) {
+                                              ].map<DropdownMenuItem<String>>(
+                                                  (String value) {
                                                 return DropdownMenuItem<String>(
                                                   value: value,
                                                   child: Text(value),
@@ -259,13 +266,18 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                               width: 100,
                                               child: TextField(
                                                 textAlign: TextAlign.end,
-                                                keyboardType: TextInputType.number,
+                                                keyboardType:
+                                                    TextInputType.number,
                                                 controller: priceController,
-                                                cursorColor: const Color(0xff09548c),
-                                                decoration: const InputDecoration(
+                                                cursorColor:
+                                                    const Color(0xff09548c),
+                                                decoration:
+                                                    const InputDecoration(
                                                   hintText: "Enter Here",
-                                                  enabledBorder: InputBorder.none,
-                                                  focusedBorder: InputBorder.none,
+                                                  enabledBorder:
+                                                      InputBorder.none,
+                                                  focusedBorder:
+                                                      InputBorder.none,
                                                 ),
                                               ),
                                             ),
@@ -276,13 +288,15 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                   ),
                                   //Type
                                   Container(
-                                    padding: const EdgeInsets.only(left: 20, right: 20),
+                                    padding: const EdgeInsets.only(
+                                        left: 20, right: 20),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       // color: Colors.grey[200],
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         const Text('Type'),
                                         DropdownButton<String>(
@@ -295,9 +309,14 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                               typeDropdownValue = newValue!;
                                             });
                                           },
-                                          icon: const Icon(Icons.arrow_drop_down_sharp),
-                                          items: <String>['Room', 'Flat', 'House']
-                                              .map<DropdownMenuItem<String>>((String value) {
+                                          icon: const Icon(
+                                              Icons.arrow_drop_down_sharp),
+                                          items: <String>[
+                                            'Room',
+                                            'Flat',
+                                            'House'
+                                          ].map<DropdownMenuItem<String>>(
+                                              (String value) {
                                             return DropdownMenuItem<String>(
                                               value: value,
                                               child: Text(value),
@@ -309,13 +328,15 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                   ),
                                   //Parking
                                   Container(
-                                    padding: const EdgeInsets.only(left: 20, right: 20),
+                                    padding: const EdgeInsets.only(
+                                        left: 20, right: 20),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       // color: Colors.grey[200],
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         const Text('Parking'),
                                         DropdownButton<String>(
@@ -328,12 +349,14 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                               parkingDropdownValue = newValue!;
                                             });
                                           },
-                                          icon: const Icon(Icons.arrow_drop_down_sharp),
+                                          icon: const Icon(
+                                              Icons.arrow_drop_down_sharp),
                                           items: <String>[
                                             'No',
                                             'Bike',
                                             'Car',
-                                          ].map<DropdownMenuItem<String>>((String value) {
+                                          ].map<DropdownMenuItem<String>>(
+                                              (String value) {
                                             return DropdownMenuItem<String>(
                                               value: value,
                                               child: Text(value),
@@ -345,13 +368,15 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                   ),
                                   //Internet
                                   Container(
-                                    padding: const EdgeInsets.only(left: 20, right: 20),
+                                    padding: const EdgeInsets.only(
+                                        left: 20, right: 20),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       // color: Colors.grey[200],
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         const Text(
                                           'Internet',
@@ -366,11 +391,13 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                               internetDropdownValue = newValue!;
                                             });
                                           },
-                                          icon: const Icon(Icons.arrow_drop_down_sharp),
+                                          icon: const Icon(
+                                              Icons.arrow_drop_down_sharp),
                                           items: <String>[
                                             'No',
                                             'Yes',
-                                          ].map<DropdownMenuItem<String>>((String value) {
+                                          ].map<DropdownMenuItem<String>>(
+                                              (String value) {
                                             return DropdownMenuItem<String>(
                                               value: value,
                                               child: Text(value),
@@ -382,13 +409,15 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                   ),
                                   //Kitchen
                                   Container(
-                                    padding: const EdgeInsets.only(left: 20, right: 20),
+                                    padding: const EdgeInsets.only(
+                                        left: 20, right: 20),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       // color: Colors.grey[200],
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         const Text('Kitchen'),
                                         DropdownButton<String>(
@@ -401,11 +430,13 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                               kitchenDropdownValue = newValue!;
                                             });
                                           },
-                                          icon: const Icon(Icons.arrow_drop_down_sharp),
+                                          icon: const Icon(
+                                              Icons.arrow_drop_down_sharp),
                                           items: <String>[
                                             'No',
                                             'Yes',
-                                          ].map<DropdownMenuItem<String>>((String value) {
+                                          ].map<DropdownMenuItem<String>>(
+                                              (String value) {
                                             return DropdownMenuItem<String>(
                                               value: value,
                                               child: Text(value),
@@ -417,14 +448,17 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                   ),
                                   //Preferred
                                   Container(
-                                    margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                    padding: const EdgeInsets.only(left: 20, right: 20),
+                                    margin:
+                                        const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                    padding: const EdgeInsets.only(
+                                        left: 20, right: 20),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       // color: Colors.grey[200],
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         const Text('Preferences'),
                                         DropdownButton<String>(
@@ -434,14 +468,17 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                           value: preferredDropdownValue,
                                           onChanged: (String? newValue) {
                                             setState(() {
-                                              preferredDropdownValue = newValue!;
+                                              preferredDropdownValue =
+                                                  newValue!;
                                             });
                                           },
-                                          icon: const Icon(Icons.arrow_drop_down_sharp),
+                                          icon: const Icon(
+                                              Icons.arrow_drop_down_sharp),
                                           items: <String>[
                                             'Family',
                                             'Individual',
-                                          ].map<DropdownMenuItem<String>>((String value) {
+                                          ].map<DropdownMenuItem<String>>(
+                                              (String value) {
                                             return DropdownMenuItem<String>(
                                               value: value,
                                               child: Text(value),
@@ -453,7 +490,8 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                   ),
                                   //End
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       //Cancel
                                       InkWell(
@@ -467,11 +505,13 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(5),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
                                             color: ColorData.occupiedColor,
                                           ),
                                           margin: const EdgeInsets.all(10),
-                                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                                          padding: const EdgeInsets.fromLTRB(
+                                              20, 10, 20, 10),
                                           child: const Center(
                                             child: Text(
                                               'Cancel',
@@ -499,11 +539,16 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                               },
                                               child: Container(
                                                 decoration: BoxDecoration(
-                                                  border: Border.all(color: Colors.black38),
-                                                  borderRadius: BorderRadius.circular(5),
+                                                  border: Border.all(
+                                                      color: Colors.black38),
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
                                                 ),
-                                                margin: const EdgeInsets.all(10),
-                                                padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                                                margin:
+                                                    const EdgeInsets.all(10),
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        20, 10, 20, 10),
                                                 child: const Center(
                                                   child: Text(
                                                     'Reset',
@@ -523,11 +568,13 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(5),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
                                             color: ColorData.primaryColor,
                                           ),
                                           margin: const EdgeInsets.all(10),
-                                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                                          padding: const EdgeInsets.fromLTRB(
+                                              20, 10, 20, 10),
                                           child: const Center(
                                             child: Text(
                                               'Apply',
@@ -551,7 +598,9 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                 ),
               ],
             ),
-            Visibility(visible: isLoading, child: const CustomProgressIndicatorWidget()),
+            Visibility(
+                visible: isLoading,
+                child: const CustomProgressIndicatorWidget()),
           ],
         ),
       ),
