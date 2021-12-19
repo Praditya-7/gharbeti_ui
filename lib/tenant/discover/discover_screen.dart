@@ -534,6 +534,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                                   blurValue = 0.0;
                                                   filterApplied = false;
                                                   noDataFound = false;
+                                                  isLoading=true;
                                                   setData();
                                                 });
                                               },
