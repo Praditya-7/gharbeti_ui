@@ -69,7 +69,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -578,7 +578,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                                 )
                               };
                               _latLng = point;
-                              print(_latLng.latitude);
                             });
                           },
                           myLocationButtonEnabled: true,

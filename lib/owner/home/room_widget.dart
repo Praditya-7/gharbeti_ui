@@ -69,7 +69,7 @@ class _RoomWidgetState extends State<RoomWidget> {
                 return Container();
               },
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Column(
@@ -81,7 +81,7 @@ class _RoomWidgetState extends State<RoomWidget> {
                   weight: FontWeight.w600,
                   fontSize: 18,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 BuildText(
@@ -89,7 +89,7 @@ class _RoomWidgetState extends State<RoomWidget> {
                   weight: FontWeight.w300,
                   fontSize: 14,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 BuildText(

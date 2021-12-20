@@ -17,7 +17,6 @@ class ProfileScreenOwner extends StatefulWidget {
 }
 
 class _ProfileScreenOwnerState extends State<ProfileScreenOwner> {
-  bool _toggleDarkMode = false;
   bool _toggleNotifications = false;
   List<User> userDataList = [];
   User userData = User();

@@ -748,7 +748,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                         )),
                   ]),
               pw.Divider(thickness: 0.5),
-              //MONTHLYRENT
+              //MONTHLY RENT
               pw.Row(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -885,7 +885,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                   ]),
             ]),
           ),
-          //BILLCONTENTS
+          //BILL CONTENTS
           pw.SizedBox(height: 10.0),
           pw.Align(
             alignment: pw.Alignment.bottomRight,

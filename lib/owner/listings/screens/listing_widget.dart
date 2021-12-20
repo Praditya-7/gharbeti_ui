@@ -3,6 +3,7 @@ import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/owner/listings/screens/listing_detail.dart';
 import 'package:gharbeti_ui/owner/listings/service/storage_service.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ListingWidget extends StatelessWidget {
   final int index;
@@ -23,7 +24,9 @@ class ListingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
+        final pref = await SharedPreferences.getInstance();
+        pref.setString("TenantEmail", data.tenantEmail.toString());
         Navigator.of(context).pushNamed(ListingDetail.route, arguments: data);
       },
       child: Container(
@@ -56,7 +59,7 @@ class ListingWidget extends StatelessWidget {
                 return Container();
               },
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Column(
@@ -68,7 +71,7 @@ class ListingWidget extends StatelessWidget {
                   weight: FontWeight.w600,
                   fontSize: 18,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 BuildText(
@@ -76,12 +79,12 @@ class ListingWidget extends StatelessWidget {
                   weight: FontWeight.normal,
                   fontSize: 14,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Row(
                   children: [
-                    Text(
+                    const Text(
                       'Status : ',
                       style: TextStyle(
                         fontWeight: FontWeight.normal,
@@ -90,14 +93,14 @@ class ListingWidget extends StatelessWidget {
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        color: data.status == 'Vacant' ? Color(0xff30d472) : Colors.orange,
+                        color: data.status == 'Vacant' ? const Color(0xff30d472) : Colors.orange,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
                           child: Text(
                             data.status.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),

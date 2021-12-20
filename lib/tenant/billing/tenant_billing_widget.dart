@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/billing/entity/billing_container.dart';
+import 'package:gharbeti_ui/owner/billing/pdfView.dart';
 import 'package:intl/intl.dart';
 
 class TenantBillingWidget extends StatefulWidget {
@@ -71,10 +72,8 @@ class _TenantBillingWidgetState extends State<TenantBillingWidget> {
                   color: Color(0xff09548c),
                 ),
                 onPressed: () {
-                  //
-                  //PDF OPENER HERE
-                  //
-                  // widget.data.pdfLink.toString()
+                  String pdfURL = widget.data.pdfLink.toString();
+                  Navigator.of(context).pushNamed(ViewPdfBill.route, arguments: pdfURL);
                 },
               ),
               const SizedBox(
