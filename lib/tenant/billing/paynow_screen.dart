@@ -10,15 +10,17 @@ class PayNow extends StatefulWidget {
 }
 
 class _PayNowState extends State<PayNow> {
+  String _payOption = "";
   int billAmount = 8000;
   String owner = "Ram shrestha";
   String paymentStatus = "overdue";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF4F4F4),
+      backgroundColor: const Color(0xffF4F4F4),
       appBar: AppBar(
-        title: Text('Payment Details'),
+        title: const Text('Payment Details'),
         backgroundColor: ColorData.primaryColor,
       ),
       body: Column(
@@ -31,12 +33,12 @@ class _PayNowState extends State<PayNow> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8.0)),
               width: double.infinity,
-              margin: EdgeInsets.all(5.0),
+              margin: const EdgeInsets.all(5.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  BuildText(
+                  const BuildText(
                     text: "Payment To",
                     fontSize: 16,
                   ),
@@ -45,10 +47,10 @@ class _PayNowState extends State<PayNow> {
                     color: Colors.orange,
                     fontSize: 16,
                   ),
-                  SizedBox(
-                    height: 25,
+                  const SizedBox(
+                    height: 20,
                   ),
-                  BuildText(
+                  const BuildText(
                     text: "Payment Type",
                     fontSize: 16,
                   ),
@@ -59,35 +61,38 @@ class _PayNowState extends State<PayNow> {
                         : Colors.green,
                     fontSize: 16,
                   ),
-                  SizedBox(
-                    height: 25,
+                  const SizedBox(
+                    height: 20,
                   ),
-                  BuildText(
+                  const BuildText(
                     text: "Payment Option",
                     fontSize: 16,
                   ),
                   //Payment Options
-                  Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: 30,
-                        ),
-                        Image(
-                          image: AssetImage("assets/image/khalti.png"),
-                          width: 100,
-                          height: 100,
-                        ),
-                      ],
-                    ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const [
+                          Image(
+                            image: AssetImage("assets/image/khalti.png"),
+                            width: 100,
+                            height: 100,
+                          ),
+                          BuildText(
+                            text: "CASH IN HAND",
+                            fontSize: 18,
+                            weight: FontWeight.bold,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                    ],
                   ),
                   // cah in hand
-                  BuildText(
-                    text: "CASH IN HAND",
-                    fontSize: 18,
-                    weight: FontWeight.bold,
-                  ),
                 ],
               ),
             ),
@@ -95,12 +100,117 @@ class _PayNowState extends State<PayNow> {
         ],
       ),
       floatingActionButton: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              constraints: BoxConstraints.loose(Size(
+                  MediaQuery.of(context).size.width,
+                  MediaQuery.of(context).size.height * 0.35)),
+              isScrollControlled: true,
+              context: context,
+              builder: (BuildContext context) {
+                return StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
+                      return Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(10.0),
+                                  topRight: Radius.circular(10.0)),
+                              color: ColorData.primaryColor,
+                            ),
+                            padding: const EdgeInsets.all(10.0),
+                            width: double.infinity,
+                            child: const Center(
+                              child: BuildText(
+                                text: "Choose the payment option",
+                                fontSize: 18,
+                                weight: FontWeight.normal,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Radio(
+                                value: "khalti",
+                                groupValue: _payOption,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _payOption = value.toString();
+                                  });
+                                },
+                              ),
+                              const Image(
+                                image: AssetImage("assets/image/khalti.png"),
+                                width: 70,
+                                height: 70,
+                              ),
+                              const SizedBox(
+                                width: 30,
+                              ),
+                              const BuildText(
+                                text: "Khalti",
+                                fontSize: 18,
+                                weight: FontWeight.bold,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Radio(
+                                value: "cash",
+                                groupValue: _payOption,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _payOption = value.toString();
+                                  });
+                                },
+                              ),
+                              Icon(
+                                Icons.account_balance_wallet_sharp,
+                                color: ColorData.primaryColor,
+                              ),
+                              const SizedBox(
+                                width: 30,
+                              ),
+                              const BuildText(
+                                text: "Cash",
+                                fontSize: 18,
+                                weight: FontWeight.bold,
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              print(_payOption);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: ColorData.primaryColor,
+                              minimumSize: const Size(300, 41),
+                            ),
+                            child: const Text("Pay"),
+                          ),
+                        ],
+                      );
+                    });
+              });
+        },
         style: ElevatedButton.styleFrom(
           primary: ColorData.primaryColor,
           minimumSize: Size(330, 41),
         ),
-        child: Text("Pay Now"),
+        child: const Text("Pay Now"),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
@@ -117,21 +227,21 @@ class _PayNowState extends State<PayNow> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-            Text(
-              "Total Amount to be Paid",
-              style: TextStyle(color: Colors.white),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Text(
-              "Rs. " + billAmount.toString(),
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24.0),
-            ),
-          ])),
+                Text(
+                  "Total Amount to be Paid",
+                  style: TextStyle(color: Colors.white),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  "Rs. " + billAmount.toString(),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0),
+                ),
+              ])),
     );
   }
 }
