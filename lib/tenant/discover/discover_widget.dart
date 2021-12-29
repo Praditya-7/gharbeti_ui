@@ -38,14 +38,22 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
   Future<String> _getPlace() async {
     String add;
     List<Placemark> newPlace = await placemarkFromCoordinates(
-        widget.data.latitude, widget.data.longitude,
-        localeIdentifier: 'ne_NP');
+      widget.data.latitude,
+      widget.data.longitude,
+    );
 
     Placemark placeMark = newPlace[0];
     String street = placeMark.street.toString();
     String subLocality = placeMark.subLocality.toString();
     String locality = placeMark.locality.toString();
-    add = street + "," + subLocality + "," + locality;
+    String district = placeMark.subAdministrativeArea.toString();
+    add = subLocality + ", " + locality + ", " + district;
+    if (locality.isNotEmpty) {
+      add = subLocality + ", " + district;
+    }
+    if (subLocality == '') {
+      add = locality + ", " + district;
+    }
     print(add);
     return add;
   }
