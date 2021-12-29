@@ -27,7 +27,7 @@ class _VacantRoomState extends State<VacantRoom> {
   bool isLoading = true;
   Room args = Room(latitude: 0.0, longitude: 0.0);
 
-  TextEditingController _emailController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   double height = 0.0;
 
   @override
@@ -79,10 +79,10 @@ class _VacantRoomState extends State<VacantRoom> {
     height = SizeConfig.safeBlockVertical!;
 
     return Scaffold(
-      backgroundColor: Color.fromRGBO(240, 240, 240, 1),
+      backgroundColor: const Color.fromRGBO(240, 240, 240, 1),
       appBar: AppBar(
         backgroundColor: ColorData.primaryColor,
-        title: Text("Listing Detail"),
+        title: const Text("Listing Detail"),
       ),
       body: Stack(
         children: [
@@ -98,7 +98,7 @@ class _VacantRoomState extends State<VacantRoom> {
 
   Widget _createBody() {
     return Container(
-        margin: EdgeInsets.all(10.0),
+        margin: const EdgeInsets.all(10.0),
         child: Column(crossAxisAlignment: (CrossAxisAlignment.start), children: [
           _createRoomWidget(),
           const SizedBox(
@@ -121,7 +121,7 @@ class _VacantRoomState extends State<VacantRoom> {
             weight: FontWeight.bold,
             fontSize: 16.0,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -161,20 +161,20 @@ class _VacantRoomState extends State<VacantRoom> {
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          Container(
+          SizedBox(
             height: width * 90,
             child: _createTenantListWidget(),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              color: Color(0xff09548c),
+              color: const Color(0xff09548c),
             ),
             child: InkWell(
               onTap: () {
@@ -185,7 +185,7 @@ class _VacantRoomState extends State<VacantRoom> {
                 child: Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Icon(
                         Icons.login_sharp,
                         color: Colors.white,
@@ -286,7 +286,7 @@ class _VacantRoomState extends State<VacantRoom> {
 
   Widget _createLocationWidget() {
     return Container(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5.0)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -295,7 +295,7 @@ class _VacantRoomState extends State<VacantRoom> {
               Icons.pin_drop,
               color: ColorData.primaryColor,
             ),
-            SizedBox(
+            const SizedBox(
               width: 25,
             ),
             BuildText(
@@ -307,7 +307,7 @@ class _VacantRoomState extends State<VacantRoom> {
 
   Widget _createRoomWidget() {
     return Container(
-      padding: EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5.0)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -320,7 +320,7 @@ class _VacantRoomState extends State<VacantRoom> {
               child: Image(
                 image: AssetImage("assets/image/logo_image.png"),
               )),
-          SizedBox(
+          const SizedBox(
             width: 40,
           ),
           BuildText(

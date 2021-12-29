@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,8 +10,9 @@ import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_near_you.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_widget.dart';
-
-import 'entity/filter_container.dart';
+import 'package:gharbeti_ui/tenant/discover/entity/filter_container.dart';
+import 'package:gharbeti_ui/tenant/discover/entity/locationRadius_container.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
@@ -53,7 +55,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
 
   setData() async {
     roomList.clear();
-    var query = _fireStore.collection('Rooms').get();
+    var query = _fireStore.collection('Rooms').where("Status", isEqualTo: "Vacant").get();
     await query.then((value) {
       if (value.docs.isNotEmpty) {
         for (var doc in value.docs) {
@@ -104,8 +106,19 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(DiscoverNearYou.route);
+            onPressed: () async {
+              LocationRadius_container? popData = LocationRadius_container();
+              popData = await (Navigator.of(context).pushNamed(DiscoverNearYou.route))
+                  as LocationRadius_container?;
+              print(popData!.markedLocation);
+              print(popData.radius);
+              setState(() {
+                roomList.clear();
+                if (roomList.isEmpty) {
+                  isLoading = true;
+                }
+                checkListingWithinRadius(popData!.markedLocation, popData.radius);
+              });
             },
             icon: const Icon(
               Icons.location_on_outlined,
@@ -151,9 +164,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                               shrinkWrap: true,
                               physics: const BouncingScrollPhysics(),
                               itemCount: roomCount,
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                                      const Divider(
+                              separatorBuilder: (BuildContext context, int index) => const Divider(
                                 height: 0.1,
                                 indent: 0,
                                 thickness: 0.1,
@@ -174,435 +185,391 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                   ),
                 ),
                 //Filter
-                Positioned(
-                  left: width * 3,
-                  right: width * 3,
-                  top: height * 9,
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(
-                      sigmaX: blurValue,
-                      sigmaY: blurValue,
+                FilterWidget(),
+              ],
+            ),
+            Visibility(visible: isLoading, child: const CustomProgressIndicatorWidget()),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget FilterWidget() {
+    return Positioned(
+      left: width * 3,
+      right: width * 3,
+      top: height * 9,
+      child: BackdropFilter(
+        filter: ImageFilter.blur(
+          sigmaX: blurValue,
+          sigmaY: blurValue,
+        ),
+        child: Visibility(
+          visible: filterSelected,
+          child: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                //Apply Following Filter
+                Container(
+                  decoration: BoxDecoration(
+                    // border: Border.all(color: Colors.black26),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(5),
+                      topRight: Radius.circular(5),
                     ),
-                    child: Visibility(
-                      visible: filterSelected,
-                      child: SafeArea(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                    color: ColorData.primaryColor,
+                  ),
+                  width: double.infinity,
+                  height: height * 4,
+                  child: const Center(
+                    child: Text(
+                      'Apply Following Filter',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: ColorData.primaryColor,
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      bottomRight: Radius.circular(5),
+                      bottomLeft: Radius.circular(5),
+                    ),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    children: [
+                      //Price
+                      Container(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          // color: Colors.grey[200],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            //Apply Following Filter
-                            Container(
-                              decoration: BoxDecoration(
-                                // border: Border.all(color: Colors.black26),
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(5),
-                                  topRight: Radius.circular(5),
+                            const Text('Price'),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                DropdownButton<String>(
+                                  underline: Container(
+                                    height: 0,
+                                  ),
+                                  value: priceDropdownValue,
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      priceDropdownValue = newValue!;
+                                    });
+                                  },
+                                  icon: const Icon(Icons.arrow_drop_down_sharp),
+                                  items: <String>[
+                                    'Above',
+                                    'Below',
+                                  ].map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
                                 ),
-                                color: ColorData.primaryColor,
-                              ),
-                              width: double.infinity,
-                              height: height * 4,
-                              child: const Center(
-                                child: Text(
-                                  'Apply Following Filter',
-                                  style: TextStyle(color: Colors.white),
+                                SizedBox(
+                                  width: 100,
+                                  child: TextField(
+                                    textAlign: TextAlign.end,
+                                    keyboardType: TextInputType.number,
+                                    controller: priceController,
+                                    cursorColor: const Color(0xff09548c),
+                                    decoration: const InputDecoration(
+                                      hintText: "Enter Here",
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                    ),
+                                  ),
                                 ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      //Type
+                      Container(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          // color: Colors.grey[200],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Type'),
+                            DropdownButton<String>(
+                              underline: Container(
+                                height: 0,
                               ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: ColorData.primaryColor,
-                                ),
-                                borderRadius: const BorderRadius.only(
-                                  bottomRight: Radius.circular(5),
-                                  bottomLeft: Radius.circular(5),
-                                ),
-                                color: Colors.white,
-                              ),
-                              child: Column(
-                                children: [
-                                  //Price
-                                  Container(
-                                    padding: const EdgeInsets.only(
-                                        left: 20, right: 20),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      // color: Colors.grey[200],
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Text('Price'),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            DropdownButton<String>(
-                                              underline: Container(
-                                                height: 0,
-                                              ),
-                                              value: priceDropdownValue,
-                                              onChanged: (String? newValue) {
-                                                setState(() {
-                                                  priceDropdownValue =
-                                                      newValue!;
-                                                });
-                                              },
-                                              icon: const Icon(
-                                                  Icons.arrow_drop_down_sharp),
-                                              items: <String>[
-                                                'Above',
-                                                'Below',
-                                              ].map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                                return DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Text(value),
-                                                );
-                                              }).toList(),
-                                            ),
-                                            SizedBox(
-                                              width: 100,
-                                              child: TextField(
-                                                textAlign: TextAlign.end,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                controller: priceController,
-                                                cursorColor:
-                                                    const Color(0xff09548c),
-                                                decoration:
-                                                    const InputDecoration(
-                                                  hintText: "Enter Here",
-                                                  enabledBorder:
-                                                      InputBorder.none,
-                                                  focusedBorder:
-                                                      InputBorder.none,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  //Type
-                                  Container(
-                                    padding: const EdgeInsets.only(
-                                        left: 20, right: 20),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      // color: Colors.grey[200],
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Text('Type'),
-                                        DropdownButton<String>(
-                                          underline: Container(
-                                            height: 0,
-                                          ),
-                                          value: typeDropdownValue,
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              typeDropdownValue = newValue!;
-                                            });
-                                          },
-                                          icon: const Icon(
-                                              Icons.arrow_drop_down_sharp),
-                                          items: <String>[
-                                            'Room',
-                                            'Flat',
-                                            'House'
-                                          ].map<DropdownMenuItem<String>>(
-                                              (String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            );
-                                          }).toList(),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  //Parking
-                                  Container(
-                                    padding: const EdgeInsets.only(
-                                        left: 20, right: 20),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      // color: Colors.grey[200],
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Text('Parking'),
-                                        DropdownButton<String>(
-                                          underline: Container(
-                                            height: 0,
-                                          ),
-                                          value: parkingDropdownValue,
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              parkingDropdownValue = newValue!;
-                                            });
-                                          },
-                                          icon: const Icon(
-                                              Icons.arrow_drop_down_sharp),
-                                          items: <String>[
-                                            'No',
-                                            'Bike',
-                                            'Car',
-                                          ].map<DropdownMenuItem<String>>(
-                                              (String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            );
-                                          }).toList(),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  //Internet
-                                  Container(
-                                    padding: const EdgeInsets.only(
-                                        left: 20, right: 20),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      // color: Colors.grey[200],
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Text(
-                                          'Internet',
-                                        ),
-                                        DropdownButton<String>(
-                                          underline: Container(
-                                            height: 0,
-                                          ),
-                                          value: internetDropdownValue,
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              internetDropdownValue = newValue!;
-                                            });
-                                          },
-                                          icon: const Icon(
-                                              Icons.arrow_drop_down_sharp),
-                                          items: <String>[
-                                            'No',
-                                            'Yes',
-                                          ].map<DropdownMenuItem<String>>(
-                                              (String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            );
-                                          }).toList(),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  //Kitchen
-                                  Container(
-                                    padding: const EdgeInsets.only(
-                                        left: 20, right: 20),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      // color: Colors.grey[200],
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Text('Kitchen'),
-                                        DropdownButton<String>(
-                                          underline: Container(
-                                            height: 0,
-                                          ),
-                                          value: kitchenDropdownValue,
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              kitchenDropdownValue = newValue!;
-                                            });
-                                          },
-                                          icon: const Icon(
-                                              Icons.arrow_drop_down_sharp),
-                                          items: <String>[
-                                            'No',
-                                            'Yes',
-                                          ].map<DropdownMenuItem<String>>(
-                                              (String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            );
-                                          }).toList(),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  //Preferred
-                                  Container(
-                                    margin:
-                                        const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                    padding: const EdgeInsets.only(
-                                        left: 20, right: 20),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      // color: Colors.grey[200],
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Text('Preferences'),
-                                        DropdownButton<String>(
-                                          underline: Container(
-                                            height: 0,
-                                          ),
-                                          value: preferredDropdownValue,
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              preferredDropdownValue =
-                                                  newValue!;
-                                            });
-                                          },
-                                          icon: const Icon(
-                                              Icons.arrow_drop_down_sharp),
-                                          items: <String>[
-                                            'Family',
-                                            'Individual',
-                                          ].map<DropdownMenuItem<String>>(
-                                              (String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            );
-                                          }).toList(),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  //End
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      //Cancel
-                                      InkWell(
-                                        onTap: () {
-                                          //Cancel Code Here
-                                          setState(() {
-                                            filterSelected = false;
-                                            isIgnored = false;
-                                            blurValue = 0.0;
-                                          });
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            color: ColorData.occupiedColor,
-                                          ),
-                                          margin: const EdgeInsets.all(10),
-                                          padding: const EdgeInsets.fromLTRB(
-                                              20, 10, 20, 10),
-                                          child: const Center(
-                                            child: Text(
-                                              'Cancel',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-
-                                      //Reset
-                                      filterApplied == true
-                                          ? InkWell(
-                                              onTap: () {
-                                                //Cancel Code Here
-                                                setState(() {
-                                                  filterSelected = false;
-                                                  isIgnored = false;
-                                                  blurValue = 0.0;
-                                                  filterApplied = false;
-                                                  noDataFound = false;
-                                                  isLoading=true;
-                                                  setData();
-                                                });
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: Colors.black38),
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                ),
-                                                margin:
-                                                    const EdgeInsets.all(10),
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        20, 10, 20, 10),
-                                                child: const Center(
-                                                  child: Text(
-                                                    'Reset',
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                          : Container(),
-
-                                      //Apply
-                                      InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            isLoading = true;
-                                            setFilterData();
-                                          });
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            color: ColorData.primaryColor,
-                                          ),
-                                          margin: const EdgeInsets.all(10),
-                                          padding: const EdgeInsets.fromLTRB(
-                                              20, 10, 20, 10),
-                                          child: const Center(
-                                            child: Text(
-                                              'Apply',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                              value: typeDropdownValue,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  typeDropdownValue = newValue!;
+                                });
+                              },
+                              icon: const Icon(Icons.arrow_drop_down_sharp),
+                              items: <String>['Room', 'Flat', 'House']
+                                  .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
                             ),
                           ],
                         ),
                       ),
-                    ),
+                      //Parking
+                      Container(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          // color: Colors.grey[200],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Parking'),
+                            DropdownButton<String>(
+                              underline: Container(
+                                height: 0,
+                              ),
+                              value: parkingDropdownValue,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  parkingDropdownValue = newValue!;
+                                });
+                              },
+                              icon: const Icon(Icons.arrow_drop_down_sharp),
+                              items: <String>[
+                                'No',
+                                'Bike',
+                                'Car',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      //Internet
+                      Container(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          // color: Colors.grey[200],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Internet',
+                            ),
+                            DropdownButton<String>(
+                              underline: Container(
+                                height: 0,
+                              ),
+                              value: internetDropdownValue,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  internetDropdownValue = newValue!;
+                                });
+                              },
+                              icon: const Icon(Icons.arrow_drop_down_sharp),
+                              items: <String>[
+                                'No',
+                                'Yes',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      //Kitchen
+                      Container(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          // color: Colors.grey[200],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Kitchen'),
+                            DropdownButton<String>(
+                              underline: Container(
+                                height: 0,
+                              ),
+                              value: kitchenDropdownValue,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  kitchenDropdownValue = newValue!;
+                                });
+                              },
+                              icon: const Icon(Icons.arrow_drop_down_sharp),
+                              items: <String>[
+                                'No',
+                                'Yes',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      //Preferred
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          // color: Colors.grey[200],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Preferences'),
+                            DropdownButton<String>(
+                              underline: Container(
+                                height: 0,
+                              ),
+                              value: preferredDropdownValue,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  preferredDropdownValue = newValue!;
+                                });
+                              },
+                              icon: const Icon(Icons.arrow_drop_down_sharp),
+                              items: <String>[
+                                'Family',
+                                'Individual',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      //End
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          //Cancel
+                          InkWell(
+                            onTap: () {
+                              //Cancel Code Here
+                              setState(() {
+                                filterSelected = false;
+                                isIgnored = false;
+                                blurValue = 0.0;
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: ColorData.occupiedColor,
+                              ),
+                              margin: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                              child: const Center(
+                                child: Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //Reset
+                          filterApplied == true
+                              ? InkWell(
+                                  onTap: () {
+                                    //Cancel Code Here
+                                    setState(() {
+                                      filterSelected = false;
+                                      isIgnored = false;
+                                      blurValue = 0.0;
+                                      filterApplied = false;
+                                      noDataFound = false;
+                                      isLoading = true;
+                                      setData();
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black38),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    margin: const EdgeInsets.all(10),
+                                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                                    child: const Center(
+                                      child: Text(
+                                        'Reset',
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Container(),
+
+                          //Apply
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                isLoading = true;
+                                setFilterData();
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: ColorData.primaryColor,
+                              ),
+                              margin: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                              child: const Center(
+                                child: Text(
+                                  'Apply',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-            Visibility(
-                visible: isLoading,
-                child: const CustomProgressIndicatorWidget()),
-          ],
+          ),
         ),
       ),
     );
@@ -610,7 +577,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
 
   setFilterData() async {
     roomList.clear();
-    print(data.type);
+
     var query = _fireStore
         .collection('Rooms')
         .where("Type", isEqualTo: typeDropdownValue.toString())
@@ -639,5 +606,83 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
       blurValue = 0.0;
       filterApplied = true;
     });
+  }
+
+  checkListingWithinRadius(LatLng? markedLocation, String? radius) async {
+    List<Room> resultList = [];
+    List<Room> outputList = [];
+    resultList.clear();
+    var query = _fireStore.collection('Rooms').get();
+    await query.then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var doc in value.docs) {
+          resultList.add(Room.fromFireStoreSnapshot(doc));
+        }
+      }
+    });
+    for (var item in resultList) {
+      bool withinRadius = false;
+      double lat = double.parse(item.latitude.toString());
+      double long = double.parse(item.longitude.toString());
+      withinRadius = checkData(lat, long, markedLocation, radius);
+      if (withinRadius) {
+        outputList.add(item);
+      }
+    }
+
+    setState(() {
+      roomList.clear();
+      roomList = outputList;
+      roomCount = roomList.length;
+      if(roomList.isEmpty){
+        noDataFound=true;
+      }
+
+      isLoading = false;
+    });
+  }
+
+  bool checkData(double latitude, double longitude, LatLng? markedLocation, String? radius) {
+    bool withinRadius = false;
+    double calculated = distance(
+        latitude,
+        longitude,
+        double.parse(markedLocation!.latitude.toString()),
+        double.parse(markedLocation.longitude.toString()),
+        'K');
+    double rad = double.parse(radius!);
+
+    if (calculated <= rad) {
+      withinRadius = true;
+      print(withinRadius);
+    }
+    return withinRadius;
+  }
+
+  // unit = the unit you desire for results
+  // where: 'M' is statute miles (default)
+  // 'K' is kilometers
+  // 'N' is nautical miles
+  double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
+    double theta = lon1 - lon2;
+    double dist = sin(deg2rad(lat1)) * sin(deg2rad(lat2)) +
+        cos(deg2rad(lat1)) * cos(deg2rad(lat2)) * cos(deg2rad(theta));
+    dist = acos(dist);
+    dist = rad2deg(dist);
+    dist = dist * 60 * 1.1515;
+    if (unit == 'K') {
+      dist = dist * 1.609344;
+    } else if (unit == 'N') {
+      dist = dist * 0.8684;
+    }
+    return dist;
+  }
+
+  double deg2rad(double deg) {
+    return (deg * pi / 180.0);
+  }
+
+  double rad2deg(double rad) {
+    return (rad * 180.0 / pi);
   }
 }
