@@ -32,7 +32,7 @@ class _DiscoverNearYouState extends State<DiscoverNearYou> {
       backgroundColor: const Color(0xffE5E5E5),
       appBar: AppBar(
         backgroundColor: const Color(0xff09548c),
-        title: const Text("Search within Location"),
+        title: const Text("Search within Area"),
         actions: <Widget>[
           IconButton(
             onPressed: () {

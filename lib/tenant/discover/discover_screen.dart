@@ -580,6 +580,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
 
     var query = _fireStore
         .collection('Rooms')
+        .where("Status", isEqualTo: "Vacant")
         .where("Type", isEqualTo: typeDropdownValue.toString())
         .where("Parking", isEqualTo: parkingDropdownValue.toString())
         .where("Internet", isEqualTo: internetDropdownValue.toString())
@@ -612,7 +613,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
     List<Room> resultList = [];
     List<Room> outputList = [];
     resultList.clear();
-    var query = _fireStore.collection('Rooms').get();
+    var query = _fireStore.collection('Rooms').where("Status", isEqualTo: "Vacant").get();
     await query.then((value) {
       if (value.docs.isNotEmpty) {
         for (var doc in value.docs) {
@@ -634,8 +635,8 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
       roomList.clear();
       roomList = outputList;
       roomCount = roomList.length;
-      if(roomList.isEmpty){
-        noDataFound=true;
+      if (roomList.isEmpty) {
+        noDataFound = true;
       }
 
       isLoading = false;
