@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -23,10 +23,14 @@ class AddListingsScreen extends StatefulWidget {
 }
 
 class _AddListingsScreenState extends State<AddListingsScreen> {
+  String randomFileName = '';
+  final _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  final Random _rnd = Random();
   var img;
   var path;
   var fileName;
   bool imageSelected = false;
+  List<String?> files = [];
 
   Set<Marker> _marker = <Marker>{};
   bool isLoading = false;
@@ -614,23 +618,19 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          final results = await FilePicker.platform.pickFiles(
-                            allowMultiple: true,
-                            type: FileType.custom,
-                            allowedExtensions: ['png', 'jpg'],
-                          );
-                          if (results == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('No image selected.'),
-                              ),
-                            );
+                          FilePickerResult? result =
+                              await FilePicker.platform.pickFiles(allowMultiple: true);
+                          if (result != null) {
+                            files = result.paths;
+                            print(files);
+                            setState(() {
+                              imageSelected = true;
+                            });
+                          } else {
+                            setState(() {
+                              imageSelected = false;
+                            });
                           }
-                          path = results!.files.single.path!;
-                          fileName = results.files.single.name;
-                          setState(() {
-                            imageSelected = true;
-                          });
                         },
                         child: const Center(
                           child: ListTile(
@@ -649,9 +649,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                       ),
                       imageSelected == false
                           ? const Text('No image selected')
-                          : Image.file(
-                              File(path),
-                            ),
+                          : const Text('Image selected'),
                     ],
                   ),
                 ),
@@ -694,10 +692,14 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
     );
   }
 
+  String getRandomString(int length) => String.fromCharCodes(
+      Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+
   void setData() async {
+    randomFileName = getRandomString(10);
     final pref = await SharedPreferences.getInstance();
     await Storage(listingNo: _listingNo.text.toString())
-        .uploadImage(path, fileName)
+        .uploadImage(files)
         .then((value) => print('Uploaded'));
 
     var model = Rooms(

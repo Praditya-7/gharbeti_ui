@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -10,15 +11,21 @@ class Storage {
   final String? listingNo;
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
 
-  Future<void> uploadImage(
-    String filePath,
-    String fileName,
-  ) async {
+  String randomFileName = '';
+  final _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  final Random _rnd = Random();
+
+  String getRandomString(int length) => String.fromCharCodes(
+      Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+
+  Future<void> uploadImage(List<String?> files) async {
     final pref = await SharedPreferences.getInstance();
     String? email = pref.getString("email");
-    File file = File(filePath);
     try {
-      await storage.ref('$email/$listingNo/$fileName').putFile(file);
+      for (int i = 0; i < files.length; i++) {
+        randomFileName = getRandomString(10);
+        await storage.ref('$email/$listingNo/$randomFileName').putFile(File(files[i]!));
+      }
     } on firebase_core.FirebaseException catch (e) {
       print(e);
     }
