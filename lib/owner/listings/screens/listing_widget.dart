@@ -40,7 +40,8 @@ class ListingWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             FutureBuilder(
-              future: Storage(listingNo: data.listingNo).downloadURL(data.imageName.toString()),
+              future:
+                  Storage(listingNo: data.listingNo).downloadImageURL(data.imageName.toString()),
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
                   return ClipRRect(

@@ -50,7 +50,7 @@ class _RoomWidgetState extends State<RoomWidget> {
           children: [
             FutureBuilder(
               future: Storage(listingNo: widget.data.listingNo)
-                  .downloadURL(widget.data.imageName.toString()),
+                  .downloadImageURL(widget.data.imageName.toString()),
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
                   return ClipRRect(

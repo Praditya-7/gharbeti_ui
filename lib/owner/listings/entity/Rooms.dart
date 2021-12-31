@@ -1,26 +1,4 @@
 class Rooms {
-  Rooms({
-    this.bathrooms,
-    this.description,
-    this.floor,
-    this.internet,
-    this.kitchen,
-    this.listingNo,
-    this.rent,
-    this.parking,
-    this.preference,
-    this.status,
-    this.type,
-    this.email,
-    this.negotiable,
-    this.preferences,
-    this.lat,
-    this.long,
-    this.imageName,
-    this.tenantEmail,
-    this.lastMeterReading,
-  });
-
   final String? negotiable;
   final String? bathrooms;
   final String? description;
@@ -41,4 +19,28 @@ class Rooms {
   final String? imageName;
   final String? tenantEmail;
   final String? lastMeterReading;
+  final List? imagesLinkList;
+
+  Rooms({
+    this.bathrooms,
+    this.description,
+    this.floor,
+    this.internet,
+    this.kitchen,
+    this.listingNo,
+    this.rent,
+    this.parking,
+    this.preference,
+    this.status,
+    this.type,
+    this.email,
+    this.negotiable,
+    this.preferences,
+    this.lat,
+    this.long,
+    this.imageName,
+    this.tenantEmail,
+    this.lastMeterReading,
+    this.imagesLinkList,
+  });
 }

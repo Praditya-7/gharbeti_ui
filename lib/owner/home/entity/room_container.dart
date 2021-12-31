@@ -20,6 +20,7 @@ class Room {
   final double latitude;
   final double longitude;
   final String? lastMeterReading;
+  final List? imagesLinkList;
 
   Room({
     this.negotiable,
@@ -38,6 +39,7 @@ class Room {
     this.tenantEmail,
     this.imageName,
     this.lastMeterReading,
+    this.imagesLinkList,
     required this.latitude,
     required this.longitude,
   });
@@ -61,7 +63,8 @@ class Room {
         imageName: json['ImageName'],
         latitude: json['Latitude'],
         lastMeterReading: json['LastMeterReading'],
-        longitude: json['Longitude']);
+        longitude: json['Longitude'],
+        imagesLinkList: json['ImageLinkList']);
   }
 
   Room.fromFireStoreSnapshot(DocumentSnapshot snap)
@@ -82,6 +85,7 @@ class Room {
         imageName = snap.get('ImageName'),
         latitude = snap.get('Latitude'),
         longitude = snap.get('Longitude'),
+        imagesLinkList = snap.get('ImageLinkList'),
         lastMeterReading = snap.get('LastMeterReading'),
         email = snap.get('OwnerEmail');
 
@@ -105,6 +109,7 @@ class Room {
       'Longitude': longitude,
       'LastMeterReading': lastMeterReading,
       'ImageName': imageName,
+      'ImageLinkList': imagesLinkList,
     };
   }
 }

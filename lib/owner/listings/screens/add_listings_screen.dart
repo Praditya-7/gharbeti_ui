@@ -31,6 +31,9 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
   var fileName;
   bool imageSelected = false;
   List<String?> files = [];
+  List<String> imageFileName = [];
+  String imageLink = '';
+  List<String> imageDownloadLinkList = [];
 
   Set<Marker> _marker = <Marker>{};
   bool isLoading = false;
@@ -698,9 +701,20 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
   void setData() async {
     randomFileName = getRandomString(10);
     final pref = await SharedPreferences.getInstance();
-    await Storage(listingNo: _listingNo.text.toString())
-        .uploadImage(files)
-        .then((value) => print('Uploaded'));
+
+    for (int i = 0; i < files.length; i++) {
+      randomFileName = getRandomString(10);
+      imageFileName.add(randomFileName);
+      String? imageFile = files[i].toString();
+      await Storage(listingNo: _listingNo.text.toString())
+          .uploadImage(imageFile, randomFileName)
+          .then((value) async {
+        print('Uploaded');
+        imageLink =
+            await Storage(listingNo: _listingNo.text.toString()).downloadImageURL(randomFileName);
+        imageDownloadLinkList.add(imageLink);
+      });
+    }
 
     var model = Rooms(
       type: listingTypeDropdownValue,
@@ -721,6 +735,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
       imageName: fileName,
       lastMeterReading: lastMeterReadingController.text.toString(),
       tenantEmail: "",
+      imagesLinkList: imageDownloadLinkList,
     );
 
     var query = _fireStore.collection('Rooms').get();
@@ -732,7 +747,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
         addRoom = addData(model);
         // }
       }
-      _fireStore.collection('Rooms').add(addRoom).then((value) {
+      _fireStore.collection('Rooms').add(addRoom).then((value) async {
         print("Data Updated");
         setState(() {
           isLoading = false;
@@ -767,6 +782,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
       "ImageName": model.imageName,
       "Tenant Email": model.tenantEmail,
       "LastMeterReading": model.lastMeterReading,
+      "ImageLinkList": imageDownloadLinkList,
     };
     return data;
   }
