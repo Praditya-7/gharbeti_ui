@@ -4,7 +4,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
-import 'package:gharbeti_ui/tenant/discover/service/discover_storage_service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DiscoverListingDetail extends StatefulWidget {
@@ -110,28 +109,11 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
               children: [
                 Container(
                   color: Colors.white,
-                  child: FutureBuilder(
-                    future:
-                        DiscoverStorage(listingNo: args.listingNo, email: args.email).downloadURL(
-                      args.imageName.toString(),
-                    ),
-                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-                        return Container(
-                          child: Image.network(
-                            snapshot.data!,
-                            fit: BoxFit.fitWidth,
-                            width: double.infinity,
-                            height: height * 30,
-                          ),
-                        );
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting ||
-                          !snapshot.hasData) {
-                        return const CircularProgressIndicator();
-                      }
-                      return Container();
-                    },
+                  child: Image.network(
+                    args.imagesLinkList!.first.toString(),
+                    fit: BoxFit.fitWidth,
+                    width: double.infinity,
+                    height: height * 30,
                   ),
 
                   // Image(

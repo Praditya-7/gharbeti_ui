@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/owner/listings/screens/listing_detail.dart';
-import 'package:gharbeti_ui/owner/listings/service/storage_service.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -39,26 +38,14 @@ class ListingWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            FutureBuilder(
-              future:
-                  Storage(listingNo: data.listingNo).downloadImageURL(data.imageName.toString()),
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      snapshot.data!,
-                      fit: BoxFit.cover,
-                      width: width * 33,
-                      height: height * 17,
-                    ),
-                  );
-                }
-                if (snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
-                  return const CircularProgressIndicator();
-                }
-                return Container();
-              },
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                data.imagesLinkList!.first.toString(),
+                fit: BoxFit.cover,
+                width: width * 33,
+                height: height * 17,
+              ),
             ),
             const SizedBox(
               width: 10,

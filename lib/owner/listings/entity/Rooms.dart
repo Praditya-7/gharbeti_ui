@@ -16,7 +16,6 @@ class Rooms {
   String? documentId;
   final double? lat;
   final double? long;
-  final String? imageName;
   final String? tenantEmail;
   final String? lastMeterReading;
   final List? imagesLinkList;
@@ -38,7 +37,6 @@ class Rooms {
     this.preferences,
     this.lat,
     this.long,
-    this.imageName,
     this.tenantEmail,
     this.lastMeterReading,
     this.imagesLinkList,

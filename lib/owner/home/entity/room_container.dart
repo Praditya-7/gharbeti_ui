@@ -15,7 +15,6 @@ class Room {
   final String? type;
   final String? email;
   String? documentId;
-  final String? imageName;
   final String? tenantEmail;
   final double latitude;
   final double longitude;
@@ -37,7 +36,6 @@ class Room {
     this.type,
     this.email,
     this.tenantEmail,
-    this.imageName,
     this.lastMeterReading,
     this.imagesLinkList,
     required this.latitude,
@@ -46,25 +44,25 @@ class Room {
 
   factory Room.fromJson(Map<String, dynamic> json) {
     return Room(
-        bathroom: json['Bathrooms'],
-        description: json['Description'],
-        floor: json['Floor'],
-        internet: json['Internet'],
-        kitchen: json['Kitchen'],
-        listingNo: json['ListingNo'],
-        rent: json['MonthlyRent'],
-        parking: json['Parking'],
-        preferences: json['Preferences'],
-        status: json['Status'],
-        type: json['Type'],
-        tenantEmail: json['Tenant Email'],
-        email: json['OwnerEmail'],
-        negotiable: json['Negotiable'],
-        imageName: json['ImageName'],
-        latitude: json['Latitude'],
-        lastMeterReading: json['LastMeterReading'],
-        longitude: json['Longitude'],
-        imagesLinkList: json['ImageLinkList']);
+      bathroom: json['Bathrooms'],
+      description: json['Description'],
+      floor: json['Floor'],
+      internet: json['Internet'],
+      kitchen: json['Kitchen'],
+      listingNo: json['ListingNo'],
+      rent: json['MonthlyRent'],
+      parking: json['Parking'],
+      preferences: json['Preferences'],
+      status: json['Status'],
+      type: json['Type'],
+      tenantEmail: json['Tenant Email'],
+      email: json['OwnerEmail'],
+      negotiable: json['Negotiable'],
+      latitude: json['Latitude'],
+      lastMeterReading: json['LastMeterReading'],
+      longitude: json['Longitude'],
+      imagesLinkList: json['ImageLinkList'],
+    );
   }
 
   Room.fromFireStoreSnapshot(DocumentSnapshot snap)
@@ -82,7 +80,6 @@ class Room {
         status = snap.get('Status'),
         negotiable = snap.get('Negotiable'),
         tenantEmail = snap.get('Tenant Email'),
-        imageName = snap.get('ImageName'),
         latitude = snap.get('Latitude'),
         longitude = snap.get('Longitude'),
         imagesLinkList = snap.get('ImageLinkList'),
@@ -108,7 +105,6 @@ class Room {
       'Latitude': latitude,
       'Longitude': longitude,
       'LastMeterReading': lastMeterReading,
-      'ImageName': imageName,
       'ImageLinkList': imagesLinkList,
     };
   }

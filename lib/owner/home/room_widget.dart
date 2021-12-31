@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/owner/home/vacant_room.dart';
 import 'package:gharbeti_ui/owner/listings/screens/listing_detail.dart';
-import 'package:gharbeti_ui/owner/listings/service/storage_service.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
 
 class RoomWidget extends StatefulWidget {
@@ -48,26 +47,14 @@ class _RoomWidgetState extends State<RoomWidget> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            FutureBuilder(
-              future: Storage(listingNo: widget.data.listingNo)
-                  .downloadImageURL(widget.data.imageName.toString()),
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      snapshot.data!,
-                      fit: BoxFit.cover,
-                      width: widget.width * 33,
-                      height: widget.height * 17,
-                    ),
-                  );
-                }
-                if (snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
-                  return const CircularProgressIndicator();
-                }
-                return Container();
-              },
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                widget.data.imagesLinkList!.first.toString(),
+                fit: BoxFit.cover,
+                width: widget.width * 33,
+                height: widget.height * 17,
+              ),
             ),
             const SizedBox(
               width: 10,
