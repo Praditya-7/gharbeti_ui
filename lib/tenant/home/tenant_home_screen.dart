@@ -32,6 +32,8 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
   setData() async {
     final pref = await SharedPreferences.getInstance();
     roomName = pref.getString("roomName").toString();
+
+    setState(() {});
   }
 
   @override
@@ -269,5 +271,11 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
         )),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }

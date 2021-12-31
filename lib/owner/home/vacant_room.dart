@@ -312,14 +312,17 @@ class _VacantRoomState extends State<VacantRoom> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-              width: 90,
-              height: 90,
-              decoration:
-                  BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(5.0)),
-              child: Image(
-                image: AssetImage("assets/image/logo_image.png"),
-              )),
+          SizedBox(
+            width: 90,
+            height: 90,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: Image.network(
+                args.imagesLinkList!.first.toString(),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
           const SizedBox(
             width: 40,
           ),

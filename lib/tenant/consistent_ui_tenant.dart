@@ -5,7 +5,7 @@ import 'package:gharbeti_ui/tenant/profile/tenant_profile_screen.dart';
 
 import 'billing/tenant_billing_screen.dart';
 import 'discover/discover_screen.dart';
-import 'tenant_home_screen.dart';
+import 'home/tenant_home_screen.dart';
 
 class ConsistentUITenant extends StatefulWidget {
   const ConsistentUITenant({Key? key}) : super(key: key);

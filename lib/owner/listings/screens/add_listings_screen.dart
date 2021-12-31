@@ -141,6 +141,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         ),
                         child: TextField(
                           controller: _listingNo,
+                          keyboardType: TextInputType.number,
                           cursorColor: const Color(0xff09548c),
                           decoration: const InputDecoration(
                             hintText: "Listing No*",
@@ -383,6 +384,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         ),
                         child: TextField(
                           controller: _price,
+                          keyboardType: TextInputType.number,
                           cursorColor: const Color(0xff09548c),
                           decoration: const InputDecoration(
                             hintText: "Rent Price(in Rs.)",

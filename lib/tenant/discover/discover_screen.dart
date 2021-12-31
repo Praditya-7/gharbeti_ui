@@ -55,7 +55,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
 
   setData() async {
     roomList.clear();
-    var query = _fireStore.collection('Rooms').where("Status", isEqualTo: "Vacant").get();
+    var query = _fireStore.collection('Rooms').get();
     await query.then((value) {
       if (value.docs.isNotEmpty) {
         for (var doc in value.docs) {
@@ -685,5 +685,11 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
 
   double rad2deg(double rad) {
     return (rad * 180.0 / pi);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }

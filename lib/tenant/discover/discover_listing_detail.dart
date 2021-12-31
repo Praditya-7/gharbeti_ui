@@ -17,6 +17,8 @@ class DiscoverListingDetail extends StatefulWidget {
 class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
   Room args = Room(latitude: 0, longitude: 0);
   late GoogleMapController _googleMapController;
+  int _currentPage = 0;
+  PageController _pageController = PageController();
 
   double width = 0.0;
   double height = 0.0;
@@ -107,18 +109,49 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Container(
+                //   color: Colors.white,
+                //   child: Image.network(
+                //     args.imagesLinkList!.first.toString(),
+                //     fit: BoxFit.fitWidth,
+                //     width: double.infinity,
+                //     height: height * 30,
+                //   ),
+                // ),
+
                 Container(
                   color: Colors.white,
-                  child: Image.network(
-                    args.imagesLinkList!.first.toString(),
-                    fit: BoxFit.fitWidth,
-                    width: double.infinity,
-                    height: height * 30,
+                  width: double.infinity,
+                  height: height * 30,
+                  child: Stack(
+                    children: [
+                      PageView.builder(
+                        controller: _pageController,
+                        onPageChanged: (int page) {
+                          setState(() {
+                            _currentPage = page;
+                          });
+                        },
+                        itemCount: args.imagesLinkList!.length,
+                        itemBuilder: (context, index) {
+                          return Image.network(
+                            args.imagesLinkList![_currentPage].toString(),
+                            fit: BoxFit.fitWidth,
+                          );
+                        },
+                      ),
+                      Positioned(
+                        left: width * 35,
+                        top: height * 28,
+                        child: Center(
+                          child: Text(
+                            'Swipe for more images',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-
-                  // Image(
-                  //     image: NetworkImage(
-                  //         "https://media.gettyimages.com/photos/fresh-and-modern-white-style-living-room-interior-picture-id598928736?s=612x612")),
                 ),
                 SizedBox(height: 5.0),
                 Container(
@@ -337,7 +370,6 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                     color: Colors.grey[200],
                   ),
                   child: GoogleMap(
-                    liteModeEnabled: true,
                     compassEnabled: false,
                     mapType: MapType.normal,
                     trafficEnabled: false,
@@ -379,5 +411,42 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
         ),
       ),
     );
+  }
+
+  Widget _indicator(bool isActive) {
+    return Container(
+      height: 10,
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 150),
+        margin: EdgeInsets.symmetric(horizontal: 4.0),
+        height: isActive ? 10 : 8.0,
+        width: isActive ? 12 : 8.0,
+        decoration: BoxDecoration(
+          boxShadow: [
+            isActive
+                ? BoxShadow(
+                    color: Color(0XFF2FB7B2).withOpacity(0.72),
+                    blurRadius: 4.0,
+                    spreadRadius: 1.0,
+                    offset: Offset(
+                      0.0,
+                      0.0,
+                    ),
+                  )
+                : BoxShadow(
+                    color: Colors.transparent,
+                  )
+          ],
+          shape: BoxShape.circle,
+          color: isActive ? Color(0XFF6BC4C9) : Color(0XFFEAEAEA),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }

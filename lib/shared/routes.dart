@@ -18,7 +18,7 @@ import 'package:gharbeti_ui/tenant/discover/discover_listing_detail.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_near_you.dart';
 import 'package:gharbeti_ui/tenant/discover/filtered_listing.dart';
 import 'package:gharbeti_ui/tenant/tenant_dashboard.dart';
-import 'package:gharbeti_ui/tenant/tenant_home_screen.dart';
+import 'package:gharbeti_ui/tenant/home/tenant_home_screen.dart';
 
 class Routes {
   static var routes = {

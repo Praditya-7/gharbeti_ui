@@ -5,7 +5,7 @@ import 'package:gharbeti_ui/shared/tenant_dashboard_icons.dart';
 import 'package:gharbeti_ui/tenant/billing/tenant_billing_screen.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_screen.dart';
 import 'package:gharbeti_ui/tenant/profile/tenant_profile_screen.dart';
-import 'package:gharbeti_ui/tenant/tenant_home_screen.dart';
+import 'package:gharbeti_ui/tenant/home/tenant_home_screen.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class TenantDashboardScreen extends StatefulWidget {

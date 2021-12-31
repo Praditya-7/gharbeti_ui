@@ -358,7 +358,22 @@ class _ListingDetailState extends State<ListingDetail> {
     );
   }
 
-  deleteData() {
-    //
+  deleteData() async {
+    final pref = await SharedPreferences.getInstance();
+    var ownerEmail = pref.getString("email");
+    var query = _fireStore
+        .collection('Rooms')
+        .where("ListingNo", isEqualTo: args.listingNo.toString())
+        .where("OwnerEmail", isEqualTo: ownerEmail)
+        .get();
+    await query.then((value) async {
+      if (value.docs.isNotEmpty) {
+        for (var doc in value.docs) {
+          await doc.reference.delete().then((value) {
+            Navigator.pop(context,true);
+          });
+        }
+      }
+    });
   }
 }

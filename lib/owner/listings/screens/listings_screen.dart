@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/owner/listings/screens/listing_widget.dart';
+import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -61,7 +62,11 @@ class _ListingsScreenState extends State<ListingsScreen> {
       backgroundColor: Color.fromRGBO(240, 240, 240, 1),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, AddListingsScreen.route);
+          var abc = Navigator.pushNamed(context, AddListingsScreen.route) as bool;
+          if (abc) {
+            isLoading = true;
+            setData();
+          }
         },
         child: Icon(
           Icons.add,
@@ -70,28 +75,48 @@ class _ListingsScreenState extends State<ListingsScreen> {
         backgroundColor: Color(0xff09548c),
       ),
       body: SafeArea(
-        child: ListView.separated(
-          shrinkWrap: true,
-          physics: BouncingScrollPhysics(),
-          itemCount: roomCount,
-          separatorBuilder: (BuildContext context, int index) => Divider(
-            height: 0.1,
-            indent: 0,
-            thickness: 0.1,
-          ),
-          itemBuilder: (BuildContext context, int index) {
-            return ListingWidget(
-              height: height,
-              width: width,
-              data: roomList[index],
-              index: index,
-              onTap: (index) {
-                //ROUTE CODE HERE
-              },
-            );
-          },
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: roomCount == 0
+                  ? Container(
+                      child: Text('No Listing Found'),
+                    )
+                  : ListView.separated(
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      itemCount: roomCount,
+                      separatorBuilder: (BuildContext context, int index) => Divider(
+                        height: 0.1,
+                        indent: 0,
+                        thickness: 0.1,
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListingWidget(
+                          height: height,
+                          width: width,
+                          data: roomList[index],
+                          index: index,
+                          onTap: (index) {
+                            //ROUTE CODE HERE
+                          },
+                        );
+                      },
+                    ),
+            ),
+            Visibility(
+              visible: isLoading,
+              child: CustomProgressIndicatorWidget(),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }
