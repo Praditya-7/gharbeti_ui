@@ -43,7 +43,7 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
       // appBar: ReusableWidgets.getAppBar(title),
       body: SafeArea(
         child: Container(
-          margin: EdgeInsets.all(10.0),
+          //margin: EdgeInsets.all(10.0),
           child: roomName == ""
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -52,6 +52,7 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                     SizedBox(height: 10.0),
                     Expanded(
                       child: Container(
+                        margin: EdgeInsets.all(10.0),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
@@ -69,6 +70,7 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                                     "If you want to rent a new home, start looking from thousands of listings and apply online using yourRenter Profile.",
                                 fontSize: 16,
                                 color: Colors.grey,
+                                weight: FontWeight.normal,
                               ),
                               SizedBox(
                                 height: 8.0,
@@ -81,9 +83,10 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => DiscoverTenantScreen()));
+                                          builder: (context) =>
+                                              DiscoverTenantScreen()));
                                 },
-                                child: Text("find New"),
+                                child: Text("Find New"),
                               )
                             ],
                           ),
@@ -96,63 +99,99 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      color: Colors.white,
-                      margin: EdgeInsets.fromLTRB(10, 15.0, 10, 10),
-                      padding: EdgeInsets.fromLTRB(0, 15.0, 0, 0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text('Balance Due'),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            'Rs. ' + balance + '.00',
-                            style: TextStyle(
-                              color: Color(0xff09548c),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 25,
+                      color: ColorData.primaryColor,
+                      width: double.infinity,
+                      height: 75,
+                      padding: EdgeInsets.all(10.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            BuildText(
+                              text: "Welcome, User",
+                              color: Colors.white,
+                              fontSize: 24,
                             ),
+                            Image.asset('assets/image/logo_image.png'),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
+                    Column(
+                      children: [
+                        Container(
+                          color: ColorData.primaryColor,
+                          width: double.infinity,
+                          padding: EdgeInsets.all(10.0),
+                          child: BuildText(
+                            text: "Payment Overview",
+                            color: Colors.white,
                           ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                        ),
+                        Container(
+                          color: Colors.white,
+                          margin: EdgeInsets.fromLTRB(10, 15.0, 10, 0),
+                          padding: EdgeInsets.fromLTRB(0, 15.0, 0, 0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text('Status: '),
+                              Text('Balance Due'),
+                              SizedBox(
+                                height: 5,
+                              ),
                               Text(
-                                status,
+                                'Rs. ' + balance + '.00',
                                 style: TextStyle(
-                                  color: status == 'Paid' ? Colors.green : Colors.red,
+                                  color: Color(0xff09548c),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 25,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('Status: '),
+                                  Text(
+                                    status,
+                                    style: TextStyle(
+                                      color: status == 'Paid'
+                                          ? Colors.green
+                                          : Colors.red,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors
+                                      .deepOrangeAccent, // <-- Button color
+                                ),
+                                child: Container(
+                                  height: 35,
+                                  color: Colors.deepOrangeAccent,
+                                  child: Center(
+                                    child: Text(
+                                      'Pay Now',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
                           ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              primary: Colors.white, // <-- Button color
-                            ),
-                            child: Container(
-                              height: 35,
-                              color: Colors.deepOrangeAccent,
-                              child: Center(
-                                child: Text(
-                                  'Pay Now',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 10.0),
-                    Container(
+                    SizedBox(height: 50.0),
+                    /* Container(
                       color: Colors.white,
                       margin: EdgeInsets.fromLTRB(10, 0.0, 10, 15),
                       padding: EdgeInsets.fromLTRB(0, 15.0, 0, 15),
@@ -231,6 +270,80 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                           ),
                         ],
                       ),
+                    ),*/
+                    Column(
+                      children: [
+                        Container(
+                          color: ColorData.primaryColor,
+                          width: double.infinity,
+                          padding: EdgeInsets.all(10.0),
+                          child: BuildText(
+                            text: "Lease Owner",
+                            color: Colors.white,
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            color: Colors.white,
+                          ),
+                          margin: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: ListTile(
+                              leading: Container(
+                                width: 75,
+                                height: 200,
+                                padding: EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                      'https://googleflutter.com/sample_image.jpg',
+                                    ),
+                                    fit: BoxFit.scaleDown,
+                                  ),
+                                ),
+                              ),
+                              title: Text(
+                                "Owner Name",
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              subtitle: Text(
+                                "9863439275",
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.message,
+                                      color: ColorData.primaryColor,
+                                    ),
+                                    onPressed: () {
+                                      //CALL FUNCTION
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.call,
+                                      color: ColorData.primaryColor,
+                                    ),
+                                    onPressed: () {
+                                      //CALL FUNCTION
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -242,6 +355,7 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
   Widget _getNoLeaseWidget(String title) {
     return Expanded(
       child: Container(
+        margin: EdgeInsets.all(10.0),
         height: 199,
         decoration: BoxDecoration(
           color: Colors.white,
