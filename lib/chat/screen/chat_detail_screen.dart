@@ -34,6 +34,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   String documentId = "";
   String header = "";
   String email = "";
+  final ScrollController _controller = ScrollController();
 
   bool isDataClear = true;
   Timer? timer;
@@ -55,6 +56,14 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     super.dispose();
   }
 
+  void _scrollDown() {
+    _controller.animateTo(
+      _controller.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
+
   @override
   void didChangeDependencies() async {
     if (!isApiHit) {
@@ -64,14 +73,12 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           ModalRoute.of(context)!.settings.arguments as ChatDetailScreen;
       documentId = args.id;
       header = args.title;
-      timer = Timer.periodic(const Duration(seconds: 1), (Timer t) async {
-
-        await setData();
-      });
       setState(() {
         isApiHit = true;
         isLoading = false;
       });
+      await setData();
+      // _scrollDown();
     }
     // chatDetailList.addAll(args.data.chatList!);
     super.didChangeDependencies();
@@ -83,10 +90,11 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     await query.then((value) {
       if (value.exists) {
         var chatUser = ChatUser.fromJson(value.data()!);
+        if (chatUser.chatList!.length > chatDetailList.length) {
+          // _scrollDown();
+        }
         chatDetailList.addAll(chatUser.chatList!);
-        setState(() {
-
-        });
+        setState(() {});
       }
     });
   }
@@ -136,6 +144,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     _fireStore.collection('Chat').doc(documentId).update({
       "messageData": FieldValue.arrayUnion([chatModel.toJson()])
     }).then((value) {
+      setState(() {
+        _scrollDown();
+      });
       // chatDetailList.add(chatModel);
       // setState(() {});
     }).catchError((error) => print("Failed to add data: $error"));
@@ -154,13 +165,13 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           SizedBox(
             height: height * 4,
           ),
-          _createChatBody(width),
+          _createChatBody(width, height),
         ],
       ),
     );
   }
 
-  Expanded _createChatBody(double width) {
+  Expanded _createChatBody(double width, double height) {
     return Expanded(
         child: Container(
             decoration: BoxDecoration(
@@ -175,20 +186,23 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
             //     return Text(snapshot.hasData ? '${snapshot.data}' : '');
             //   },
             // ),
-            child: ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
-                reverse: false,
-                itemCount: chatDetailList.length,
-                itemBuilder: (context, index) =>
-                    chatDetailList[index].email == email
-                        ? buildChatMsgSender(
-                            width: width,
-                            message: chatDetailList[index].message!,
-                            time: "10:45 am")
-                        : buildChatMsgReciever(
-                            width: width,
-                            message: chatDetailList[index].message!,
-                            time: "10:45 am"))));
+            child: Center(
+              child: ListView.builder(
+                  physics: const ClampingScrollPhysics(),
+                  reverse: false,
+                  controller: _controller,
+                  itemCount: chatDetailList.length,
+                  itemBuilder: (context, index) =>
+                      chatDetailList[index].email == email
+                          ? buildChatMsgSender(
+                              width: width,
+                              message: chatDetailList[index].message!,
+                              time: "10:45 am")
+                          : buildChatMsgReciever(
+                              width: width,
+                              message: chatDetailList[index].message!,
+                              time: "10:45 am")),
+            )));
   }
 
   Container _createHeader(BuildContext context, double width) {

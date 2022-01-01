@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gharbeti_ui/chat/model/chat_model.dart';
 import 'package:gharbeti_ui/chat/model/chat_user.dart';
+import 'package:gharbeti_ui/chat/screen/add_chat_user.dart';
 import 'package:gharbeti_ui/owner/listings/entity/user_container.dart';
 import 'package:gharbeti_ui/shared/color.dart';
+import 'package:gharbeti_ui/shared/data_class.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
 import 'package:gharbeti_ui/shared/widget/no_internet_connection.dart';
@@ -31,6 +33,7 @@ class _ChatScreenState extends State<ChatScreen> {
   ConnectivityResult? _connectionStatus;
   StreamSubscription<ConnectivityResult>? connectivitySubscription;
   List<ChatUser> chatList = [];
+  List<String> removeUserList = [];
   bool isApiHit = false;
   bool isLoading = true;
   String userName = "";
@@ -79,9 +82,10 @@ class _ChatScreenState extends State<ChatScreen> {
         chatData.name = userName;
         chatList.add(chatData);
         setState(() {});
-        print(chatData.documentId);
       }
     }
+
+    DataClass.getInstance.setData(removeUserList);
   }
 
   getUserData(String participants, String email) async {
@@ -90,6 +94,7 @@ class _ChatScreenState extends State<ChatScreen> {
     for (var splitData in split) {
       if (splitData != email) {
         name = splitData;
+        removeUserList.add(name);
         break;
       }
     }
@@ -194,7 +199,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add your onPressed code here!
+          Navigator.of(context).pushNamed(AddChatUserScreen.routeName);
         },
         child: const Icon(
           Icons.message,

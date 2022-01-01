@@ -20,6 +20,9 @@ class BuildChatListingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var message = data.chatList!.isNotEmpty
+        ? data.chatList![data.chatList!.length - 1].message!
+        : "";
     return InkWell(
       onTap: () => Navigator.of(context).pushNamed(ChatDetailScreen.routeName,
           arguments: ChatDetailScreen(
@@ -51,7 +54,7 @@ class BuildChatListingWidget extends StatelessWidget {
                 SizedBox(
                   width: width * 50,
                   child: BuildText(
-                    text: data.chatList![data.chatList!.length - 1].message!,
+                    text: message,
                     fontSize: width * 3.5,
                     color: Colors.grey,
                     maxLines: 1,

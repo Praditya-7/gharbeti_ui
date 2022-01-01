@@ -1,4 +1,5 @@
 import 'package:gharbeti_ui/chat/model/chat_user.dart';
+import 'package:gharbeti_ui/chat/screen/add_chat_user.dart';
 import 'package:gharbeti_ui/chat/screen/chat_detail_screen.dart';
 import 'package:gharbeti_ui/chat/screen/chat_screen.dart';
 import 'package:gharbeti_ui/login/screen/login_screen.dart';
@@ -49,6 +50,7 @@ class Routes {
     DiscoverFilter.route: (ctx) => const DiscoverFilter(),
     NotificationScreen.route: (ctx) => const NotificationScreen(),
     ChatScreen.routeName: (ctx) => const ChatScreen(),
+    AddChatUserScreen.routeName: (ctx) => const AddChatUserScreen(),
     ChatDetailScreen.routeName: (ctx) => const ChatDetailScreen(
           id: "",
           title: "",
