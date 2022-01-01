@@ -64,16 +64,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           ModalRoute.of(context)!.settings.arguments as ChatDetailScreen;
       documentId = args.id;
       header = args.title;
-      timer = Timer.periodic(const Duration(seconds: 2), (Timer t) async {
-        var isFirst = isDataClear;
-        if (isDataClear) {
-          chatDetailList.clear();
+      timer = Timer.periodic(const Duration(seconds: 1), (Timer t) async {
 
-          // store.clearData();
-          setState(() {
-            isDataClear = false;
-          });
-        }
         await setData();
       });
       setState(() {
@@ -86,11 +78,15 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   }
 
   setData() async {
+    chatDetailList.clear();
     var query = _fireStore.collection('Chat').doc(documentId).get();
     await query.then((value) {
       if (value.exists) {
         var chatUser = ChatUser.fromJson(value.data()!);
         chatDetailList.addAll(chatUser.chatList!);
+        setState(() {
+
+        });
       }
     });
   }
@@ -140,8 +136,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     _fireStore.collection('Chat').doc(documentId).update({
       "messageData": FieldValue.arrayUnion([chatModel.toJson()])
     }).then((value) {
-      chatDetailList.add(chatModel);
-      setState(() {});
+      // chatDetailList.add(chatModel);
+      // setState(() {});
     }).catchError((error) => print("Failed to add data: $error"));
   }
 
