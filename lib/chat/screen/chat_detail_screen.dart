@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,6 +35,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   String header = "";
   String email = "";
 
+  bool isDataClear = true;
+  Timer? timer;
+
   // final _channel = IOWebSocketChannel.connect(
   //   Uri.parse('wss://ws.ifelse.io/'),
   // );
@@ -41,6 +45,14 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   void initState() {
     // initSocket();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    chatDetailList.clear();
+
+    super.dispose();
   }
 
   @override
@@ -52,7 +64,18 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           ModalRoute.of(context)!.settings.arguments as ChatDetailScreen;
       documentId = args.id;
       header = args.title;
-      await setData();
+      timer = Timer.periodic(const Duration(seconds: 2), (Timer t) async {
+        var isFirst = isDataClear;
+        if (isDataClear) {
+          chatDetailList.clear();
+
+          // store.clearData();
+          setState(() {
+            isDataClear = false;
+          });
+        }
+        await setData();
+      });
       setState(() {
         isApiHit = true;
         isLoading = false;
@@ -63,7 +86,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   }
 
   setData() async {
-    chatDetailList.clear();
     var query = _fireStore.collection('Chat').doc(documentId).get();
     await query.then((value) {
       if (value.exists) {
@@ -71,13 +93,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         chatDetailList.addAll(chatUser.chatList!);
       }
     });
-  }
-
-  @override
-  void dispose() {
-    // _channel.sink.close();
-    chatDetailList.clear();
-    super.dispose();
   }
 
   @override
