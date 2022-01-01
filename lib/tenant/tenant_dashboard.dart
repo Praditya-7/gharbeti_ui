@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/chat/screen/chat_screen.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/shared/tenant_dashboard_icons.dart';
@@ -60,7 +61,9 @@ class _TenantDashboardScreenState extends State<TenantDashboardScreen> {
         backgroundColor: ColorData.primaryColor,
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(ChatScreen.routeName);
+            },
             icon: const Icon(
               Icons.message,
               color: Colors.white,
