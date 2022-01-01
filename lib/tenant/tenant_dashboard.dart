@@ -4,8 +4,9 @@ import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/shared/tenant_dashboard_icons.dart';
 import 'package:gharbeti_ui/tenant/billing/tenant_billing_screen.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_screen.dart';
-import 'package:gharbeti_ui/tenant/profile/tenant_profile_screen.dart';
 import 'package:gharbeti_ui/tenant/home/tenant_home_screen.dart';
+import 'package:gharbeti_ui/tenant/notification/notification_screen.dart';
+import 'package:gharbeti_ui/tenant/profile/tenant_profile_screen.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class TenantDashboardScreen extends StatefulWidget {
@@ -57,6 +58,24 @@ class _TenantDashboardScreenState extends State<TenantDashboardScreen> {
           style: const TextStyle(color: Colors.white),
         ),
         backgroundColor: ColorData.primaryColor,
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.message,
+              color: Colors.white,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, NotificationScreen.route);
+            },
+            icon: const Icon(
+              Icons.notifications,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       body: _dashBody(height!, width!),
       bottomNavigationBar: _btmNavBar(height, width),

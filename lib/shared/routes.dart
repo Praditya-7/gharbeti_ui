@@ -17,8 +17,9 @@ import 'package:gharbeti_ui/tenant/discover/discover_filter.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_listing_detail.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_near_you.dart';
 import 'package:gharbeti_ui/tenant/discover/filtered_listing.dart';
-import 'package:gharbeti_ui/tenant/tenant_dashboard.dart';
 import 'package:gharbeti_ui/tenant/home/tenant_home_screen.dart';
+import 'package:gharbeti_ui/tenant/notification/notification_screen.dart';
+import 'package:gharbeti_ui/tenant/tenant_dashboard.dart';
 
 class Routes {
   static var routes = {
@@ -43,5 +44,6 @@ class Routes {
     ViewPdfBill.route: (ctx) => const ViewPdfBill(),
     FilteredListing.route: (ctx) => const FilteredListing(),
     DiscoverFilter.route: (ctx) => const DiscoverFilter(),
+    NotificationScreen.route: (ctx) => const NotificationScreen(),
   };
 }

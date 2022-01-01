@@ -61,6 +61,22 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
           style: const TextStyle(color: Colors.white),
         ),
         backgroundColor: ColorData.primaryColor,
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.message,
+              color: Colors.white,
+            ),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.notifications,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       body: _dashBody(height!, width!),
       bottomNavigationBar: _btmNavBar(height, width),

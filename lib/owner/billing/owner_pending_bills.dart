@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/billing/owner_billing_widget.dart';
+import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -70,24 +71,8 @@ class _OwnerPendingBillsState extends State<OwnerPendingBills> {
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
       appBar: AppBar(
-        backgroundColor: Color(0xff09548c),
+        backgroundColor: ColorData.primaryColor,
         title: Text("Pending Bills"),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.message,
-              color: Colors.white,
-            ),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.notifications,
-              color: Colors.white,
-            ),
-          ),
-        ],
       ),
       body: SafeArea(
         child: Stack(
