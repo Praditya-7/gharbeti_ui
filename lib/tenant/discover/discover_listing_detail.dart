@@ -120,26 +120,8 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                 //     height: height * 30,
                 //   ),
                 // ),
-
-                Container(
-                  color: Colors.white,
-                  width: double.infinity,
-                  height: height * 30,
-                  child: Stack(
-                    children: [
-                      CarouselWithIndicator(imgList: args.imagesLinkList,),
-                      Positioned(
-                        left: width * 35,
-                        top: height * 28,
-                        child: Center(
-                          child: Text(
-                            'Swipe for more images',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                CarouselWithIndicator(
+                  imgList: args.imagesLinkList,
                 ),
                 SizedBox(height: 5.0),
                 Container(
@@ -171,7 +153,8 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                       ),
                       Text(
                         'Rs.' + args.rent.toString() + '/month',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.black),
                       ),
                     ],
                   ),
@@ -190,7 +173,9 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         children: [
                           //TO BE IMPLEMENTED
                           Text("Owner",
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black)),
                           Text(name),
                         ],
                       ),
@@ -200,7 +185,9 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Preferences",
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black)),
                           Text(args.preferences.toString()),
                         ],
                       ),
@@ -210,7 +197,9 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Floor",
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black)),
                           Text(args.floor.toString()),
                         ],
                       )
@@ -243,7 +232,9 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         text: TextSpan(
                           text: "BathRooms : ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14.0,
+                              color: Colors.black),
                           children: [
                             TextSpan(
                                 text: " " + args.bathroom.toString(),
@@ -262,7 +253,9 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         text: TextSpan(
                           text: "Kitchen : ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14.0,
+                              color: Colors.black),
                           children: [
                             TextSpan(
                                 text: " " + args.kitchen.toString(),
@@ -281,7 +274,9 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         text: TextSpan(
                           text: "Internet : ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14.0,
+                              color: Colors.black),
                           children: [
                             TextSpan(
                                 text: " " + args.internet.toString(),
@@ -300,7 +295,9 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         text: TextSpan(
                           text: "Parking : ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14.0,
+                              color: Colors.black),
                           children: [
                             TextSpan(
                                 text: " " + args.parking.toString(),

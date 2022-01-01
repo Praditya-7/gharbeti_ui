@@ -3,8 +3,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/billing/entity/billing_container.dart';
+import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
+import 'package:gharbeti_ui/shared/widget/build_text.dart';
 import 'package:gharbeti_ui/tenant/billing/paynow_screen.dart';
 import 'package:gharbeti_ui/tenant/billing/tenant_billing_widget.dart';
 import 'package:gharbeti_ui/tenant/billing/tenant_paid_bills.dart';
@@ -105,15 +107,14 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
           children: [
             SingleChildScrollView(
               child: Container(
-                margin: EdgeInsets.all(10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //First Container
                     Container(
+                      margin: EdgeInsets.all(10),
                       color: Colors.white,
                       padding: EdgeInsets.fromLTRB(0, 15.0, 0, 0),
-                      margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -139,7 +140,9 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                               Text(
                                 status,
                                 style: TextStyle(
-                                  color: status == 'Paid' ? Colors.green : Colors.red,
+                                  color: status == 'Paid'
+                                      ? Colors.green
+                                      : Colors.red,
                                 ),
                               ),
                             ],
@@ -152,7 +155,9 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                                 //ROUTE TO PAY NOW HERE!!
                                 ) {
                               Navigator.push(
-                                  context, MaterialPageRoute(builder: (context) => PayNow()));
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PayNow()));
                             },
                             child: Container(
                               height: 35,
@@ -169,15 +174,20 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                           ),
                         ],
                       ),
+                    ),
+                    SizedBox(
+                      height: 5.0,
                     ), //Balance Due //First Container
                     // Pending Bills
-                    Text(
-                      'Pending Bills',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                    Container(
+                      color: ColorData.primaryColor,
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10.0),
+                      child: BuildText(
+                        text: "Pending Bills",
+                        color: Colors.white,
                       ),
                     ),
-                    SizedBox(height: 10),
 
                     pendingList.isNotEmpty
                         ? TenantBillingWidget(
@@ -186,7 +196,7 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                             data: pendingData,
                           )
                         : Container(
-                            margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10),
+                            margin: EdgeInsets.all(10),
                             height: height * 16,
                             color: Colors.white,
                             padding: EdgeInsets.all(40),
@@ -195,31 +205,37 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                             ),
                           ),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        pendingList.isNotEmpty
-                            ? InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed(TenantPendingBills.route);
-                                },
-                                child: Text(
-                                  "View All >",
-                                  style: TextStyle(color: Color(0xff09548C)),
-                                ),
-                              )
-                            : Container(),
-                      ],
-                    ),
-
-                    //RECENT PAYMENT
-                    Text(
-                      'Recent Payment',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                    Container(
+                      margin: EdgeInsets.only(right: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          pendingList.isNotEmpty
+                              ? InkWell(
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .pushNamed(TenantPendingBills.route);
+                                  },
+                                  child: Text(
+                                    "View All ->",
+                                    style: TextStyle(color: Color(0xff09548C)),
+                                  ),
+                                )
+                              : Container(),
+                        ],
                       ),
                     ),
                     SizedBox(height: 10),
+                    //RECENT PAYMENT
+                    Container(
+                      color: ColorData.primaryColor,
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10.0),
+                      child: BuildText(
+                        text: "Recent Payment",
+                        color: Colors.white,
+                      ),
+                    ),
                     paidList.isNotEmpty
                         ? TenantBillingWidget(
                             width: width,
@@ -227,7 +243,7 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                             data: paidData,
                           )
                         : Container(
-                            margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10),
+                            margin: EdgeInsets.all(10),
                             color: Colors.white,
                             height: height * 16,
                             padding: EdgeInsets.all(40),
@@ -235,21 +251,25 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                               child: Text('No Paid Bills found'),
                             ),
                           ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        paidList.isNotEmpty
-                            ? InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed(TenantPaidBills.route);
-                                },
-                                child: Text(
-                                  "View All >",
-                                  style: TextStyle(color: Color(0xff09548C)),
-                                ),
-                              )
-                            : Container(),
-                      ],
+                    Container(
+                      margin: EdgeInsets.only(right: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          paidList.isNotEmpty
+                              ? InkWell(
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .pushNamed(TenantPaidBills.route);
+                                  },
+                                  child: Text(
+                                    "View All ->",
+                                    style: TextStyle(color: Color(0xff09548C)),
+                                  ),
+                                )
+                              : Container(),
+                        ],
+                      ),
                     ),
                   ],
                 ),

@@ -20,16 +20,15 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final width = SizeConfig.safeBlockHorizontal;
-    final height = SizeConfig.safeBlockVertical;
+    final width = SizeConfig.safeBlockHorizontal!;
+    final height = SizeConfig.safeBlockVertical!;
     double statusBarHeight = MediaQuery.of(context).padding.top;
     return Column(children: [
       CarouselSlider(
         items: widget.imgList!.map((item) {
           return SizedBox(
             width: double.infinity,
-            height: height! * 30,
-            child: buildImageNetwork(item, width!, height),
+            child: buildImageNetwork(item, width, height),
           );
         }).toList(),
         options: CarouselOptions(
@@ -45,44 +44,44 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
               });
             }),
       ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: widget.imgList!.map(
-          (image) {
-            //these two lines
-            int index = widget.imgList!.indexOf(image); //are changed
-            return Container(
-              width: 8.0,
-              height: 8.0,
-              margin:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: _current == index
-                      ? ColorData.activeColor
-                      : const Color.fromRGBO(0, 0, 0, 0.4)),
-            );
-          },
-        ).toList(),
+      Align(
+        alignment: Alignment.bottomCenter,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: widget.imgList!.map(
+            (image) {
+              //these two lines
+              int index = widget.imgList!.indexOf(image); //are changed
+              return Container(
+                width: 8.0,
+                height: 8.0,
+                margin:
+                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _current == index
+                        ? ColorData.activeColor
+                        : const Color.fromRGBO(0, 0, 0, 0.4)),
+              );
+            },
+          ).toList(),
+        ),
       ),
     ]);
   }
 
   Widget buildImageNetwork(String image, double width, double height) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8.0),
-      child: Container(
-        height: height * 20,
-        width: width * 80,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            image: DecorationImage(
-                fit: BoxFit.fitWidth,
-                image: NetworkImage(
-                  image,
-                ))),
-      ),
+    return Container(
+      height: height * 40,
+      width: width * 80,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          image: DecorationImage(
+              fit: BoxFit.fitWidth,
+              image: NetworkImage(
+                image,
+              ))),
     );
     // Container(
     //     width: width * 80,

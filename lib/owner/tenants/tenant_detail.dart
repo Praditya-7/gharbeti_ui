@@ -76,22 +76,6 @@ class _TenantDetailState extends State<TenantDetail> {
       appBar: AppBar(
         backgroundColor: Color(0xff09548c),
         title: Text("Tenant Details"),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.message,
-              color: Colors.white,
-            ),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.notifications,
-              color: Colors.white,
-            ),
-          ),
-        ],
       ),
       body: SafeArea(
         child: Column(
@@ -126,7 +110,8 @@ class _TenantDetailState extends State<TenantDetail> {
                       ),
                       subtitle: Text(
                         args.email.toString(),
-                        style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -138,7 +123,9 @@ class _TenantDetailState extends State<TenantDetail> {
                       Text(
                         "Details",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18.0),
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 18.0),
                       ),
                       SizedBox(
                         width: 120.0,
@@ -173,7 +160,9 @@ class _TenantDetailState extends State<TenantDetail> {
                           text: TextSpan(
                             text: "Address : ",
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                                color: Colors.black),
                             children: [
                               TextSpan(
                                   text: " " + address,
@@ -190,7 +179,9 @@ class _TenantDetailState extends State<TenantDetail> {
                           text: TextSpan(
                             text: "Gender : ",
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                                color: Colors.black),
                             children: [
                               TextSpan(
                                   text: " " + gender,
@@ -207,7 +198,9 @@ class _TenantDetailState extends State<TenantDetail> {
                           text: TextSpan(
                             text: "Contact : ",
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                                color: Colors.black),
                             children: [
                               TextSpan(
                                   text: " " + args.phoneNumber.toString(),
@@ -224,7 +217,9 @@ class _TenantDetailState extends State<TenantDetail> {
                           text: TextSpan(
                             text: "Listing Type : ",
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                                color: Colors.black),
                             children: [
                               TextSpan(
                                   text: " " + listType,
@@ -241,7 +236,9 @@ class _TenantDetailState extends State<TenantDetail> {
                           text: TextSpan(
                             text: "Listing No : ",
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                                color: Colors.black),
                             children: [
                               TextSpan(
                                   text: " " + args.roomName.toString(),
@@ -270,7 +267,8 @@ class _TenantDetailState extends State<TenantDetail> {
                       padding: const EdgeInsets.fromLTRB(10.0, 10.0, 0, 0),
                       child: Text(
                         "Pending Bills",
-                        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold),
                       ),
                     ),
                     //Pending Bills

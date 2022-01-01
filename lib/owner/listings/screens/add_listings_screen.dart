@@ -8,6 +8,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/listings/entity/Rooms.dart';
 import 'package:gharbeti_ui/owner/listings/service/storage_service.dart';
+import 'package:gharbeti_ui/shared/color.dart';
+import 'package:gharbeti_ui/shared/screen_config.dart';
+import 'package:gharbeti_ui/shared/widget/build_text.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,7 +27,8 @@ class AddListingsScreen extends StatefulWidget {
 
 class _AddListingsScreenState extends State<AddListingsScreen> {
   String randomFileName = '';
-  final _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  final _chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   final Random _rnd = Random();
   var img;
   var path;
@@ -46,32 +50,28 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
   String internetDropdownValue = 'Yes';
   String negotiableDropdownValue = 'Yes';
   String preferencesDropdownValue = 'Family';
+  double height = 0.0;
+  double width = 0.0;
 
   late LatLng _latLng;
 
   late GoogleMapController _googleMapController;
   final TextEditingController _listingNo = TextEditingController();
-  final TextEditingController lastMeterReadingController = TextEditingController();
+  final TextEditingController lastMeterReadingController =
+      TextEditingController();
   final TextEditingController _additionalDescription = TextEditingController();
   final TextEditingController _price = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    width = SizeConfig.safeBlockHorizontal!;
+    height = SizeConfig.safeBlockVertical!;
     return Scaffold(
       backgroundColor: const Color.fromRGBO(240, 240, 240, 1),
       appBar: AppBar(
         backgroundColor: const Color(0xff09548c),
         title: const Text('Add Listings'),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.message),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.notifications),
-          ),
-        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -81,11 +81,13 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //General Information
-                const Text(
-                  'General Information',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                Container(
+                  color: ColorData.primaryColor,
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10.0),
+                  child: const BuildText(
+                    text: "General Information",
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(
@@ -192,11 +194,13 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Text(
-                  'Basic Amenities',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                Container(
+                  color: ColorData.primaryColor,
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10.0),
+                  child: const BuildText(
+                    text: "Basic Amenities",
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(
@@ -359,11 +363,13 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Text(
-                  'Rent Price(Monthly)',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                Container(
+                  color: ColorData.primaryColor,
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10.0),
+                  child: const BuildText(
+                    text: "Rent price (Monthly)",
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(
@@ -434,11 +440,13 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Text(
-                  'Additional Description',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                Container(
+                  color: ColorData.primaryColor,
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10.0),
+                  child: const BuildText(
+                    text: "Additional Description",
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(
@@ -539,11 +547,13 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Text(
-                  'Pin Listing Location',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                Container(
+                  color: ColorData.primaryColor,
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10.0),
+                  child: const BuildText(
+                    text: "Pin Listing Location",
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(
@@ -555,7 +565,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                   child: Column(
                     children: [
                       Container(
-                        height: 400,
+                        height: height * 30,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
@@ -571,7 +581,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           onMapCreated: (GoogleMapController controller) {
                             _googleMapController = controller;
                           },
-                          gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                          gestureRecognizers: <
+                              Factory<OneSequenceGestureRecognizer>>{
                             Factory<OneSequenceGestureRecognizer>(
                               () => EagerGestureRecognizer(),
                             ),
@@ -606,11 +617,13 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Text(
-                  'Room Photos',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                Container(
+                  color: ColorData.primaryColor,
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10.0),
+                  child: const BuildText(
+                    text: "Add Listing Photos",
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(
@@ -618,13 +631,16 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                 ),
                 Container(
                   color: Colors.white,
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.deepOrangeAccent,
+                        ),
                         onPressed: () async {
-                          FilePickerResult? result =
-                              await FilePicker.platform.pickFiles(allowMultiple: true);
+                          FilePickerResult? result = await FilePicker.platform
+                              .pickFiles(allowMultiple: true);
                           if (result != null) {
                             files = result.paths;
                             print(files);
@@ -652,6 +668,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           ),
                         ),
                       ),
+                      const SizedBox(height: 5),
                       imageSelected == false
                           ? const Text('No image selected')
                           : const Text('Image selected'),
@@ -664,9 +681,10 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                 ),
                 //Add
                 Container(
+                  height: height * 6,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: const Color(0xff09548c),
+                    color: Colors.green,
                   ),
                   child: InkWell(
                     onTap: () async {
@@ -681,9 +699,9 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         child: Text(
                           'Add Listing',
                           style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0),
                         ),
                       ),
                     ),
@@ -697,8 +715,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
     );
   }
 
-  String getRandomString(int length) => String.fromCharCodes(
-      Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
   void setData() async {
     randomFileName = getRandomString(10);
@@ -712,8 +730,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
           .uploadImage(imageFile, randomFileName)
           .then((value) async {
         print('Uploaded');
-        imageLink =
-            await Storage(listingNo: _listingNo.text.toString()).downloadImageURL(randomFileName);
+        imageLink = await Storage(listingNo: _listingNo.text.toString())
+            .downloadImageURL(randomFileName);
         imageDownloadLinkList.add(imageLink);
       });
     }

@@ -3,8 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/billing/owner_billing_widget.dart';
 import 'package:gharbeti_ui/owner/billing/owner_paid_bills.dart';
+import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
+import 'package:gharbeti_ui/shared/widget/build_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'entity/billing_container.dart';
@@ -102,17 +104,18 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
           children: [
             SingleChildScrollView(
               child: Container(
-                margin: EdgeInsets.all(10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10.0, 10.0, 0, 0),
-                      child: Text(
-                        "Issued Bill",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18.0, color: Colors.black),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      color: ColorData.primaryColor,
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10.0),
+                      child: BuildText(
+                        text: "Issued Bills",
+                        color: Colors.white,
                       ),
                     ),
                     pendingList.isNotEmpty
@@ -122,7 +125,7 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
                             data: pendingData,
                           )
                         : Container(
-                            margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10),
+                            margin: EdgeInsets.all(10),
                             height: height * 16,
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -133,29 +136,34 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
                               child: Text('No Pending Bills found'),
                             ),
                           ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        pendingList.isNotEmpty
-                            ? InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed(OwnerPendingBills.route);
-                                },
-                                child: Text(
-                                  "View All >",
-                                  style: TextStyle(color: Color(0xff09548C)),
-                                ),
-                              )
-                            : Container(),
-                      ],
+                    Container(
+                      margin: EdgeInsets.only(right: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          pendingList.isNotEmpty
+                              ? InkWell(
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .pushNamed(OwnerPendingBills.route);
+                                  },
+                                  child: Text(
+                                    "View All ->",
+                                    style: TextStyle(color: Color(0xff09548C)),
+                                  ),
+                                )
+                              : Container(),
+                        ],
+                      ),
                     ),
-
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10.0, 10.0, 0, 0),
-                      child: Text(
-                        "Recent Payments",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18.0, color: Colors.black),
+                    SizedBox(height: 10),
+                    Container(
+                      color: ColorData.primaryColor,
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10.0),
+                      child: BuildText(
+                        text: "Recent Payments",
+                        color: Colors.white,
                       ),
                     ),
                     //Paid Bills
@@ -166,7 +174,7 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
                             data: paidData,
                           )
                         : Container(
-                            margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10),
+                            margin: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
@@ -177,21 +185,25 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
                               child: Text('No Paid Bills found'),
                             ),
                           ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        paidList.isNotEmpty
-                            ? InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed(OwnerPaidBills.route);
-                                },
-                                child: Text(
-                                  "View All >",
-                                  style: TextStyle(color: Color(0xff09548C)),
-                                ),
-                              )
-                            : Container(),
-                      ],
+                    Container(
+                      margin: EdgeInsets.only(right: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          paidList.isNotEmpty
+                              ? InkWell(
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .pushNamed(OwnerPaidBills.route);
+                                  },
+                                  child: Text(
+                                    "View All ->",
+                                    style: TextStyle(color: Color(0xff09548C)),
+                                  ),
+                                )
+                              : Container(),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 40,

@@ -23,9 +23,10 @@ class _OwnerBillingWidgetState extends State<OwnerBillingWidget> {
   @override
   Widget build(BuildContext context) {
     var unformattedDate = widget.data.billDate?.toDate();
-    String formattedDate = DateFormat.yMMMMd().format(unformattedDate!).toString();
+    String formattedDate =
+        DateFormat.yMMMMd().format(unformattedDate!).toString();
     return Container(
-      margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10),
+      margin: EdgeInsets.all(10),
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -79,7 +80,8 @@ class _OwnerBillingWidgetState extends State<OwnerBillingWidget> {
                   //PDF OPENER HERE
                   //
                   String pdfURL = widget.data.pdfLink.toString();
-                  Navigator.of(context).pushNamed(ViewPdfBill.route, arguments: pdfURL);
+                  Navigator.of(context)
+                      .pushNamed(ViewPdfBill.route, arguments: pdfURL);
                 },
               ),
               const SizedBox(
