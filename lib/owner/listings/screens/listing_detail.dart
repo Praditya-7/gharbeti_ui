@@ -299,7 +299,7 @@ class _ListingDetailState extends State<ListingDetail> {
 
               args.status == "Vacant"
                   ? Container(
-                margin: EdgeInsets.all(10),
+                      margin: EdgeInsets.all(10),
                       height: height * 6,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),

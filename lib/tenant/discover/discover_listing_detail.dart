@@ -50,22 +50,6 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
       appBar: AppBar(
         backgroundColor: Color(0xff09548c),
         title: Text("Listing Detail"),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.message,
-              color: Colors.white,
-            ),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.notifications,
-              color: Colors.white,
-            ),
-          ),
-        ],
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
