@@ -49,6 +49,7 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
     final pref = await SharedPreferences.getInstance();
     var email = pref.getString("email");
     print(email);
+
     var query1 = _fireStore
         .collection('Billings')
         .where("TenantEmail", isEqualTo: email)
@@ -138,9 +139,7 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                               Text(
                                 status,
                                 style: TextStyle(
-                                  color: status == 'Paid'
-                                      ? Colors.green
-                                      : Colors.red,
+                                  color: status == 'Paid' ? Colors.green : Colors.red,
                                 ),
                               ),
                             ],
@@ -153,9 +152,7 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                                 //ROUTE TO PAY NOW HERE!!
                                 ) {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => PayNow()));
+                                  context, MaterialPageRoute(builder: (context) => PayNow()));
                             },
                             child: Container(
                               height: 35,
@@ -204,8 +201,7 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                         pendingList.isNotEmpty
                             ? InkWell(
                                 onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed(TenantPendingBills.route);
+                                  Navigator.of(context).pushNamed(TenantPendingBills.route);
                                 },
                                 child: Text(
                                   "View All >",
@@ -245,8 +241,7 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                         paidList.isNotEmpty
                             ? InkWell(
                                 onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed(TenantPaidBills.route);
+                                  Navigator.of(context).pushNamed(TenantPaidBills.route);
                                 },
                                 child: Text(
                                   "View All >",
