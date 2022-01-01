@@ -74,16 +74,34 @@ class _AddChatUserScreenState extends State<AddChatUserScreen> {
   }
 
   getUserList(String type) async {
-    var query = (type == "tenant")
-        ? _fireStore.collection('Users').where("Type", isEqualTo: "owner").get()
-        : _fireStore.collection('Users').where("Email", isEqualTo: email).get();
-    await query.then((value) {
-      if (value.docs.isNotEmpty) {
-        for (var doc in value.docs) {
-          userList.add(User.fromFireStoreSnapshot(doc));
+    if (type == "tenant") {
+      var query = _fireStore
+          .collection('Users')
+          .where("Type", isEqualTo: "owner")
+          .get();
+      await query.then((value) {
+        if (value.docs.isNotEmpty) {
+          for (var doc in value.docs) {
+            userList.add(User.fromFireStoreSnapshot(doc));
+          }
         }
+      });
+    } else {
+      for (var emailData in emailList) {
+        var query = _fireStore
+            .collection('Users')
+            .where("Email", isEqualTo: emailData)
+            .get();
+        await query.then((value) {
+          if (value.docs.isNotEmpty) {
+            for (var doc in value.docs) {
+              userList.add(User.fromFireStoreSnapshot(doc));
+            }
+          }
+        });
       }
-    });
+    }
+
     for (var data in DataClass.getInstance.getData()) {
       userList.removeWhere((item) => item.email == data);
       setState(() {});
