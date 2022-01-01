@@ -6,6 +6,8 @@ import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import 'carousel.dart';
+
 class DiscoverListingDetail extends StatefulWidget {
   static String route = '/discoverListingDetail';
   const DiscoverListingDetail({Key? key}) : super(key: key);
@@ -125,21 +127,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                   height: height * 30,
                   child: Stack(
                     children: [
-                      PageView.builder(
-                        controller: _pageController,
-                        onPageChanged: (int page) {
-                          setState(() {
-                            _currentPage = page;
-                          });
-                        },
-                        itemCount: args.imagesLinkList!.length,
-                        itemBuilder: (context, index) {
-                          return Image.network(
-                            args.imagesLinkList![_currentPage].toString(),
-                            fit: BoxFit.fitWidth,
-                          );
-                        },
-                      ),
+                      CarouselWithIndicator(imgList: args.imagesLinkList,),
                       Positioned(
                         left: width * 35,
                         top: height * 28,

@@ -19,7 +19,7 @@ class Room {
   final double latitude;
   final double longitude;
   final String? lastMeterReading;
-  final List? imagesLinkList;
+  final List<String>? imagesLinkList;
 
   Room({
     this.negotiable,
@@ -43,6 +43,8 @@ class Room {
   });
 
   factory Room.fromJson(Map<String, dynamic> json) {
+    var list = json['ImageLinkList'] as List;
+    List<String> dataList = List<String>.from(list);
     return Room(
       bathroom: json['Bathrooms'],
       description: json['Description'],
@@ -61,7 +63,7 @@ class Room {
       latitude: json['Latitude'],
       lastMeterReading: json['LastMeterReading'],
       longitude: json['Longitude'],
-      imagesLinkList: json['ImageLinkList'],
+      imagesLinkList: dataList,
     );
   }
 
@@ -82,7 +84,7 @@ class Room {
         tenantEmail = snap.get('Tenant Email'),
         latitude = snap.get('Latitude'),
         longitude = snap.get('Longitude'),
-        imagesLinkList = snap.get('ImageLinkList'),
+        imagesLinkList = List<String>.from(snap.get('ImageLinkList')),
         lastMeterReading = snap.get('LastMeterReading'),
         email = snap.get('OwnerEmail');
 

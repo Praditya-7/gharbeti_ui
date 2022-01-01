@@ -49,6 +49,7 @@ dependencies:
   path_provider: ^2.0.8
   flutter_cached_pdfview: ^0.4.1
   bubble: ^1.2.1
+  carousel_slider:
 
 
 
