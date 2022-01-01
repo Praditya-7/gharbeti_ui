@@ -27,7 +27,7 @@ class NotificationWidget extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(5),
         ),
-        child: Text('NOTIFICATION'),
+        child: const Text('NOTIFICATION'),
       ),
     );
   }
