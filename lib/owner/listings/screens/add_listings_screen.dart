@@ -27,7 +27,8 @@ class AddListingsScreen extends StatefulWidget {
 
 class _AddListingsScreenState extends State<AddListingsScreen> {
   String randomFileName = '';
-  final _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  final _chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   final Random _rnd = Random();
   var img;
   var path;
@@ -56,7 +57,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
 
   late GoogleMapController _googleMapController;
   final TextEditingController _listingNo = TextEditingController();
-  final TextEditingController lastMeterReadingController = TextEditingController();
+  final TextEditingController lastMeterReadingController =
+      TextEditingController();
   final TextEditingController _additionalDescription = TextEditingController();
   final TextEditingController _price = TextEditingController();
 
@@ -82,8 +84,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                 Container(
                   decoration: BoxDecoration(
                     color: ColorData.primaryColor,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(5), topRight: Radius.circular(5)),
                   ),
                   width: double.infinity,
                   padding: const EdgeInsets.all(10.0),
@@ -95,10 +95,9 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
 
                 //GENERAL INFORMATION START
                 Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -111,6 +110,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200],
                         ),
+                        height: height * 5,
                         child: DropdownButton<String>(
                           isExpanded: true,
                           hint: const Text('Type*'),
@@ -138,6 +138,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                       //Listing No//
                       Container(
                         margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        height: height * 5,
                         alignment: Alignment.center,
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
@@ -155,13 +156,16 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           ),
                         ),
                       ),
+                      //floor
                       Container(
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200],
                         ),
+                        height: height * 5,
                         child: DropdownButton<String>(
+                          menuMaxHeight: 200,
                           isExpanded: true,
                           hint: const Text('Floor*'),
                           underline: Container(
@@ -208,12 +212,13 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
 
                 Container(
                   color: Colors.white,
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
                       //Parking
                       Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        height: height * 5,
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
@@ -250,7 +255,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                       ),
                       //Bathroom
                       Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        height: height * 5,
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
@@ -287,7 +293,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                       ),
                       //Kitchen
                       Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        height: height * 5,
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
@@ -323,6 +330,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                       ),
                       //Internet
                       Container(
+                        height: height * 5,
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
@@ -375,11 +383,12 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
 
                 Container(
                   color: Colors.white,
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
                       Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        height: height * 5,
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         alignment: Alignment.center,
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
@@ -398,6 +407,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         ),
                       ),
                       Container(
+                        height: height * 5,
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
@@ -450,11 +460,12 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
 
                 Container(
                   color: Colors.white,
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
                       Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        height: height * 5,
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         padding: const EdgeInsets.fromLTRB(18, 2, 30, 2),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
@@ -482,7 +493,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        height: height * 5,
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
@@ -574,7 +586,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           onMapCreated: (GoogleMapController controller) {
                             _googleMapController = controller;
                           },
-                          gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                          gestureRecognizers: <
+                              Factory<OneSequenceGestureRecognizer>>{
                             Factory<OneSequenceGestureRecognizer>(
                               () => EagerGestureRecognizer(),
                             ),
@@ -626,11 +639,11 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.deepOrangeAccent,
-                        ),
+                            primary: Colors.deepOrangeAccent,
+                            fixedSize: Size(double.infinity, height * 5)),
                         onPressed: () async {
-                          FilePickerResult? result =
-                              await FilePicker.platform.pickFiles(allowMultiple: true);
+                          FilePickerResult? result = await FilePicker.platform
+                              .pickFiles(allowMultiple: true);
                           if (result != null) {
                             files = result.paths;
                             print(files);
@@ -643,19 +656,21 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                             });
                           }
                         },
-                        child: const Center(
-                          child: ListTile(
-                            leading: Icon(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(
                               Icons.upload,
                               color: Colors.white,
                             ),
-                            title: Text(
+                            SizedBox(width: 5),
+                            Text(
                               'Upload Images',
                               style: TextStyle(
                                 color: Colors.white,
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 5),
@@ -689,7 +704,9 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         child: Text(
                           'Add Listing',
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.0),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0),
                         ),
                       ),
                     ),
@@ -703,8 +720,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
     );
   }
 
-  String getRandomString(int length) => String.fromCharCodes(
-      Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
   void setData() async {
     randomFileName = getRandomString(10);
@@ -718,8 +735,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
           .uploadImage(imageFile, randomFileName)
           .then((value) async {
         print('Uploaded');
-        imageLink =
-            await Storage(listingNo: _listingNo.text.toString()).downloadImageURL(randomFileName);
+        imageLink = await Storage(listingNo: _listingNo.text.toString())
+            .downloadImageURL(randomFileName);
         imageDownloadLinkList.add(imageLink);
       });
     }
