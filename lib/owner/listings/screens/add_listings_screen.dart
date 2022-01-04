@@ -27,8 +27,7 @@ class AddListingsScreen extends StatefulWidget {
 
 class _AddListingsScreenState extends State<AddListingsScreen> {
   String randomFileName = '';
-  final _chars =
-      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  final _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   final Random _rnd = Random();
   var img;
   var path;
@@ -57,8 +56,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
 
   late GoogleMapController _googleMapController;
   final TextEditingController _listingNo = TextEditingController();
-  final TextEditingController lastMeterReadingController =
-      TextEditingController();
+  final TextEditingController lastMeterReadingController = TextEditingController();
   final TextEditingController _additionalDescription = TextEditingController();
   final TextEditingController _price = TextEditingController();
 
@@ -82,7 +80,11 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
               children: [
                 //General Information
                 Container(
-                  color: ColorData.primaryColor,
+                  decoration: BoxDecoration(
+                    color: ColorData.primaryColor,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+                  ),
                   width: double.infinity,
                   padding: const EdgeInsets.all(10.0),
                   child: const BuildText(
@@ -90,19 +92,20 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
+
                 //GENERAL INFORMATION START
                 Container(
-                  color: Colors.white,
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       //TYPE*//
                       Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
@@ -134,7 +137,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                       ),
                       //Listing No//
                       Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         alignment: Alignment.center,
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
@@ -153,7 +156,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
@@ -203,9 +205,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
+
                 Container(
                   color: Colors.white,
                   padding: const EdgeInsets.all(20),
@@ -372,9 +372,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
+
                 Container(
                   color: Colors.white,
                   padding: const EdgeInsets.all(20),
@@ -448,9 +446,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                     text: "Additional Description",
                     color: Colors.white,
                   ),
-                ),
-                const SizedBox(
-                  height: 5,
                 ),
 
                 Container(
@@ -556,9 +551,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
+
                 Container(
                   color: Colors.white,
                   padding: const EdgeInsets.all(10),
@@ -581,8 +574,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           onMapCreated: (GoogleMapController controller) {
                             _googleMapController = controller;
                           },
-                          gestureRecognizers: <
-                              Factory<OneSequenceGestureRecognizer>>{
+                          gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
                             Factory<OneSequenceGestureRecognizer>(
                               () => EagerGestureRecognizer(),
                             ),
@@ -626,9 +618,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
+
                 Container(
                   color: Colors.white,
                   padding: const EdgeInsets.all(10),
@@ -639,8 +629,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           primary: Colors.deepOrangeAccent,
                         ),
                         onPressed: () async {
-                          FilePickerResult? result = await FilePicker.platform
-                              .pickFiles(allowMultiple: true);
+                          FilePickerResult? result =
+                              await FilePicker.platform.pickFiles(allowMultiple: true);
                           if (result != null) {
                             files = result.paths;
                             print(files);
@@ -699,9 +689,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         child: Text(
                           'Add Listing',
                           style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0),
+                              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.0),
                         ),
                       ),
                     ),
@@ -715,8 +703,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
     );
   }
 
-  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
-      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+  String getRandomString(int length) => String.fromCharCodes(
+      Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
   void setData() async {
     randomFileName = getRandomString(10);
@@ -730,8 +718,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
           .uploadImage(imageFile, randomFileName)
           .then((value) async {
         print('Uploaded');
-        imageLink = await Storage(listingNo: _listingNo.text.toString())
-            .downloadImageURL(randomFileName);
+        imageLink =
+            await Storage(listingNo: _listingNo.text.toString()).downloadImageURL(randomFileName);
         imageDownloadLinkList.add(imageLink);
       });
     }

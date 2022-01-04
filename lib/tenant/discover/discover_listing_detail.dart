@@ -3,7 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
+import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
+import 'package:gharbeti_ui/shared/widget/build_text.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'carousel.dart';
@@ -19,8 +21,6 @@ class DiscoverListingDetail extends StatefulWidget {
 class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
   Room args = Room(latitude: 0, longitude: 0);
   late GoogleMapController _googleMapController;
-  int _currentPage = 0;
-  PageController _pageController = PageController();
 
   double width = 0.0;
   double height = 0.0;
@@ -95,15 +95,6 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Container(
-                //   color: Colors.white,
-                //   child: Image.network(
-                //     args.imagesLinkList!.first.toString(),
-                //     fit: BoxFit.fitWidth,
-                //     width: double.infinity,
-                //     height: height * 30,
-                //   ),
-                // ),
                 CarouselWithIndicator(
                   imgList: args.imagesLinkList,
                 ),
@@ -137,8 +128,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                       ),
                       Text(
                         'Rs.' + args.rent.toString() + '/month',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
                       ),
                     ],
                   ),
@@ -157,9 +147,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         children: [
                           //TO BE IMPLEMENTED
                           Text("Owner",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black)),
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
                           Text(name),
                         ],
                       ),
@@ -169,9 +157,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Preferences",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black)),
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
                           Text(args.preferences.toString()),
                         ],
                       ),
@@ -181,29 +167,26 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Floor",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black)),
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
                           Text(args.floor.toString()),
                         ],
                       )
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 5.0,
-                ),
+
                 //Basic Amenities
-                Text(
-                  "Basic Amenities",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  color: ColorData.primaryColor,
+                  width: double.infinity,
+                  padding: EdgeInsets.all(10.0),
+                  child: BuildText(
+                    text: "Basic Amenities",
+                    color: Colors.white,
                   ),
                 ),
-                SizedBox(
-                  height: 5.0,
-                ),
+
                 Container(
                   width: double.infinity,
                   color: Colors.white,
@@ -216,9 +199,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         text: TextSpan(
                           text: "BathRooms : ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14.0,
-                              color: Colors.black),
+                              fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
                           children: [
                             TextSpan(
                                 text: " " + args.bathroom.toString(),
@@ -237,9 +218,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         text: TextSpan(
                           text: "Kitchen : ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14.0,
-                              color: Colors.black),
+                              fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
                           children: [
                             TextSpan(
                                 text: " " + args.kitchen.toString(),
@@ -258,9 +237,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         text: TextSpan(
                           text: "Internet : ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14.0,
-                              color: Colors.black),
+                              fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
                           children: [
                             TextSpan(
                                 text: " " + args.internet.toString(),
@@ -279,9 +256,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         text: TextSpan(
                           text: "Parking : ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14.0,
-                              color: Colors.black),
+                              fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
                           children: [
                             TextSpan(
                                 text: " " + args.parking.toString(),
@@ -298,39 +273,36 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                     ],
                   ),
                 ),
-                //Basic Amenities
-                SizedBox(
-                  height: 5.0,
-                ),
-                Text(
-                  "Additional Description",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
+                //Additional Description
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  color: ColorData.primaryColor,
+                  width: double.infinity,
+                  padding: EdgeInsets.all(10.0),
+                  child: BuildText(
+                    text: "Additional Description",
+                    color: Colors.white,
                   ),
                 ),
-                SizedBox(
-                  height: 5.0,
-                ),
+
                 Container(
                   width: double.infinity,
                   color: Colors.white,
                   padding: EdgeInsets.all(10.0),
                   child: Text(args.description.toString()),
                 ),
-                SizedBox(
-                  height: 5.0,
-                ),
-                Text(
-                  "Location",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
+
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  color: ColorData.primaryColor,
+                  width: double.infinity,
+                  padding: EdgeInsets.all(10.0),
+                  child: BuildText(
+                    text: "Location",
+                    color: Colors.white,
                   ),
                 ),
-                SizedBox(
-                  height: 5.0,
-                ),
+
                 Container(
                   height: height * 25,
                   alignment: Alignment.center,
