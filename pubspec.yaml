@@ -36,6 +36,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: ^1.6.0
   cloud_firestore: ^2.5.2
+  firebase_database: ^6.1.2
+  firebase_messaging: ^10.0.0
+  flutter_local_notifications: ^5.0.0+4
   intl: ^0.17.0
   google_nav_bar: ^5.0.5
   shared_preferences: ^2.0.8
@@ -49,7 +52,9 @@ dependencies:
   path_provider: ^2.0.8
   flutter_cached_pdfview: ^0.4.1
   bubble: ^1.2.1
+  provider: ^6.0.2
   carousel_slider:
+  khalti_flutter: ^2.0.0
 
 
 

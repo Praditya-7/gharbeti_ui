@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/chat/screen/chat_screen.dart';
 import 'package:gharbeti_ui/shared/color.dart';
+import 'package:gharbeti_ui/shared/push_notification_controller.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/shared/tenant_dashboard_icons.dart';
 import 'package:gharbeti_ui/tenant/billing/tenant_billing_screen.dart';
@@ -19,7 +20,7 @@ class TenantDashboardScreen extends StatefulWidget {
   _TenantDashboardScreenState createState() => _TenantDashboardScreenState();
 }
 
-class _TenantDashboardScreenState extends State<TenantDashboardScreen> {
+class _TenantDashboardScreenState extends State<TenantDashboardScreen> with WidgetsBindingObserver {
   int _selectedIndex = 0;
   PageController pageController = PageController();
 
@@ -37,6 +38,20 @@ class _TenantDashboardScreenState extends State<TenantDashboardScreen> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+  @override
+  void initState(){
+    FirebaseNotification().initilizeNotification(context);
+    WidgetsBinding.instance!.addObserver(this);
+    FirebaseNotification().firebaseNavigate(context);
+    super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if ((state == AppLifecycleState.resumed)) {
+      FirebaseNotification().firebaseNavigate(context);
+    }
   }
 
   onTabChange(index) {

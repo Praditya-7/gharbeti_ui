@@ -6,6 +6,7 @@ import 'package:gharbeti_ui/owner/profile/owner_profile_screen.dart';
 import 'package:gharbeti_ui/owner/tenants/tenants_screen.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/owner_dashboard_icons.dart';
+import 'package:gharbeti_ui/shared/push_notification_controller.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/tenant/notification/notification_screen.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -21,7 +22,7 @@ class OwnerDashboardScreen extends StatefulWidget {
   _OwnerDashboardScreenState createState() => _OwnerDashboardScreenState();
 }
 
-class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
+class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> with WidgetsBindingObserver{
   int _selectedIndex = 0;
   PageController pageController = PageController();
 
@@ -42,7 +43,20 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
       _selectedIndex = index;
     });
   }
+  @override
+  void initState(){
+    FirebaseNotification().initilizeNotification(context);
+    WidgetsBinding.instance!.addObserver(this);
+    FirebaseNotification().firebaseNavigate(context);
+    super.initState();
+  }
 
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if ((state == AppLifecycleState.resumed)) {
+      FirebaseNotification().firebaseNavigate(context);
+    }
+  }
   onTabChange(index) {
     setState(() {
       _selectedIndex = index;

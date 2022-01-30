@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 
 class PayNow extends StatefulWidget {
   const PayNow({Key? key}) : super(key: key);
@@ -109,101 +110,128 @@ class _PayNowState extends State<PayNow> {
                   MediaQuery.of(context).size.height * 0.35)),
               isScrollControlled: true,
               context: context,
-              builder: (BuildContext context) {
+              builder: (BuildContext buildContext) {
                 return StatefulBuilder(
-                    builder: (BuildContext context, StateSetter setState) {
-                      return Column(
+                    builder: (BuildContext buildContext, StateSetter setState) {
+                  return Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(10.0),
+                              topRight: Radius.circular(10.0)),
+                          color: ColorData.primaryColor,
+                        ),
+                        padding: const EdgeInsets.all(10.0),
+                        width: double.infinity,
+                        child: const Center(
+                          child: BuildText(
+                            text: "Choose the payment option",
+                            fontSize: 18,
+                            weight: FontWeight.normal,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(10.0),
-                                  topRight: Radius.circular(10.0)),
-                              color: ColorData.primaryColor,
-                            ),
-                            padding: const EdgeInsets.all(10.0),
-                            width: double.infinity,
-                            child: const Center(
-                              child: BuildText(
-                                text: "Choose the payment option",
-                                fontSize: 18,
-                                weight: FontWeight.normal,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Radio(
-                                value: "khalti",
-                                groupValue: _payOption,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _payOption = value.toString();
-                                  });
-                                },
-                              ),
-                              const Image(
-                                image: AssetImage("assets/image/khalti.png"),
-                                width: 70,
-                                height: 70,
-                              ),
-                              const SizedBox(
-                                width: 30,
-                              ),
-                              const BuildText(
-                                text: "Khalti",
-                                fontSize: 18,
-                                weight: FontWeight.bold,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Radio(
-                                value: "cash",
-                                groupValue: _payOption,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _payOption = value.toString();
-                                  });
-                                },
-                              ),
-                              Icon(
-                                Icons.account_balance_wallet_sharp,
-                                color: ColorData.primaryColor,
-                              ),
-                              const SizedBox(
-                                width: 30,
-                              ),
-                              const BuildText(
-                                text: "Cash",
-                                fontSize: 18,
-                                weight: FontWeight.bold,
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              print(_payOption);
+                          Radio(
+                            value: "khalti",
+                            groupValue: _payOption,
+                            onChanged: (value) {
+                              setState(() {
+                                _payOption = value.toString();
+                              });
                             },
-                            style: ElevatedButton.styleFrom(
-                              primary: ColorData.primaryColor,
-                              minimumSize: const Size(300, 41),
-                            ),
-                            child: const Text("Pay"),
+                          ),
+                          const Image(
+                            image: AssetImage("assets/image/khalti.png"),
+                            width: 70,
+                            height: 70,
+                          ),
+                          const SizedBox(
+                            width: 30,
+                          ),
+                          const BuildText(
+                            text: "Khalti",
+                            fontSize: 18,
+                            weight: FontWeight.bold,
                           ),
                         ],
-                      );
-                    });
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Radio(
+                            value: "cash",
+                            groupValue: _payOption,
+                            onChanged: (value) {
+                              setState(() {
+                                _payOption = value.toString();
+                              });
+                            },
+                          ),
+                          Icon(
+                            Icons.account_balance_wallet_sharp,
+                            color: ColorData.primaryColor,
+                          ),
+                          const SizedBox(
+                            width: 30,
+                          ),
+                          const BuildText(
+                            text: "Cash",
+                            fontSize: 18,
+                            weight: FontWeight.bold,
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (_payOption == "khalti") {
+                            final config = PaymentConfig(
+                              amount: 10000,
+                              // Amount should be in paisa
+                              productIdentity:
+                                  'test_public_key_dc74e0fd57cb46cd93832aee0a507256',
+                              productName: 'Dell G5 G5510 2021',
+                              productUrl: 'https://www.khalti.com/#/bazaar',
+
+                            );
+                            KhaltiScope.of(context).pay(
+                              config: config,
+                              preferences: [
+                                PaymentPreference.connectIPS,
+                                PaymentPreference.eBanking,
+                                PaymentPreference.sct,
+                              ],
+                              onSuccess: (value){
+
+                              },
+                              onFailure: (onFailure){
+
+                              },
+                              onCancel: (){
+
+                              },
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: ColorData.primaryColor,
+                          minimumSize: const Size(300, 41),
+                        ),
+                        child: const Text("Pay"),
+                      ),
+                    ],
+                  );
+                });
               });
         },
         style: ElevatedButton.styleFrom(
@@ -227,21 +255,21 @@ class _PayNowState extends State<PayNow> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  "Total Amount to be Paid",
-                  style: TextStyle(color: Colors.white),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  "Rs. " + billAmount.toString(),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24.0),
-                ),
-              ])),
+            Text(
+              "Total Amount to be Paid",
+              style: TextStyle(color: Colors.white),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              "Rs. " + billAmount.toString(),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24.0),
+            ),
+          ])),
     );
   }
 }
