@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/owner/home/vacant_room.dart';
@@ -51,10 +52,7 @@ class _ListingDetailState extends State<ListingDetail> {
   setData() async {
     final pref = await SharedPreferences.getInstance();
     var tenantEmail = pref.getString("TenantEmail");
-    var query = _fireStore
-        .collection('Users')
-        .where("Email", isEqualTo: tenantEmail)
-        .get();
+    var query = _fireStore.collection('Users').where("Email", isEqualTo: tenantEmail).get();
     await query.then((value) {
       if (value.docs.isNotEmpty) {
         for (var doc in value.docs) {
@@ -104,17 +102,13 @@ class _ListingDetailState extends State<ListingDetail> {
                           title: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text("Room No " + args.listingNo.toString(),
-                                style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold)),
+                                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
                           ),
                           subtitle: Row(
                             children: [
                               Text(
                                 "Status : ",
-                                style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold),
+                                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                               ),
                               Container(
                                 decoration: BoxDecoration(
@@ -146,9 +140,7 @@ class _ListingDetailState extends State<ListingDetail> {
                           Text(
                             "Room Info",
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 18.0),
+                                fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18.0),
                           ),
                           InkWell(
                             child: Icon(
@@ -173,9 +165,7 @@ class _ListingDetailState extends State<ListingDetail> {
                             text: TextSpan(
                               text: "Floor : ",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0,
-                                  color: Colors.black),
+                                  fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
                               children: [
                                 TextSpan(
                                     text: " " + args.floor.toString(),
@@ -193,9 +183,7 @@ class _ListingDetailState extends State<ListingDetail> {
                             text: TextSpan(
                               text: "Bathroom : ",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0,
-                                  color: Colors.black),
+                                  fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
                               children: [
                                 TextSpan(
                                     text: " " + args.bathroom.toString(),
@@ -213,9 +201,7 @@ class _ListingDetailState extends State<ListingDetail> {
                             text: TextSpan(
                               text: "Kitchen : ",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0,
-                                  color: Colors.black),
+                                  fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
                               children: [
                                 TextSpan(
                                     text: " " + args.kitchen.toString(),
@@ -236,9 +222,7 @@ class _ListingDetailState extends State<ListingDetail> {
                             text: TextSpan(
                               text: "Start Date : ",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0,
-                                  color: Colors.black),
+                                  fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
                               children: [
                                 TextSpan(
                                     text: " " + date.toString(),
@@ -256,13 +240,10 @@ class _ListingDetailState extends State<ListingDetail> {
                             text: TextSpan(
                               text: "Last Meter Reading : ",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0,
-                                  color: Colors.black),
+                                  fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
                               children: [
                                 TextSpan(
-                                    text:
-                                        " " + args.lastMeterReading.toString(),
+                                    text: " " + args.lastMeterReading.toString(),
                                     style: TextStyle(
                                         fontWeight: FontWeight.normal,
                                         fontSize: 16.0,
@@ -277,9 +258,7 @@ class _ListingDetailState extends State<ListingDetail> {
                             text: TextSpan(
                               text: "Rent : ",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0,
-                                  color: Colors.black),
+                                  fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.black),
                               children: [
                                 TextSpan(
                                     text: " Rs." + args.rent.toString(),
@@ -307,8 +286,7 @@ class _ListingDetailState extends State<ListingDetail> {
                       ),
                       child: InkWell(
                         onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(VacantRoom.route, arguments: args);
+                          Navigator.of(context).pushNamed(VacantRoom.route, arguments: args);
                         },
                         child: const Padding(
                           padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
@@ -316,9 +294,7 @@ class _ListingDetailState extends State<ListingDetail> {
                             child: Text(
                               'Add Tenant',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18.0),
+                                  color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.0),
                             ),
                           ),
                         ),
@@ -333,9 +309,7 @@ class _ListingDetailState extends State<ListingDetail> {
                       child: Text(
                         "Occupied By",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0,
-                            color: Colors.black),
+                            fontWeight: FontWeight.bold, fontSize: 18.0, color: Colors.black),
                       )),
               args.tenantEmail == ""
                   ? Container()
@@ -359,12 +333,10 @@ class _ListingDetailState extends State<ListingDetail> {
                             ),
                           ),
                           title: Text(userData.name.toString(),
-                              style: TextStyle(
-                                  fontSize: 16.0, fontWeight: FontWeight.bold)),
+                              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
                           subtitle: Text(
                             args.tenantEmail.toString(),
-                            style: TextStyle(
-                                fontSize: 16.0, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -379,16 +351,40 @@ class _ListingDetailState extends State<ListingDetail> {
   deleteData() async {
     final pref = await SharedPreferences.getInstance();
     var ownerEmail = pref.getString("email");
-    var query = _fireStore
+    var tenantEmail = pref.getString("TenantEmail");
+    List<String>? imageLinks = [];
+    String? docId;
+
+    var query1 = _fireStore
         .collection('Rooms')
         .where("ListingNo", isEqualTo: args.listingNo.toString())
         .where("OwnerEmail", isEqualTo: ownerEmail)
         .get();
-    await query.then((value) async {
+
+    await query1.then((value) async {
       if (value.docs.isNotEmpty) {
         for (var doc in value.docs) {
-          await doc.reference.delete().then((value) {
-            Navigator.pop(context, true);
+          imageLinks = Room.fromFireStoreSnapshot(doc).imagesLinkList;
+          await doc.reference.delete().then((value) async {
+            var query2 =
+                _fireStore.collection('Users').where("Email", isEqualTo: tenantEmail).get();
+            await query2.then((value) async {
+              if (value.docs.isNotEmpty) {
+                for (var doc in value.docs) {
+                  docId = User.fromFireStoreSnapshot(doc) as String?;
+                }
+              }
+              if (docId != "") {
+                _fireStore.collection("Users").doc(docId).update({"Room Name": ""}).then((value) {
+                  print("$tenantEmail cleared");
+                });
+              }
+            });
+            for (var item in imageLinks!) {
+              FirebaseStorage.instance.refFromURL(item.toString()).delete();
+            }
+            pref.setString("TenantEmail", "");
+            Navigator.pop(context);
           });
         }
       }

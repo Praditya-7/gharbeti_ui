@@ -7,6 +7,7 @@ class User {
   final String? name;
   final String? phoneNumber;
   final String? type;
+  final String? gender;
   String? documentId;
   String? roomName;
   bool? isSelected = false;
@@ -19,6 +20,7 @@ class User {
     this.roomName,
     this.phoneNumber,
     this.type,
+    this.gender,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -30,6 +32,7 @@ class User {
       name: json['Name'],
       phoneNumber: json['Phone Number'],
       type: json['Type'],
+      gender: json['Gender'],
     );
   }
 
@@ -40,6 +43,7 @@ class User {
         email = snap.get('Email'),
         password = snap.get('Password'),
         name = snap.get('Name'),
+        gender = snap.get('Gender'),
         phoneNumber = snap.get('Phone Number'),
         type = snap.get('Type');
 
@@ -49,6 +53,7 @@ class User {
       'Email': email,
       'Room Name': roomName,
       'Password': password,
+      'Gender': gender,
       'Phone Number': phoneNumber,
       'Name': name,
       'Type': type,

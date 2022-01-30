@@ -7,6 +7,7 @@ class Users {
     this.type,
     this.email,
     this.roomName,
+    this.gender,
   });
 
   String? name;
@@ -16,4 +17,5 @@ class Users {
   String? type;
   String? email;
   String? roomName;
+  String? gender;
 }

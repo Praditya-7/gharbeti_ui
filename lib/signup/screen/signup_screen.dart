@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/login/screen/login_screen.dart';
 import 'package:gharbeti_ui/shared/color.dart';
+import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/signup/entity/Users.dart';
 import 'package:intl/intl.dart';
 
@@ -26,6 +27,9 @@ class InitState extends State<SignUpScreen> {
   final TextEditingController _dateOfBirth = TextEditingController();
 
   String selectedUserType = 'owner';
+  double height = 0.0;
+  double width = 0.0;
+  String genderDropdownValue = 'Male';
 
   // CollectionReference users = _fireStore.collection('users');
 
@@ -33,6 +37,9 @@ class InitState extends State<SignUpScreen> {
   Widget build(BuildContext context) => initWidget();
 
   Widget initWidget() {
+    SizeConfig().init(context);
+    width = SizeConfig.safeBlockHorizontal!;
+    height = SizeConfig.safeBlockVertical!;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorData.primaryColor,
@@ -76,6 +83,53 @@ class InitState extends State<SignUpScreen> {
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
                       ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+                    padding: EdgeInsets.only(left: 20, right: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.grey[200],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(children: [
+                          Icon(
+                            Icons.person_pin,
+                            color: Color(0xff09548c),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            'Gender',
+                            style: TextStyle(color: Colors.grey[700], fontSize: 16),
+                          )
+                        ]),
+                        DropdownButton<String>(
+                          underline: Container(
+                            height: 0,
+                          ),
+                          value: genderDropdownValue,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              genderDropdownValue = newValue!;
+                            });
+                          },
+                          icon: Icon(Icons.arrow_drop_down_sharp),
+                          items: <String>[
+                            'Male',
+                            'Female',
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ],
                     ),
                   ),
                   Container(
@@ -331,6 +385,7 @@ class InitState extends State<SignUpScreen> {
       dateOfBirth: _dateOfBirth.text.toString(),
       type: selectedUserType,
       roomName: "",
+      gender: genderDropdownValue,
     );
     var query = _fireStore.collection('Users').get();
     await query.then((value) {
@@ -373,6 +428,7 @@ class InitState extends State<SignUpScreen> {
   Map<String, dynamic> addData(Users model) {
     Map<String, dynamic> data = <String, dynamic>{
       "Name": model.name,
+      "Gender": model.gender,
       "Email": model.email,
       "Password": model.password,
       "Phone Number": model.phone,
