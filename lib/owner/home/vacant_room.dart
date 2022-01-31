@@ -47,7 +47,10 @@ class _VacantRoomState extends State<VacantRoom> {
             .where("Type", isEqualTo: "tenant")
             .where("Email", isEqualTo: email)
             .get()
-        : _fireStore.collection('Users').where("Type", isEqualTo: "tenant").get();
+        : _fireStore
+            .collection('Users')
+            .where("Type", isEqualTo: "tenant")
+            .get();
     await query.then((value) {
       if (value.docs.isNotEmpty) {
         for (var doc in value.docs) {
@@ -99,7 +102,8 @@ class _VacantRoomState extends State<VacantRoom> {
   Widget _createBody() {
     return Container(
         margin: const EdgeInsets.all(10.0),
-        child: Column(crossAxisAlignment: (CrossAxisAlignment.start), children: [
+        child:
+            Column(crossAxisAlignment: (CrossAxisAlignment.start), children: [
           _createRoomWidget(),
           const SizedBox(
             height: 20,
@@ -134,7 +138,8 @@ class _VacantRoomState extends State<VacantRoom> {
                     filled: true,
                     fillColor: Colors.white,
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0), borderSide: BorderSide.none),
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: BorderSide.none),
                   ),
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -150,7 +155,8 @@ class _VacantRoomState extends State<VacantRoom> {
                   decoration: BoxDecoration(
                       color: ColorData.primaryColor,
                       borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(5), bottomRight: Radius.circular(5))),
+                          topRight: Radius.circular(5),
+                          bottomRight: Radius.circular(5))),
                   child: const Center(
                     child: Icon(
                       Icons.search_outlined,
@@ -228,10 +234,8 @@ class _VacantRoomState extends State<VacantRoom> {
         .then((value) {})
         .catchError((error) => print("Failed to add data: $error"));
 
-    _fireStore
-        .collection('Rooms')
-        .doc(args.documentId)
-        .update({"Tenant Email": tenant.email, "Status": "Occupied"}).then((value) {
+    _fireStore.collection('Rooms').doc(args.documentId).update(
+        {"Tenant Email": tenant.email, "Status": "Occupied"}).then((value) {
       isLoading = false;
       Navigator.pop(context, () {
         setState(() {});
@@ -287,7 +291,8 @@ class _VacantRoomState extends State<VacantRoom> {
   Widget _createLocationWidget() {
     return Container(
         padding: const EdgeInsets.all(10.0),
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5.0)),
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(5.0)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -299,7 +304,7 @@ class _VacantRoomState extends State<VacantRoom> {
               width: 25,
             ),
             BuildText(
-              text: "Lainchaur Kathmandu ,Nepal",
+              text: args.address.toString(),
             )
           ],
         ));
@@ -308,7 +313,8 @@ class _VacantRoomState extends State<VacantRoom> {
   Widget _createRoomWidget() {
     return Container(
       padding: const EdgeInsets.all(10.0),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5.0)),
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(5.0)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [

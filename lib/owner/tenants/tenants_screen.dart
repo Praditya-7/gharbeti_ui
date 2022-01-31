@@ -28,8 +28,6 @@ class _TenantsScreenState extends State<TenantsScreen> {
   double width = 0.0;
   double height = 0.0;
 
-
-
   String tenantName = 'Ram Shrestha';
   String listingType = 'Flat';
   List<int> dueRemaining = [
@@ -48,7 +46,10 @@ class _TenantsScreenState extends State<TenantsScreen> {
     roomList.clear();
     final pref = await SharedPreferences.getInstance();
     var email = pref.getString("email");
-    var query1 = _fireStore.collection('Rooms').where("OwnerEmail", isEqualTo: email).get();
+    var query1 = _fireStore
+        .collection('Rooms')
+        .where("OwnerEmail", isEqualTo: email)
+        .get();
     await query1.then((value) {
       if (value.docs.isNotEmpty) {
         for (var doc in value.docs) {
@@ -59,8 +60,10 @@ class _TenantsScreenState extends State<TenantsScreen> {
 
     if (roomList.isNotEmpty) {
       for (int i = 0; i < roomList.length; i++) {
-        var query2 =
-            _fireStore.collection('Users').where("Email", isEqualTo: roomList[i].tenantEmail).get();
+        var query2 = _fireStore
+            .collection('Users')
+            .where("Email", isEqualTo: roomList[i].tenantEmail)
+            .get();
         await query2.then((value) {
           if (value.docs.isNotEmpty) {
             for (var doc in value.docs) {
@@ -104,7 +107,8 @@ class _TenantsScreenState extends State<TenantsScreen> {
                       shrinkWrap: true,
                       physics: BouncingScrollPhysics(),
                       itemCount: tenantCount,
-                      separatorBuilder: (BuildContext context, int index) => Divider(
+                      separatorBuilder: (BuildContext context, int index) =>
+                          Divider(
                         height: 0.1,
                         indent: 0,
                         thickness: 0.1,
@@ -129,5 +133,11 @@ class _TenantsScreenState extends State<TenantsScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }

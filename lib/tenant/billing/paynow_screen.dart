@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/owner/billing/entity/billing_container.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 
 class PayNow extends StatefulWidget {
+  static String route = '/payNowScreen';
   const PayNow({Key? key}) : super(key: key);
 
   @override
@@ -11,10 +13,17 @@ class PayNow extends StatefulWidget {
 }
 
 class _PayNowState extends State<PayNow> {
+  Billings args = Billings();
   String _payOption = "";
   int billAmount = 8000;
   String owner = "Ram shrestha";
   String paymentStatus = "overdue";
+
+  @override
+  void didChangeDependencies() {
+    args = ModalRoute.of(context)!.settings.arguments as Billings;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +36,32 @@ class _PayNowState extends State<PayNow> {
       body: Column(
         children: [
           //Total Payment Info
-          show_payment_info(),
+
+          Container(
+            height: 200,
+            padding: EdgeInsets.all(10.0),
+            color: ColorData.primaryColor,
+            child: Center(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                  const Text(
+                    "Total Amount to be Paid",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    "Rs. " + args.total.toString(),
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0),
+                  ),
+                ])),
+          ),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -44,7 +78,7 @@ class _PayNowState extends State<PayNow> {
                     fontSize: 16,
                   ),
                   BuildText(
-                    text: owner,
+                    text: args.ownerEmail.toString(),
                     color: Colors.orange,
                     fontSize: 16,
                   ),
@@ -52,14 +86,12 @@ class _PayNowState extends State<PayNow> {
                     height: 20,
                   ),
                   const BuildText(
-                    text: "Payment Type",
+                    text: "Bill Month",
                     fontSize: 16,
                   ),
                   BuildText(
-                    text: paymentStatus,
-                    color: paymentStatus == "overdue"
-                        ? Colors.orange
-                        : Colors.green,
+                    text: args.month.toString(),
+                    color: Colors.orange,
                     fontSize: 16,
                   ),
                   const SizedBox(
@@ -196,13 +228,12 @@ class _PayNowState extends State<PayNow> {
                         onPressed: () {
                           if (_payOption == "khalti") {
                             final config = PaymentConfig(
-                              amount: 10000,
+                              amount: int.parse(args.total.toString()) * 100,
                               // Amount should be in paisa
                               productIdentity:
                                   'test_public_key_dc74e0fd57cb46cd93832aee0a507256',
                               productName: 'Dell G5 G5510 2021',
                               productUrl: 'https://www.khalti.com/#/bazaar',
-
                             );
                             KhaltiScope.of(context).pay(
                               config: config,
@@ -211,15 +242,9 @@ class _PayNowState extends State<PayNow> {
                                 PaymentPreference.eBanking,
                                 PaymentPreference.sct,
                               ],
-                              onSuccess: (value){
-
-                              },
-                              onFailure: (onFailure){
-
-                              },
-                              onCancel: (){
-
-                              },
+                              onSuccess: (value) {},
+                              onFailure: (onFailure) {},
+                              onCancel: () {},
                             );
                           }
                         },
@@ -241,35 +266,6 @@ class _PayNowState extends State<PayNow> {
         child: const Text("Pay Now"),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
-  }
-
-  //Payment Detail
-  Widget show_payment_info() {
-    return Container(
-      height: 200,
-      padding: EdgeInsets.all(10.0),
-      color: ColorData.primaryColor,
-      child: Center(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-            Text(
-              "Total Amount to be Paid",
-              style: TextStyle(color: Colors.white),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Text(
-              "Rs. " + billAmount.toString(),
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24.0),
-            ),
-          ])),
     );
   }
 }

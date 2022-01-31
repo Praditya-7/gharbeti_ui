@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ import 'package:gharbeti_ui/shared/widget/build_text.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'carousel.dart';
+
+final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
 class DiscoverListingDetail extends StatefulWidget {
   static String route = '/discoverListingDetail';
@@ -38,6 +41,11 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
   void didChangeDependencies() {
     args = ModalRoute.of(context)!.settings.arguments as Room;
     super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -116,7 +124,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                             child: SizedBox(
                               width: 200,
                               child: Text(
-                                address,
+                                args.address.toString(),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 3,
                                 softWrap: false,
@@ -128,7 +136,8 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                       ),
                       Text(
                         'Rs.' + args.rent.toString() + '/month',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.black),
                       ),
                     ],
                   ),
@@ -146,9 +155,13 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           //TO BE IMPLEMENTED
-                          Text("Owner",
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-                          Text(name),
+                          const Text(
+                            "Owner Email",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                          Text(args.ownerEmail.toString()),
                         ],
                       ),
                       //Preferences
@@ -157,7 +170,9 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Preferences",
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black)),
                           Text(args.preferences.toString()),
                         ],
                       ),
@@ -167,7 +182,9 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Floor",
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black)),
                           Text(args.floor.toString()),
                         ],
                       )
@@ -199,7 +216,9 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         text: TextSpan(
                           text: "BathRooms : ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14.0,
+                              color: Colors.black),
                           children: [
                             TextSpan(
                                 text: " " + args.bathroom.toString(),
@@ -218,7 +237,9 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         text: TextSpan(
                           text: "Kitchen : ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14.0,
+                              color: Colors.black),
                           children: [
                             TextSpan(
                                 text: " " + args.kitchen.toString(),
@@ -237,7 +258,9 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         text: TextSpan(
                           text: "Internet : ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14.0,
+                              color: Colors.black),
                           children: [
                             TextSpan(
                                 text: " " + args.internet.toString(),
@@ -256,7 +279,9 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                         text: TextSpan(
                           text: "Parking : ",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 14.0, color: Colors.black),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14.0,
+                              color: Colors.black),
                           children: [
                             TextSpan(
                                 text: " " + args.parking.toString(),

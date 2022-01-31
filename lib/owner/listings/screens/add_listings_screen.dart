@@ -56,11 +56,13 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
   late LatLng _latLng;
 
   late GoogleMapController _googleMapController;
-  final TextEditingController _listingNo = TextEditingController();
+  final TextEditingController listingNoController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
   final TextEditingController lastMeterReadingController =
       TextEditingController();
-  final TextEditingController _additionalDescription = TextEditingController();
-  final TextEditingController _price = TextEditingController();
+  final TextEditingController additionalDescriptionController =
+      TextEditingController();
+  final TextEditingController priceController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -146,11 +148,31 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           color: Colors.grey[200],
                         ),
                         child: TextField(
-                          controller: _listingNo,
+                          controller: listingNoController,
                           keyboardType: TextInputType.number,
                           cursorColor: const Color(0xff09548c),
                           decoration: const InputDecoration(
                             hintText: "Listing No*",
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        height: height * 5,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.grey[200],
+                        ),
+                        child: TextField(
+                          controller: addressController,
+                          keyboardType: TextInputType.text,
+                          cursorColor: const Color(0xff09548c),
+                          decoration: const InputDecoration(
+                            hintText: "Address",
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
                           ),
@@ -396,7 +418,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           color: Colors.grey[200],
                         ),
                         child: TextField(
-                          controller: _price,
+                          controller: priceController,
                           keyboardType: TextInputType.number,
                           cursorColor: const Color(0xff09548c),
                           decoration: const InputDecoration(
@@ -538,7 +560,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         child: TextField(
                           maxLines: 15,
                           minLines: 5,
-                          controller: _additionalDescription,
+                          controller: additionalDescriptionController,
                           cursorColor: const Color(0xff09548c),
                           decoration: const InputDecoration(
                             hintText: "Additional Description",
@@ -731,28 +753,30 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
       randomFileName = getRandomString(10);
       imageFileName.add(randomFileName);
       String? imageFile = files[i].toString();
-      await Storage(listingNo: _listingNo.text.toString())
+      await Storage(listingNo: listingNoController.text.toString())
           .uploadImage(imageFile, randomFileName)
           .then((value) async {
         print('Uploaded');
-        imageLink = await Storage(listingNo: _listingNo.text.toString())
-            .downloadImageURL(randomFileName);
+        imageLink =
+            await Storage(listingNo: listingNoController.text.toString())
+                .downloadImageURL(randomFileName);
         imageDownloadLinkList.add(imageLink);
       });
     }
 
     var model = Rooms(
+      address: addressController.text.toString(),
       type: listingTypeDropdownValue,
-      listingNo: _listingNo.text.toString(),
+      listingNo: listingNoController.text.toString(),
       floor: floorDropdownValue,
       parking: parkingDropdownValue,
       bathrooms: bathroomDropdownValue,
       kitchen: kitchenDropdownValue,
       internet: internetDropdownValue,
-      rent: _price.text.toString(),
+      rent: priceController.text.toString(),
       negotiable: negotiableDropdownValue,
       preferences: preferencesDropdownValue,
-      description: _additionalDescription.text.toString(),
+      description: additionalDescriptionController.text.toString(),
       email: pref.getString("email"),
       status: "Vacant",
       lat: _latLng.latitude,
@@ -788,6 +812,7 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
 
   Map<String, dynamic> addData(Rooms model) {
     Map<String, dynamic> data = <String, dynamic>{
+      "Address": model.address,
       "Type": model.type,
       "ListingNo": model.listingNo,
       "Floor": model.floor,

@@ -40,12 +40,12 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
   bool noDataFound = false;
 
   final TextEditingController priceController = TextEditingController();
-  String priceDropdownValue = 'Below';
-  String typeDropdownValue = 'Flat';
-  String parkingDropdownValue = 'No';
-  String internetDropdownValue = 'No';
-  String kitchenDropdownValue = 'No';
-  String preferredDropdownValue = 'Family';
+
+  String typeDropdownValue = 'Any';
+  String parkingDropdownValue = 'Any';
+  String internetDropdownValue = 'Any';
+  String kitchenDropdownValue = 'Any';
+  String preferredDropdownValue = 'Any';
 
   @override
   void initState() {
@@ -55,7 +55,10 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
 
   setData() async {
     roomList.clear();
-    var query = _fireStore.collection('Rooms').get();
+    var query = _fireStore
+        .collection('Rooms')
+        .where("Status", isEqualTo: "Vacant")
+        .get();
     await query.then((value) {
       if (value.docs.isNotEmpty) {
         for (var doc in value.docs) {
@@ -108,16 +111,17 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
           IconButton(
             onPressed: () async {
               LocationRadius_container? popData = LocationRadius_container();
-              popData = await (Navigator.of(context).pushNamed(DiscoverNearYou.route))
-                  as LocationRadius_container?;
-              print(popData!.markedLocation);
-              print(popData.radius);
+              popData =
+                  await (Navigator.of(context).pushNamed(DiscoverNearYou.route))
+                      as LocationRadius_container?;
+
               setState(() {
                 roomList.clear();
                 if (roomList.isEmpty) {
                   isLoading = true;
                 }
-                checkListingWithinRadius(popData!.markedLocation, popData.radius);
+                checkListingWithinRadius(
+                    popData!.markedLocation, popData.radius);
               });
             },
             icon: const Icon(
@@ -164,7 +168,9 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                               shrinkWrap: true,
                               physics: const BouncingScrollPhysics(),
                               itemCount: roomCount,
-                              separatorBuilder: (BuildContext context, int index) => const Divider(
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      const Divider(
                                 height: 0.1,
                                 indent: 0,
                                 thickness: 0.1,
@@ -188,7 +194,9 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                 FilterWidget(),
               ],
             ),
-            Visibility(visible: isLoading, child: const CustomProgressIndicatorWidget()),
+            Visibility(
+                visible: isLoading,
+                child: const CustomProgressIndicatorWidget()),
           ],
         ),
       ),
@@ -257,27 +265,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                DropdownButton<String>(
-                                  underline: Container(
-                                    height: 0,
-                                  ),
-                                  value: priceDropdownValue,
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      priceDropdownValue = newValue!;
-                                    });
-                                  },
-                                  icon: const Icon(Icons.arrow_drop_down_sharp),
-                                  items: <String>[
-                                    'Above',
-                                    'Below',
-                                  ].map<DropdownMenuItem<String>>((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                ),
+                                const Text('Below'),
                                 SizedBox(
                                   width: 100,
                                   child: TextField(
@@ -318,9 +306,14 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                   typeDropdownValue = newValue!;
                                 });
                               },
+                              menuMaxHeight: height * 10,
                               icon: const Icon(Icons.arrow_drop_down_sharp),
-                              items: <String>['Room', 'Flat', 'House']
-                                  .map<DropdownMenuItem<String>>((String value) {
+                              items: <String>[
+                                'Any',
+                                'Room',
+                                'Flat',
+                                'House'
+                              ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -351,8 +344,10 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                   parkingDropdownValue = newValue!;
                                 });
                               },
+                              menuMaxHeight: height * 10,
                               icon: const Icon(Icons.arrow_drop_down_sharp),
                               items: <String>[
+                                'Any',
                                 'No',
                                 'Bike',
                                 'Car',
@@ -389,8 +384,10 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                   internetDropdownValue = newValue!;
                                 });
                               },
+                              menuMaxHeight: height * 10,
                               icon: const Icon(Icons.arrow_drop_down_sharp),
                               items: <String>[
+                                'Any',
                                 'No',
                                 'Yes',
                               ].map<DropdownMenuItem<String>>((String value) {
@@ -424,8 +421,11 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                   kitchenDropdownValue = newValue!;
                                 });
                               },
+                              elevation: 0,
+                              menuMaxHeight: height * 10,
                               icon: const Icon(Icons.arrow_drop_down_sharp),
                               items: <String>[
+                                'Any',
                                 'No',
                                 'Yes',
                               ].map<DropdownMenuItem<String>>((String value) {
@@ -462,6 +462,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                               },
                               icon: const Icon(Icons.arrow_drop_down_sharp),
                               items: <String>[
+                                'Any',
                                 'Family',
                                 'Individual',
                               ].map<DropdownMenuItem<String>>((String value) {
@@ -494,7 +495,8 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                 color: ColorData.occupiedColor,
                               ),
                               margin: const EdgeInsets.all(10),
-                              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                              padding:
+                                  const EdgeInsets.fromLTRB(20, 10, 20, 10),
                               child: const Center(
                                 child: Text(
                                   'Cancel',
@@ -527,7 +529,8 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     margin: const EdgeInsets.all(10),
-                                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20, 10, 20, 10),
                                     child: const Center(
                                       child: Text(
                                         'Reset',
@@ -551,7 +554,8 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                 color: ColorData.primaryColor,
                               ),
                               margin: const EdgeInsets.all(10),
-                              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                              padding:
+                                  const EdgeInsets.fromLTRB(20, 10, 20, 10),
                               child: const Center(
                                 child: Text(
                                   'Apply',
@@ -581,11 +585,11 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
     var query = _fireStore
         .collection('Rooms')
         .where("Status", isEqualTo: "Vacant")
-        .where("Type", isEqualTo: typeDropdownValue.toString())
-        .where("Parking", isEqualTo: parkingDropdownValue.toString())
-        .where("Internet", isEqualTo: internetDropdownValue.toString())
-        .where("Kitchen", isEqualTo: kitchenDropdownValue.toString())
-        .where("Preferences", isEqualTo: preferredDropdownValue.toString())
+        // .where("Type", isEqualTo: typeDropdownValue.toString())
+        // .where("Parking", isEqualTo: parkingDropdownValue.toString())
+        // .where("Internet", isEqualTo: internetDropdownValue.toString())
+        // .where("Kitchen", isEqualTo: kitchenDropdownValue.toString())
+        // .where("Preferences", isEqualTo: preferredDropdownValue.toString())
         .get();
     await query.then((value) {
       if (value.docs.isNotEmpty) {
@@ -595,6 +599,46 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
       }
     });
 
+    for (var item in roomList) {
+      int rentPrice = int.parse(item.rent.toString());
+      int searchPrice = int.parse(priceController.text.toString());
+      bool remove = false;
+
+      if (priceController.text.toString() != "") {
+        if (searchPrice > rentPrice) {
+          remove = true;
+        }
+      }
+      if (typeDropdownValue.toString() != "Any") {
+        if (typeDropdownValue.toString() != item.type.toString()) {
+          remove = true;
+        }
+      }
+      if (parkingDropdownValue.toString() != "Any") {
+        if (parkingDropdownValue.toString() != item.parking.toString()) {
+          remove = true;
+        }
+      }
+      if (internetDropdownValue.toString() != "Any") {
+        if (internetDropdownValue.toString() != item.internet.toString()) {
+          remove = true;
+        }
+      }
+      if (kitchenDropdownValue.toString() != "Any") {
+        if (kitchenDropdownValue.toString() != item.kitchen.toString()) {
+          remove = true;
+        }
+      }
+      if (preferredDropdownValue.toString() != "Any") {
+        if (preferredDropdownValue.toString() != item.preferences.toString()) {
+          remove = true;
+        }
+      }
+      if (remove == true) {
+        roomList.remove(item);
+      }
+    }
+
     setState(() {
       if (roomList.isEmpty) {
         //NO DATA FOUND
@@ -602,6 +646,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
       }
       filterSelected = false;
       roomCount = roomList.length;
+
       isIgnored = false;
       isLoading = false;
       blurValue = 0.0;
@@ -613,7 +658,10 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
     List<Room> resultList = [];
     List<Room> outputList = [];
     resultList.clear();
-    var query = _fireStore.collection('Rooms').where("Status", isEqualTo: "Vacant").get();
+    var query = _fireStore
+        .collection('Rooms')
+        .where("Status", isEqualTo: "Vacant")
+        .get();
     await query.then((value) {
       if (value.docs.isNotEmpty) {
         for (var doc in value.docs) {
@@ -643,7 +691,8 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
     });
   }
 
-  bool checkData(double latitude, double longitude, LatLng? markedLocation, String? radius) {
+  bool checkData(double latitude, double longitude, LatLng? markedLocation,
+      String? radius) {
     bool withinRadius = false;
     double calculated = distance(
         latitude,
@@ -664,7 +713,8 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
   // where: 'M' is statute miles (default)
   // 'K' is kilometers
   // 'N' is nautical miles
-  double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
+  double distance(
+      double lat1, double lon1, double lat2, double lon2, String unit) {
     double theta = lon1 - lon2;
     double dist = sin(deg2rad(lat1)) * sin(deg2rad(lat2)) +
         cos(deg2rad(lat1)) * cos(deg2rad(lat2)) * cos(deg2rad(theta));

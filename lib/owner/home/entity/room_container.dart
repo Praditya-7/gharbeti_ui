@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Room {
+  final String? address;
   final String? bathroom;
   final String? description;
   final String? floor;
@@ -13,7 +14,7 @@ class Room {
   final String? negotiable;
   final String? status;
   final String? type;
-  final String? email;
+  final String? ownerEmail;
   String? documentId;
   final String? tenantEmail;
   final double latitude;
@@ -22,6 +23,7 @@ class Room {
   final List<String>? imagesLinkList;
 
   Room({
+    this.address,
     this.negotiable,
     this.bathroom,
     this.description,
@@ -34,7 +36,7 @@ class Room {
     this.preferences,
     this.status,
     this.type,
-    this.email,
+    this.ownerEmail,
     this.tenantEmail,
     this.lastMeterReading,
     this.imagesLinkList,
@@ -46,6 +48,7 @@ class Room {
     var list = json['ImageLinkList'] as List;
     List<String> dataList = List<String>.from(list);
     return Room(
+      address: json['Address'],
       bathroom: json['Bathrooms'],
       description: json['Description'],
       floor: json['Floor'],
@@ -58,7 +61,7 @@ class Room {
       status: json['Status'],
       type: json['Type'],
       tenantEmail: json['Tenant Email'],
-      email: json['OwnerEmail'],
+      ownerEmail: json['OwnerEmail'],
       negotiable: json['Negotiable'],
       latitude: json['Latitude'],
       lastMeterReading: json['LastMeterReading'],
@@ -69,6 +72,7 @@ class Room {
 
   Room.fromFireStoreSnapshot(DocumentSnapshot snap)
       : documentId = snap.id,
+        address = snap.get('Address'),
         bathroom = snap.get('Bathrooms'),
         description = snap.get('Description'),
         floor = snap.get('Floor'),
@@ -86,10 +90,11 @@ class Room {
         longitude = snap.get('Longitude'),
         imagesLinkList = List<String>.from(snap.get('ImageLinkList')),
         lastMeterReading = snap.get('LastMeterReading'),
-        email = snap.get('OwnerEmail');
+        ownerEmail = snap.get('OwnerEmail');
 
   toJson() {
     return {
+      'Address': address,
       'Bathrooms': bathroom,
       'Description': description,
       'Floor': floor,
@@ -102,7 +107,7 @@ class Room {
       'Preferences': preferences,
       'Type': type,
       'Status': status,
-      'OwnerEmail': email,
+      'OwnerEmail': ownerEmail,
       'Negotiable': negotiable,
       'Latitude': latitude,
       'Longitude': longitude,

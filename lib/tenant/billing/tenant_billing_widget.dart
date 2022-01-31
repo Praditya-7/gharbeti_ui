@@ -143,10 +143,8 @@ class _TenantBillingWidgetState extends State<TenantBillingWidget> {
                         ),
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PayNow()));
+                            Navigator.of(context).pushNamed(PayNow.route,
+                                arguments: widget.data);
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(8),

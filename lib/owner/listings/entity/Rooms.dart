@@ -1,4 +1,5 @@
 class Rooms {
+  final String? address;
   final String? negotiable;
   final String? bathrooms;
   final String? description;
@@ -21,6 +22,7 @@ class Rooms {
   final List? imagesLinkList;
 
   Rooms({
+    this.address,
     this.bathrooms,
     this.description,
     this.floor,

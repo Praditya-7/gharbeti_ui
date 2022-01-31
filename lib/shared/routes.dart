@@ -1,4 +1,3 @@
-import 'package:gharbeti_ui/chat/model/chat_user.dart';
 import 'package:gharbeti_ui/chat/screen/add_chat_user.dart';
 import 'package:gharbeti_ui/chat/screen/chat_detail_screen.dart';
 import 'package:gharbeti_ui/chat/screen/chat_screen.dart';
@@ -15,6 +14,7 @@ import 'package:gharbeti_ui/owner/tenants/tenant_detail.dart';
 import 'package:gharbeti_ui/owner/tenants/tenants_screen.dart';
 import 'package:gharbeti_ui/signup/screen/signup_screen.dart';
 import 'package:gharbeti_ui/splash_screen/intro_screen.dart';
+import 'package:gharbeti_ui/tenant/billing/paynow_screen.dart';
 import 'package:gharbeti_ui/tenant/billing/tenant_paid_bills.dart';
 import 'package:gharbeti_ui/tenant/billing/tenant_pending_bills.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_filter.dart';
@@ -50,6 +50,7 @@ class Routes {
     DiscoverFilter.route: (ctx) => const DiscoverFilter(),
     NotificationScreen.route: (ctx) => const NotificationScreen(),
     ChatScreen.routeName: (ctx) => const ChatScreen(),
+    PayNow.route: (ctx) => const PayNow(),
     AddChatUserScreen.routeName: (ctx) => const AddChatUserScreen(),
     ChatDetailScreen.routeName: (ctx) => const ChatDetailScreen(
           id: "",

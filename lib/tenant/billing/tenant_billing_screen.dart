@@ -23,7 +23,7 @@ class BillingTenantScreen extends StatefulWidget {
 }
 
 class _BillingTenantScreenState extends State<BillingTenantScreen> {
-  int totalDueBalance = 8000;
+  int totalDueBalance = 0;
   String status = 'Paid';
 
   double width = 0.0;
@@ -50,7 +50,6 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
 
     final pref = await SharedPreferences.getInstance();
     var email = pref.getString("email");
-    print(email);
 
     var query1 = _fireStore
         .collection('Billings')
@@ -68,6 +67,11 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
       print(e);
     });
 
+    for (var item in pendingList) {
+      int billValue = int.parse(item.total.toString());
+      totalDueBalance = billValue + totalDueBalance;
+    }
+
     var query2 = _fireStore
         .collection('Billings')
         .where("TenantEmail", isEqualTo: email)
@@ -81,11 +85,9 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
       }
     }).catchError((e) {
       paidList.clear();
-      print(e);
     });
 
     setState(() {
-      print(pendingList.length);
       pendingList.isNotEmpty ? pendingData = pendingList.first : null;
       paidList.isNotEmpty ? paidData = paidList.first : null;
       pendingCount = pendingList.length;
@@ -151,13 +153,21 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                             height: 10,
                           ),
                           InkWell(
-                            onTap: (
-                                //ROUTE TO PAY NOW HERE!!
-                                ) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => PayNow()));
+                            onTap: () {
+                              List<String> billMonths = [];
+                              for (var item in pendingList) {
+                                billMonths.add(item.month.toString());
+                              }
+                              String months = billMonths.join(", ");
+
+                              Billings bill = Billings(
+                                ownerEmail: pendingList[0].ownerEmail,
+                                total: totalDueBalance,
+                                month: months,
+                              );
+
+                              Navigator.of(context)
+                                  .pushNamed(PayNow.route, arguments: bill);
                             },
                             child: Container(
                               height: 35,

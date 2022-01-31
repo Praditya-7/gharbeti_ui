@@ -30,7 +30,7 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
 
   @override
   void initState() {
-    getAddress();
+    // getAddress();
     super.initState();
   }
 
@@ -53,7 +53,7 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
     if (subLocality == '') {
       add = locality + ", " + district;
     }
-    print(add);
+
     return add;
   }
 
@@ -61,17 +61,19 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
     _getPlace().then((value) {
       setState(() {
         address = value.toString();
-        print(address);
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    including = widget.data.kitchen.toString() == 'Yes' ? ' | Room including Kitchen' : ' ';
+    including = widget.data.kitchen.toString() == 'Yes'
+        ? ' | Room including Kitchen'
+        : ' ';
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(DiscoverListingDetail.route, arguments: widget.data);
+        Navigator.of(context)
+            .pushNamed(DiscoverListingDetail.route, arguments: widget.data);
       },
       child: Container(
         color: Colors.white,
@@ -146,7 +148,7 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
                         child: SizedBox(
                           width: 200,
                           child: Text(
-                            address.toString(),
+                            widget.data.address.toString(),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 3,
                             softWrap: false,
@@ -216,5 +218,11 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }
