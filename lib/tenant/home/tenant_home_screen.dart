@@ -122,6 +122,7 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                     Column(
                       children: [
                         Container(
+                          margin: EdgeInsets.all(8.0),
                           color: ColorData.primaryColor,
                           width: double.infinity,
                           padding: EdgeInsets.all(10.0),
@@ -274,6 +275,7 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                     Column(
                       children: [
                         Container(
+                          margin: EdgeInsets.all(8.0),
                           color: ColorData.primaryColor,
                           width: double.infinity,
                           padding: EdgeInsets.all(10.0),
@@ -287,7 +289,7 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                             borderRadius: BorderRadius.circular(8.0),
                             color: Colors.white,
                           ),
-                          margin: const EdgeInsets.all(8.0),
+                          margin: const EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
                           child: Center(
                             child: ListTile(
                               leading: Container(

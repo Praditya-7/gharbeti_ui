@@ -192,6 +192,7 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                     Container(
                       color: ColorData.primaryColor,
                       width: double.infinity,
+                      margin: EdgeInsets.all(8.0),
                       padding: EdgeInsets.all(10.0),
                       child: BuildText(
                         text: "Pending Bills",
@@ -241,6 +242,7 @@ class _BillingTenantScreenState extends State<BillingTenantScreen> {
                       color: ColorData.primaryColor,
                       width: double.infinity,
                       padding: EdgeInsets.all(10.0),
+                      margin: EdgeInsets.all(8.0),
                       child: BuildText(
                         text: "Recent Payment",
                         color: Colors.white,

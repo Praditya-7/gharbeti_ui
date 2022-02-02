@@ -23,6 +23,7 @@ import 'package:gharbeti_ui/tenant/discover/discover_near_you.dart';
 import 'package:gharbeti_ui/tenant/discover/filtered_listing.dart';
 import 'package:gharbeti_ui/tenant/home/tenant_home_screen.dart';
 import 'package:gharbeti_ui/tenant/notification/notification_screen.dart';
+import 'package:gharbeti_ui/tenant/profile/add_document.dart';
 import 'package:gharbeti_ui/tenant/tenant_dashboard.dart';
 
 class Routes {
@@ -51,6 +52,7 @@ class Routes {
     NotificationScreen.route: (ctx) => const NotificationScreen(),
     ChatScreen.routeName: (ctx) => const ChatScreen(),
     PayNow.route: (ctx) => const PayNow(),
+    AddDocuments.route: (ctx) => const AddDocuments(),
     AddChatUserScreen.routeName: (ctx) => const AddChatUserScreen(),
     ChatDetailScreen.routeName: (ctx) => const ChatDetailScreen(
           id: "",
