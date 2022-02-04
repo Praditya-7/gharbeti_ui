@@ -306,7 +306,6 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                   typeDropdownValue = newValue!;
                                 });
                               },
-                              menuMaxHeight: height * 10,
                               icon: const Icon(Icons.arrow_drop_down_sharp),
                               items: <String>[
                                 'Any',
@@ -344,7 +343,6 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                   parkingDropdownValue = newValue!;
                                 });
                               },
-                              menuMaxHeight: height * 10,
                               icon: const Icon(Icons.arrow_drop_down_sharp),
                               items: <String>[
                                 'Any',
@@ -384,7 +382,6 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                   internetDropdownValue = newValue!;
                                 });
                               },
-                              menuMaxHeight: height * 10,
                               icon: const Icon(Icons.arrow_drop_down_sharp),
                               items: <String>[
                                 'Any',
@@ -422,7 +419,6 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                                 });
                               },
                               elevation: 0,
-                              menuMaxHeight: height * 10,
                               icon: const Icon(Icons.arrow_drop_down_sharp),
                               items: <String>[
                                 'Any',

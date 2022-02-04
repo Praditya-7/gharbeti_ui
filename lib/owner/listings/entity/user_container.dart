@@ -11,6 +11,8 @@ class User {
   String? documentId;
   String? roomName;
   bool? isSelected = false;
+  final String? pdfLink;
+  final String? fileName;
 
   User({
     this.dob,
@@ -21,6 +23,8 @@ class User {
     this.phoneNumber,
     this.type,
     this.gender,
+    this.pdfLink,
+    this.fileName,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -33,6 +37,8 @@ class User {
       phoneNumber: json['Phone Number'],
       type: json['Type'],
       gender: json['Gender'],
+      fileName: json['FileName'],
+      pdfLink: json['PDFLink'],
     );
   }
 
@@ -45,6 +51,8 @@ class User {
         name = snap.get('Name'),
         gender = snap.get('Gender'),
         phoneNumber = snap.get('Phone Number'),
+        pdfLink = snap.get('PDFLink'),
+        fileName = snap.get('FileName'),
         type = snap.get('Type');
 
   toJson() {
@@ -56,6 +64,8 @@ class User {
       'Gender': gender,
       'Phone Number': phoneNumber,
       'Name': name,
+      'PDFLink': pdfLink,
+      'FileName': fileName,
       'Type': type,
     };
   }

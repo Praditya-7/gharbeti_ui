@@ -8,14 +8,18 @@ class Users {
     this.email,
     this.roomName,
     this.gender,
+    this.pdfLink,
+    this.fileName,
   });
 
-  String? name;
-  String? dateOfBirth;
-  String? password;
-  String? phone;
-  String? type;
-  String? email;
-  String? roomName;
-  String? gender;
+  final String? name;
+  final String? dateOfBirth;
+  final String? password;
+  final String? phone;
+  final String? type;
+  final String? email;
+  final String? roomName;
+  final String? gender;
+  final String? pdfLink;
+  final String? fileName;
 }

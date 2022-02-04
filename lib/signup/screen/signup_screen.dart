@@ -43,7 +43,7 @@ class InitState extends State<SignUpScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorData.primaryColor,
-        title: Text(
+        title: const Text(
           "Register",
           style: TextStyle(color: Colors.white),
         ),
@@ -53,7 +53,7 @@ class InitState extends State<SignUpScreen> {
               child: Container(
                 height: 20,
                 width: 30,
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               ),
             )
           : SingleChildScrollView(
@@ -61,20 +61,23 @@ class InitState extends State<SignUpScreen> {
                 children: [
                   Container(
                     alignment: Alignment.center,
-                    margin: EdgeInsets.only(left: 20, right: 20, top: 30),
-                    padding: EdgeInsets.only(left: 20, right: 20),
+                    margin: const EdgeInsets.only(left: 20, right: 20, top: 30),
+                    padding: const EdgeInsets.only(left: 20, right: 20),
                     height: 54,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       color: Colors.grey[200],
-                      boxShadow: [
-                        BoxShadow(offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
+                      boxShadow: const [
+                        BoxShadow(
+                            offset: Offset(0, 10),
+                            blurRadius: 50,
+                            color: Color(0xffEEEEEE)),
                       ],
                     ),
                     child: TextField(
                       controller: _name,
-                      cursorColor: Color(0xff09548c),
-                      decoration: InputDecoration(
+                      cursorColor: const Color(0xff09548c),
+                      decoration: const InputDecoration(
                         icon: Icon(
                           Icons.person,
                           color: Color(0xff09548c),
@@ -86,8 +89,8 @@ class InitState extends State<SignUpScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-                    padding: EdgeInsets.only(left: 20, right: 20),
+                    margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                    padding: const EdgeInsets.only(left: 20, right: 20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       color: Colors.grey[200],
@@ -96,16 +99,17 @@ class InitState extends State<SignUpScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(children: [
-                          Icon(
+                          const Icon(
                             Icons.person_pin,
                             color: Color(0xff09548c),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 15,
                           ),
                           Text(
                             'Gender',
-                            style: TextStyle(color: Colors.grey[700], fontSize: 16),
+                            style: TextStyle(
+                                color: Colors.grey[700], fontSize: 16),
                           )
                         ]),
                         DropdownButton<String>(
@@ -141,7 +145,10 @@ class InitState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.circular(5),
                       color: Colors.grey[200],
                       boxShadow: [
-                        BoxShadow(offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
+                        BoxShadow(
+                            offset: Offset(0, 10),
+                            blurRadius: 50,
+                            color: Color(0xffEEEEEE)),
                       ],
                     ),
                     child: TextField(
@@ -167,7 +174,10 @@ class InitState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.circular(5),
                       color: Color(0xffEEEEEE),
                       boxShadow: [
-                        BoxShadow(offset: Offset(0, 20), blurRadius: 100, color: Color(0xffEEEEEE)),
+                        BoxShadow(
+                            offset: Offset(0, 20),
+                            blurRadius: 100,
+                            color: Color(0xffEEEEEE)),
                       ],
                     ),
                     child: TextField(
@@ -194,7 +204,10 @@ class InitState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.circular(5),
                       color: Color(0xffEEEEEE),
                       boxShadow: [
-                        BoxShadow(offset: Offset(0, 20), blurRadius: 100, color: Color(0xffEEEEEE)),
+                        BoxShadow(
+                            offset: Offset(0, 20),
+                            blurRadius: 100,
+                            color: Color(0xffEEEEEE)),
                       ],
                     ),
                     child: TextField(
@@ -233,7 +246,10 @@ class InitState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.circular(5),
                       color: Color(0xffEEEEEE),
                       boxShadow: [
-                        BoxShadow(offset: Offset(0, 20), blurRadius: 100, color: Color(0xffEEEEEE)),
+                        BoxShadow(
+                            offset: Offset(0, 20),
+                            blurRadius: 100,
+                            color: Color(0xffEEEEEE)),
                       ],
                     ),
                     child: TextField(
@@ -265,7 +281,8 @@ class InitState extends State<SignUpScreen> {
                             );
                           },
                           child: Container(
-                            margin: EdgeInsets.only(left: 20, right: 5, top: 20),
+                            margin:
+                                EdgeInsets.only(left: 20, right: 5, top: 20),
                             decoration: BoxDecoration(
                               border: Border.all(
                                 width: 1.0,
@@ -281,7 +298,9 @@ class InitState extends State<SignUpScreen> {
                                 'Owner',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: selectedUserType == 'owner' ? Colors.white : Colors.black,
+                                  color: selectedUserType == 'owner'
+                                      ? Colors.white
+                                      : Colors.black,
                                   fontSize: 15.0,
                                 ),
                               ),
@@ -299,7 +318,8 @@ class InitState extends State<SignUpScreen> {
                             );
                           },
                           child: Container(
-                            margin: EdgeInsets.only(left: 5, right: 20, top: 20),
+                            margin:
+                                EdgeInsets.only(left: 5, right: 20, top: 20),
                             decoration: BoxDecoration(
                               border: Border.all(
                                 width: 1.0,
@@ -315,7 +335,9 @@ class InitState extends State<SignUpScreen> {
                                 'Tenant',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: selectedUserType == 'tenant' ? Colors.white : Colors.black,
+                                  color: selectedUserType == 'tenant'
+                                      ? Colors.white
+                                      : Colors.black,
                                   fontSize: 15.0,
                                 ),
                               ),
@@ -342,7 +364,9 @@ class InitState extends State<SignUpScreen> {
                         color: Color(0xff09548c),
                         boxShadow: [
                           BoxShadow(
-                              offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
+                              offset: Offset(0, 10),
+                              blurRadius: 50,
+                              color: Color(0xffEEEEEE)),
                         ],
                       ),
                       child: Text(
@@ -385,7 +409,9 @@ class InitState extends State<SignUpScreen> {
       dateOfBirth: _dateOfBirth.text.toString(),
       type: selectedUserType,
       roomName: "",
+      pdfLink: "",
       gender: genderDropdownValue,
+      fileName: "",
     );
     var query = _fireStore.collection('Users').get();
     await query.then((value) {
@@ -435,6 +461,8 @@ class InitState extends State<SignUpScreen> {
       "Type": model.type,
       "Date of Birth": model.dateOfBirth,
       "Room Name": model.roomName,
+      "PDFLink": model.pdfLink,
+      "FileName": model.fileName,
     };
     return data;
   }
