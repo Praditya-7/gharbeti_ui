@@ -1,14 +1,19 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
+import 'package:gharbeti_ui/owner/listings/entity/user_container.dart';
 import 'package:gharbeti_ui/shared/color.dart';
+import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+
 class TenantHomeScreen extends StatefulWidget {
   static String route = '/homeScreenRegistered';
-
   const TenantHomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -22,7 +27,13 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
   late String balance = dueBalance.toString();
   final pref = SharedPreferences.getInstance();
   String roomName = "";
-
+  String ownerEmail = '';
+  List<User> userDataList = [];
+  User tenantDoc = User();
+  Room roomOwner = Room(longitude: 0, latitude: 0);
+  List<Room> roomOwnerDataList = [];
+  double width = 0.0;
+  double height = 0.0;
   @override
   void initState() {
     setData();
@@ -33,11 +44,45 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
     final pref = await SharedPreferences.getInstance();
     roomName = pref.getString("roomName").toString();
 
-    setState(() {});
+    var email = pref.getString("email");
+
+    var query1 =
+        _fireStore.collection('Users').where("Email", isEqualTo: email).get();
+    await query1.then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var doc in value.docs) {
+          userDataList.add(User.fromFireStoreSnapshot(doc));
+        }
+      }
+    }).catchError((e) {
+      print(e);
+    });
+
+    var query2 = _fireStore
+        .collection('Rooms')
+        .where("ListingNo", isEqualTo: roomName)
+        .get();
+    await query2.then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var doc in value.docs) {
+          roomOwnerDataList.add(Room.fromFireStoreSnapshot(doc));
+        }
+      }
+    }).catchError((e) {
+      print(e);
+    });
+
+    setState(() {
+      tenantDoc = userDataList.first;
+      roomOwner = roomOwnerDataList.first;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    width = SizeConfig.safeBlockHorizontal!;
+    height = SizeConfig.safeBlockVertical!;
     return Scaffold(
       backgroundColor: Color.fromRGBO(240, 240, 240, 1),
       // appBar: ReusableWidgets.getAppBar(title),
@@ -109,7 +154,7 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             BuildText(
-                              text: "Welcome, User",
+                              text: "Welcome, ${tenantDoc.name.toString()}",
                               color: Colors.white,
                               fontSize: 24,
                             ),
@@ -192,86 +237,6 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                       ],
                     ),
                     SizedBox(height: 50.0),
-                    /* Container(
-                      color: Colors.white,
-                      margin: EdgeInsets.fromLTRB(10, 0.0, 10, 15),
-                      padding: EdgeInsets.fromLTRB(0, 15.0, 0, 15),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Column(
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    child: Icon(
-                                      Icons.message,
-                                      color: Color(0xff09548c),
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      shape: CircleBorder(),
-                                      side: BorderSide(
-                                        width: 1.5,
-                                        color: Colors.deepOrangeAccent,
-                                      ),
-                                      padding: EdgeInsets.all(18),
-                                      primary: Colors.white, // <-- Button color
-                                    ),
-                                  ),
-                                  SizedBox(height: 10.0),
-                                  Text('Send Message'),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    child: Icon(
-                                      Icons.home_repair_service_outlined,
-                                      color: Color(0xff09548c),
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      shape: CircleBorder(),
-                                      side: BorderSide(
-                                        width: 1.5,
-                                        color: Colors.deepOrangeAccent,
-                                      ),
-                                      padding: EdgeInsets.all(18),
-                                      primary: Colors.white, // <-- Button color
-                                    ),
-                                  ),
-                                  SizedBox(height: 10.0),
-                                  Text('Add Request'),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    child: Icon(
-                                      Icons.note_alt,
-                                      color: Color(0xff09548c),
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      shape: CircleBorder(),
-                                      side: BorderSide(
-                                        width: 1.5,
-                                        color: Colors.deepOrangeAccent,
-                                      ),
-                                      padding: EdgeInsets.all(18),
-                                      primary: Colors.white, // <-- Button color
-                                    ),
-                                  ),
-                                  SizedBox(height: 10.0),
-                                  Text('Pending Bills'),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),*/
                     Column(
                       children: [
                         Container(
@@ -285,65 +250,70 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                           ),
                         ),
                         Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            color: Colors.white,
-                          ),
-                          margin: const EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
-                          child: Center(
-                            child: ListTile(
-                              leading: Container(
-                                width: 75,
-                                height: 200,
-                                padding: EdgeInsets.all(10.0),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                      'https://googleflutter.com/sample_image.jpg',
-                                    ),
-                                    fit: BoxFit.scaleDown,
-                                  ),
-                                ),
-                              ),
-                              title: Text(
-                                "Owner Name",
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              subtitle: Text(
-                                "9863439275",
-                                style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.message,
-                                      color: ColorData.primaryColor,
-                                    ),
-                                    onPressed: () {
-                                      //CALL FUNCTION
-                                    },
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.call,
-                                      color: ColorData.primaryColor,
-                                    ),
-                                    onPressed: () {
-                                      //CALL FUNCTION
-                                    },
-                                  ),
-                                ],
-                              ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              color: Colors.white,
                             ),
-                          ),
+                            margin: const EdgeInsets.fromLTRB(10.0, 5, 10.0, 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  width: width * 20,
+                                  height: height * 10,
+                                  padding: EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        'https://googleflutter.com/sample_image.jpg',
+                                      ),
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  "${roomOwner.ownerEmail}\n9863439275",
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            )),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xff09548C),
+                              ),
+                              icon: Icon(
+                                Icons.call,
+                                color: Colors.white,
+                              ),
+                              label: Text('Call Now'),
+                              onPressed: () {
+                                //MESSAGE FUNCTION HERE
+                              },
+                            ),
+                            ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xff09548C),
+                              ),
+                              icon: Icon(
+                                Icons.message,
+                                color: Colors.white,
+                              ),
+                              label: Text('Message'),
+                              onPressed: () {
+                                //MESSAGE FUNCTION HERE
+                              },
+                            ),
+                          ],
                         ),
                       ],
                     ),
