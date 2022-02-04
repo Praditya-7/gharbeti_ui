@@ -4,7 +4,7 @@ import 'package:gharbeti_ui/chat/screen/chat_screen.dart';
 import 'package:gharbeti_ui/login/screen/login_screen.dart';
 import 'package:gharbeti_ui/owner/billing/owner_paid_bills.dart';
 import 'package:gharbeti_ui/owner/billing/owner_pending_bills.dart';
-import 'package:gharbeti_ui/owner/billing/pdfView.dart';
+import 'package:gharbeti_ui/owner/billing/pdf_view.dart';
 import 'package:gharbeti_ui/owner/home/owner_home_screen.dart';
 import 'package:gharbeti_ui/owner/home/vacant_room.dart';
 import 'package:gharbeti_ui/owner/listings/screens/add_listings_screen.dart';

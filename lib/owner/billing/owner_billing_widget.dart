@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/billing/entity/billing_container.dart';
-import 'package:gharbeti_ui/owner/billing/pdfView.dart';
+import 'package:gharbeti_ui/owner/billing/pdf_view.dart';
 import 'package:intl/intl.dart';
 
 class OwnerBillingWidget extends StatefulWidget {

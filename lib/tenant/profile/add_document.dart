@@ -241,7 +241,6 @@ class _AddDocumentsState extends State<AddDocuments> {
                                 height: height,
                                 width: width,
                                 data: userList[index],
-                                index: index,
                                 onTap: (index) {
                                   //ROUTE CODE HERE
                                 },

@@ -27,11 +27,11 @@ class _ViewPdfBillState extends State<ViewPdfBill> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Bill Pdf View"),
+        title: const Text("PDF View"),
         backgroundColor: ColorData.primaryColor,
       ),
       body: SafeArea(
-        child: PDF(
+        child: const PDF(
                 enableSwipe: true,
                 swipeHorizontal: true,
                 autoSpacing: true,
@@ -44,5 +44,11 @@ class _ViewPdfBillState extends State<ViewPdfBill> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }
