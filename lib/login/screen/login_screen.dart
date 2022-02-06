@@ -267,8 +267,9 @@ class StartState extends State<LoginScreen> {
               pref.setString('roomName', roomName);
               pref.setString('email', email);
               Navigator.pushReplacementNamed(
-                  context, TenantDashboardScreen.route,
-                  arguments: roomName);
+                context,
+                TenantDashboardScreen.route,
+              );
             } else {
               pref.setString('email', email);
               Navigator.pushReplacementNamed(

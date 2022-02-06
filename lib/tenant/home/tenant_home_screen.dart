@@ -31,7 +31,8 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
   String ownerEmail = '';
   List<User> userDataList = [];
   User tenantDoc = User();
-  Room roomOwner = Room(longitude: 0, latitude: 0);
+  User ownerDoc = User();
+  Room tenantRoom = Room(longitude: 0, latitude: 0);
   List<Room> roomOwnerDataList = [];
   double width = 0.0;
   double height = 0.0;
@@ -45,7 +46,6 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
 
   setData() async {
     final pref = await SharedPreferences.getInstance();
-    roomName = pref.getString("roomName").toString();
 
     var email = pref.getString("email");
 
@@ -57,30 +57,45 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
           userDataList.add(User.fromFireStoreSnapshot(doc));
         }
       }
-      var query2 = _fireStore
-          .collection('Rooms')
-          .where("ListingNo", isEqualTo: roomName)
-          .get();
-      await query2.then((value) {
-        if (value.docs.isNotEmpty) {
-          for (var doc in value.docs) {
-            roomOwnerDataList.add(Room.fromFireStoreSnapshot(doc));
-          }
-        }
-      }).catchError((e) {
-        print(e);
-      });
     }).catchError((e) {
       print(e);
     });
 
-    if (mounted) {
-      setState(() {
+    var query2 = _fireStore
+        .collection('Rooms')
+        .where("ListingNo", isEqualTo: roomName)
+        .get();
+    await query2.then(
+      (value) async {
+        if (value.docs.isNotEmpty) {
+          for (var doc in value.docs) {
+            tenantRoom = Room.fromFireStoreSnapshot(doc);
+          }
+        }
+      },
+    ).catchError((e) {
+      print(e);
+    });
+
+    var query3 = _fireStore
+        .collection('Users')
+        .where("Email", isEqualTo: tenantRoom.ownerEmail)
+        .get();
+    await query3.then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var doc in value.docs) {
+          ownerDoc = User.fromFireStoreSnapshot(doc);
+        }
+      }
+    });
+
+    setState(
+      () {
+        roomName = pref.getString("roomName").toString();
         tenantDoc = userDataList.first;
-        roomOwner = roomOwnerDataList.first;
         isLoading = false;
-      });
-    }
+      },
+    );
   }
 
   @override
@@ -285,7 +300,7 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                                         ),
                                       ),
                                       Text(
-                                        "${roomOwner.ownerEmail}\n9863439275",
+                                        "${ownerDoc.name}\n${ownerDoc.phoneNumber}",
                                         style: TextStyle(
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.bold,
