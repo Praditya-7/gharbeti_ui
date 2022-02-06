@@ -2,6 +2,7 @@ import 'package:gharbeti_ui/chat/screen/add_chat_user.dart';
 import 'package:gharbeti_ui/chat/screen/chat_detail_screen.dart';
 import 'package:gharbeti_ui/chat/screen/chat_screen.dart';
 import 'package:gharbeti_ui/login/screen/login_screen.dart';
+import 'package:gharbeti_ui/notification/notification_screen.dart';
 import 'package:gharbeti_ui/owner/billing/owner_paid_bills.dart';
 import 'package:gharbeti_ui/owner/billing/owner_pending_bills.dart';
 import 'package:gharbeti_ui/owner/billing/pdf_view.dart';
@@ -22,7 +23,6 @@ import 'package:gharbeti_ui/tenant/discover/discover_listing_detail.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_near_you.dart';
 import 'package:gharbeti_ui/tenant/discover/filtered_listing.dart';
 import 'package:gharbeti_ui/tenant/home/tenant_home_screen.dart';
-import 'package:gharbeti_ui/tenant/notification/notification_screen.dart';
 import 'package:gharbeti_ui/tenant/profile/add_document.dart';
 import 'package:gharbeti_ui/tenant/tenant_dashboard.dart';
 

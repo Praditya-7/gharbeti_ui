@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/owner/listings/entity/user_container.dart';
 import 'package:gharbeti_ui/shared/color.dart';
+import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_screen.dart';
@@ -34,6 +35,8 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
   List<Room> roomOwnerDataList = [];
   double width = 0.0;
   double height = 0.0;
+  bool isLoading = true;
+
   @override
   void initState() {
     setData();
@@ -48,34 +51,36 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
 
     var query1 =
         _fireStore.collection('Users').where("Email", isEqualTo: email).get();
-    await query1.then((value) {
+    await query1.then((value) async {
       if (value.docs.isNotEmpty) {
         for (var doc in value.docs) {
           userDataList.add(User.fromFireStoreSnapshot(doc));
         }
       }
-    }).catchError((e) {
-      print(e);
-    });
-
-    var query2 = _fireStore
-        .collection('Rooms')
-        .where("ListingNo", isEqualTo: roomName)
-        .get();
-    await query2.then((value) {
-      if (value.docs.isNotEmpty) {
-        for (var doc in value.docs) {
-          roomOwnerDataList.add(Room.fromFireStoreSnapshot(doc));
+      var query2 = _fireStore
+          .collection('Rooms')
+          .where("ListingNo", isEqualTo: roomName)
+          .get();
+      await query2.then((value) {
+        if (value.docs.isNotEmpty) {
+          for (var doc in value.docs) {
+            roomOwnerDataList.add(Room.fromFireStoreSnapshot(doc));
+          }
         }
-      }
+      }).catchError((e) {
+        print(e);
+      });
     }).catchError((e) {
       print(e);
     });
 
-    setState(() {
-      tenantDoc = userDataList.first;
-      roomOwner = roomOwnerDataList.first;
-    });
+    if (mounted) {
+      setState(() {
+        tenantDoc = userDataList.first;
+        roomOwner = roomOwnerDataList.first;
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -85,240 +90,255 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
     height = SizeConfig.safeBlockVertical!;
     return Scaffold(
       backgroundColor: Color.fromRGBO(240, 240, 240, 1),
-      // appBar: ReusableWidgets.getAppBar(title),
       body: SafeArea(
-        child: Container(
-          //margin: EdgeInsets.all(10.0),
-          child: roomName == ""
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    _getNoLeaseWidget("No active lease"),
-                    SizedBox(height: 10.0),
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.all(10.0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              BuildText(
-                                text: "Looking for New Home?",
-                                fontSize: 16,
-                              ),
-                              SizedBox(
-                                height: 8.0,
-                              ),
-                              BuildText(
-                                text:
-                                    "If you want to rent a new home, start looking from thousands of listings and apply online using yourRenter Profile.",
-                                fontSize: 16,
-                                color: Colors.grey,
-                                weight: FontWeight.normal,
-                              ),
-                              SizedBox(
-                                height: 8.0,
-                              ),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: ColorData.primaryColor,
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Container(
+                //margin: EdgeInsets.all(10.0),
+                child: roomName == ""
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          _getNoLeaseWidget("No active lease"),
+                          SizedBox(height: 10.0),
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.all(10.0),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    BuildText(
+                                      text: "Looking for New Home?",
+                                      fontSize: 16,
+                                    ),
+                                    SizedBox(
+                                      height: 8.0,
+                                    ),
+                                    BuildText(
+                                      text:
+                                          "If you want to rent a new home, start looking from thousands of listings and apply online using yourRenter Profile.",
+                                      fontSize: 16,
+                                      color: Colors.grey,
+                                      weight: FontWeight.normal,
+                                    ),
+                                    SizedBox(
+                                      height: 8.0,
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: ColorData.primaryColor,
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DiscoverTenantScreen()));
+                                      },
+                                      child: Text("Find New"),
+                                    )
+                                  ],
                                 ),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DiscoverTenantScreen()));
-                                },
-                                child: Text("Find New"),
-                              )
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            color: ColorData.primaryColor,
+                            width: double.infinity,
+                            height: 75,
+                            padding: EdgeInsets.all(10.0),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  BuildText(
+                                    text:
+                                        "Welcome, ${tenantDoc.name.toString()}",
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                  ),
+                                  Image.asset('assets/image/logo_image.png'),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20.0),
+                          Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.all(8.0),
+                                color: ColorData.primaryColor,
+                                width: double.infinity,
+                                padding: EdgeInsets.all(10.0),
+                                child: BuildText(
+                                  text: "Payment Overview",
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Container(
+                                color: Colors.white,
+                                margin: EdgeInsets.fromLTRB(10, 15.0, 10, 0),
+                                padding: EdgeInsets.fromLTRB(0, 15.0, 0, 0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text('Balance Due'),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      'Rs. ' + balance + '.00',
+                                      style: TextStyle(
+                                        color: Color(0xff09548c),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text('Status: '),
+                                        Text(
+                                          status,
+                                          style: TextStyle(
+                                            color: status == 'Paid'
+                                                ? Colors.green
+                                                : Colors.red,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors
+                                            .deepOrangeAccent, // <-- Button color
+                                      ),
+                                      child: Container(
+                                        height: 35,
+                                        color: Colors.deepOrangeAccent,
+                                        child: Center(
+                                          child: Text(
+                                            'Pay Now',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      color: ColorData.primaryColor,
-                      width: double.infinity,
-                      height: 75,
-                      padding: EdgeInsets.all(10.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            BuildText(
-                              text: "Welcome, ${tenantDoc.name.toString()}",
-                              color: Colors.white,
-                              fontSize: 24,
-                            ),
-                            Image.asset('assets/image/logo_image.png'),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20.0),
-                    Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.all(8.0),
-                          color: ColorData.primaryColor,
-                          width: double.infinity,
-                          padding: EdgeInsets.all(10.0),
-                          child: BuildText(
-                            text: "Payment Overview",
-                            color: Colors.white,
-                          ),
-                        ),
-                        Container(
-                          color: Colors.white,
-                          margin: EdgeInsets.fromLTRB(10, 15.0, 10, 0),
-                          padding: EdgeInsets.fromLTRB(0, 15.0, 0, 0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                          SizedBox(height: 50.0),
+                          Column(
                             children: [
-                              Text('Balance Due'),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                'Rs. ' + balance + '.00',
-                                style: TextStyle(
-                                  color: Color(0xff09548c),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 25,
+                              Container(
+                                margin: EdgeInsets.all(8.0),
+                                color: ColorData.primaryColor,
+                                width: double.infinity,
+                                padding: EdgeInsets.all(10.0),
+                                child: BuildText(
+                                  text: "Lease Owner",
+                                  color: Colors.white,
                                 ),
                               ),
+                              Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    color: Colors.white,
+                                  ),
+                                  margin: const EdgeInsets.fromLTRB(
+                                      10.0, 5, 10.0, 5),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Container(
+                                        width: width * 20,
+                                        height: height * 10,
+                                        padding: EdgeInsets.all(10.0),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                              'https://googleflutter.com/sample_image.jpg',
+                                            ),
+                                            fit: BoxFit.scaleDown,
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        "${roomOwner.ownerEmail}\n9863439275",
+                                        style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  )),
                               SizedBox(
-                                height: 5,
+                                height: 15,
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text('Status: '),
-                                  Text(
-                                    status,
-                                    style: TextStyle(
-                                      color: status == 'Paid'
-                                          ? Colors.green
-                                          : Colors.red,
+                                  ElevatedButton.icon(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color(0xff09548C),
                                     ),
+                                    icon: Icon(
+                                      Icons.call,
+                                      color: Colors.white,
+                                    ),
+                                    label: Text('Call Now'),
+                                    onPressed: () {
+                                      //MESSAGE FUNCTION HERE
+                                    },
+                                  ),
+                                  ElevatedButton.icon(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color(0xff09548C),
+                                    ),
+                                    icon: Icon(
+                                      Icons.message,
+                                      color: Colors.white,
+                                    ),
+                                    label: Text('Message'),
+                                    onPressed: () {
+                                      //MESSAGE FUNCTION HERE
+                                    },
                                   ),
                                 ],
                               ),
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors
-                                      .deepOrangeAccent, // <-- Button color
-                                ),
-                                child: Container(
-                                  height: 35,
-                                  color: Colors.deepOrangeAccent,
-                                  child: Center(
-                                    child: Text(
-                                      'Pay Now',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 50.0),
-                    Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.all(8.0),
-                          color: ColorData.primaryColor,
-                          width: double.infinity,
-                          padding: EdgeInsets.all(10.0),
-                          child: BuildText(
-                            text: "Lease Owner",
-                            color: Colors.white,
-                          ),
-                        ),
-                        Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.0),
-                              color: Colors.white,
-                            ),
-                            margin: const EdgeInsets.fromLTRB(10.0, 5, 10.0, 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                  width: width * 20,
-                                  height: height * 10,
-                                  padding: EdgeInsets.all(10.0),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                        'https://googleflutter.com/sample_image.jpg',
-                                      ),
-                                      fit: BoxFit.scaleDown,
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  "${roomOwner.ownerEmail}\n9863439275",
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            )),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ElevatedButton.icon(
-                              style: ElevatedButton.styleFrom(
-                                primary: Color(0xff09548C),
-                              ),
-                              icon: Icon(
-                                Icons.call,
-                                color: Colors.white,
-                              ),
-                              label: Text('Call Now'),
-                              onPressed: () {
-                                //MESSAGE FUNCTION HERE
-                              },
-                            ),
-                            ElevatedButton.icon(
-                              style: ElevatedButton.styleFrom(
-                                primary: Color(0xff09548C),
-                              ),
-                              icon: Icon(
-                                Icons.message,
-                                color: Colors.white,
-                              ),
-                              label: Text('Message'),
-                              onPressed: () {
-                                //MESSAGE FUNCTION HERE
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                        ],
+                      ),
+              ),
+            ),
+            Visibility(
+              visible: isLoading,
+              child: CustomProgressIndicatorWidget(),
+            ),
+          ],
         ),
       ),
     );

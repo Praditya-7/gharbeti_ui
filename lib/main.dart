@@ -11,6 +11,7 @@ import 'package:gharbeti_ui/shared/routes.dart';
 import 'package:gharbeti_ui/splash_screen/intro_screen.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:provider/provider.dart';
+
 const String testPublicKey = 'test_public_key_dc74e0fd57cb46cd93832aee0a507256';
 
 Future<void> main() async {
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
                   ],
                   theme: ThemeData(
                     brightness: appPreference.brightness,
-                    primarySwatch: Colors.deepPurple,
+                    primarySwatch: Colors.blue,
                     pageTransitionsTheme: const PageTransitionsTheme(
                       builders: {
                         TargetPlatform.android: ZoomPageTransitionsBuilder(),
@@ -61,14 +62,12 @@ class MyApp extends StatelessWidget {
                   ),
                   debugShowCheckedModeBanner: false,
                   navigatorKey: navKey,
-
-                  routes:Routes.routes,
+                  routes: Routes.routes,
                   onGenerateInitialRoutes: (route) {
                     // Only used for handling response from KPG in Flutter Web.
                     if (route.startsWith('/kpg/')) {
                       final uri = Uri.parse('https://khalti.com$route');
                       return [
-
                         MaterialPageRoute(
                           builder: (context) => SplashScreen(),
                         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/chat/screen/chat_screen.dart';
+import 'package:gharbeti_ui/notification/notification_screen.dart';
 import 'package:gharbeti_ui/owner/billing/owner_billing_screen.dart';
 import 'package:gharbeti_ui/owner/listings/screens/listings_screen.dart';
 import 'package:gharbeti_ui/owner/profile/owner_profile_screen.dart';
@@ -8,7 +9,6 @@ import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/owner_dashboard_icons.dart';
 import 'package:gharbeti_ui/shared/push_notification_controller.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
-import 'package:gharbeti_ui/tenant/notification/notification_screen.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import 'home/owner_home_screen.dart';
@@ -22,7 +22,8 @@ class OwnerDashboardScreen extends StatefulWidget {
   _OwnerDashboardScreenState createState() => _OwnerDashboardScreenState();
 }
 
-class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> with WidgetsBindingObserver{
+class _OwnerDashboardScreenState extends State<OwnerDashboardScreen>
+    with WidgetsBindingObserver {
   int _selectedIndex = 0;
   PageController pageController = PageController();
 
@@ -43,8 +44,9 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> with Widget
       _selectedIndex = index;
     });
   }
+
   @override
-  void initState(){
+  void initState() {
     FirebaseNotification().initilizeNotification(context);
     WidgetsBinding.instance!.addObserver(this);
     FirebaseNotification().firebaseNavigate(context);
@@ -57,6 +59,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> with Widget
       FirebaseNotification().firebaseNavigate(context);
     }
   }
+
   onTabChange(index) {
     setState(() {
       _selectedIndex = index;

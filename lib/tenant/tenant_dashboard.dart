@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/chat/screen/chat_screen.dart';
+import 'package:gharbeti_ui/notification/notification_screen.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/push_notification_controller.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
@@ -7,7 +8,6 @@ import 'package:gharbeti_ui/shared/tenant_dashboard_icons.dart';
 import 'package:gharbeti_ui/tenant/billing/tenant_billing_screen.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_screen.dart';
 import 'package:gharbeti_ui/tenant/home/tenant_home_screen.dart';
-import 'package:gharbeti_ui/tenant/notification/notification_screen.dart';
 import 'package:gharbeti_ui/tenant/profile/tenant_profile_screen.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
@@ -20,7 +20,8 @@ class TenantDashboardScreen extends StatefulWidget {
   _TenantDashboardScreenState createState() => _TenantDashboardScreenState();
 }
 
-class _TenantDashboardScreenState extends State<TenantDashboardScreen> with WidgetsBindingObserver {
+class _TenantDashboardScreenState extends State<TenantDashboardScreen>
+    with WidgetsBindingObserver {
   int _selectedIndex = 0;
   PageController pageController = PageController();
 
@@ -39,8 +40,9 @@ class _TenantDashboardScreenState extends State<TenantDashboardScreen> with Widg
       _selectedIndex = index;
     });
   }
+
   @override
-  void initState(){
+  void initState() {
     FirebaseNotification().initilizeNotification(context);
     WidgetsBinding.instance!.addObserver(this);
     FirebaseNotification().firebaseNavigate(context);
