@@ -10,6 +10,7 @@ import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
@@ -329,7 +330,8 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                                     ),
                                     label: Text('Call Now'),
                                     onPressed: () {
-                                      //MESSAGE FUNCTION HERE
+                                      launch(
+                                          "tel:${ownerDoc.phoneNumber.toString()}");
                                     },
                                   ),
                                   ElevatedButton.icon(
@@ -342,7 +344,8 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                                     ),
                                     label: Text('Message'),
                                     onPressed: () {
-                                      //MESSAGE FUNCTION HERE
+                                      launch(
+                                          "sms:${ownerDoc.phoneNumber.toString()}");
                                     },
                                   ),
                                 ],
