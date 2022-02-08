@@ -112,7 +112,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200],
                         ),
-                        height: height * 5,
                         child: DropdownButton<String>(
                           isExpanded: true,
                           hint: const Text('Type*'),
@@ -140,7 +139,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                       //Listing No//
                       Container(
                         margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        height: height * 5,
                         alignment: Alignment.center,
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
@@ -160,7 +158,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                       ),
                       Container(
                         margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        height: height * 5,
                         alignment: Alignment.center,
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
@@ -185,7 +182,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200],
                         ),
-                        height: height * 5,
                         child: DropdownButton<String>(
                           menuMaxHeight: 200,
                           isExpanded: true,
@@ -239,7 +235,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                     children: [
                       //Parking
                       Container(
-                        height: height * 5,
                         margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
@@ -278,7 +273,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                       //Bathroom
                       Container(
                         margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        height: height * 5,
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
@@ -315,7 +309,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                       ),
                       //Kitchen
                       Container(
-                        height: height * 5,
                         margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
@@ -352,7 +345,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                       ),
                       //Internet
                       Container(
-                        height: height * 5,
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
@@ -409,7 +401,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                   child: Column(
                     children: [
                       Container(
-                        height: height * 5,
                         margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         alignment: Alignment.center,
                         padding: const EdgeInsets.only(left: 20, right: 20),
@@ -429,7 +420,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         ),
                       ),
                       Container(
-                        height: height * 5,
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
@@ -486,7 +476,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                   child: Column(
                     children: [
                       Container(
-                        height: height * 5,
                         margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         padding: const EdgeInsets.fromLTRB(18, 2, 30, 2),
                         decoration: BoxDecoration(
@@ -515,7 +504,6 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                         ),
                       ),
                       Container(
-                        height: height * 5,
                         margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         decoration: BoxDecoration(

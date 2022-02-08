@@ -113,6 +113,7 @@ class InitState extends State<SignUpScreen> {
                           )
                         ]),
                         DropdownButton<String>(
+                          menuMaxHeight: height * 8,
                           underline: Container(
                             height: 0,
                           ),

@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gharbeti_ui/login/screen/login_screen.dart';
 import 'package:gharbeti_ui/owner/listings/entity/user_container.dart';
+import 'package:gharbeti_ui/shared/color.dart';
+import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/tenant/profile/add_document.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,6 +25,8 @@ class _ProfileTenantScreenState extends State<ProfileTenantScreen> {
   List<User> userDataList = [];
   User userData = User();
   bool isLoading = true;
+  double width = 0.0;
+  double height = 0.0;
   var div = Divider(
     thickness: 0.9,
   );
@@ -57,6 +61,9 @@ class _ProfileTenantScreenState extends State<ProfileTenantScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    width = SizeConfig.safeBlockHorizontal!;
+    height = SizeConfig.safeBlockVertical!;
     return Scaffold(
       backgroundColor: Color.fromRGBO(240, 240, 240, 1),
       body: SafeArea(
@@ -139,18 +146,7 @@ class _ProfileTenantScreenState extends State<ProfileTenantScreen> {
                     leadingIconData: Icons.folder_open,
                     trailingIconData: CupertinoIcons.chevron_forward,
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 40),
-              padding: EdgeInsets.fromLTRB(15, 0, 10, 0),
-              color: Colors.white,
-              child: Column(
-                children: [
+                  div,
                   GetListTile(
                     onTap: () {
                       //ROUTE CODE HERE
@@ -168,9 +164,6 @@ class _ProfileTenantScreenState extends State<ProfileTenantScreen> {
                     trailingIconData: CupertinoIcons.chevron_forward,
                     leadingIconData: Icons.alternate_email,
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
                   div,
                   GetListTile(
                     onTap: () async {
@@ -185,9 +178,13 @@ class _ProfileTenantScreenState extends State<ProfileTenantScreen> {
                     trailingIconData: CupertinoIcons.chevron_forward,
                     leadingIconData: Icons.logout,
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  div,
+                  Container(
+                    width: double.infinity,
+                    color: ColorData.primaryColor,
+                    height: height * 20,
+                    child: Image.asset('assets/image/logo_image.png'),
+                  )
                 ],
               ),
             ),

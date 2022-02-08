@@ -108,6 +108,10 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
       body: SafeArea(
         child: Stack(
           children: [
+            Visibility(
+              visible: isLoading,
+              child: CustomProgressIndicatorWidget(),
+            ),
             SingleChildScrollView(
               child: Container(
                 //margin: EdgeInsets.all(10.0),
@@ -300,7 +304,7 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                                         ),
                                       ),
                                       Text(
-                                        "${ownerDoc.name}\n${ownerDoc.phoneNumber}",
+                                        "${ownerDoc.name.toString()}\n${ownerDoc.phoneNumber.toString()}",
                                         style: TextStyle(
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.bold,
@@ -348,10 +352,6 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                         ],
                       ),
               ),
-            ),
-            Visibility(
-              visible: isLoading,
-              child: CustomProgressIndicatorWidget(),
             ),
           ],
         ),

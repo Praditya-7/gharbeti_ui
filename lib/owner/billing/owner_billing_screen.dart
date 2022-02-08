@@ -109,7 +109,7 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 10),
+                      margin: EdgeInsets.all(10),
                       color: ColorData.primaryColor,
                       width: double.infinity,
                       padding: EdgeInsets.all(10.0),
@@ -160,6 +160,7 @@ class _BillingScreenOwnerState extends State<BillingScreenOwner> {
                     Container(
                       color: ColorData.primaryColor,
                       width: double.infinity,
+                      margin: EdgeInsets.all(10.0),
                       padding: EdgeInsets.all(10.0),
                       child: BuildText(
                         text: "Recent Payments",

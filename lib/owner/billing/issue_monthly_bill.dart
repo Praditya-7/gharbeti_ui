@@ -150,6 +150,7 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                               color: Colors.grey[200],
                             ),
                             child: DropdownButton<String>(
+                              menuMaxHeight: height * 10,
                               isExpanded: true,
                               hint: Text(
                                 'Select Tenant*',
