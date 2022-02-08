@@ -8,6 +8,7 @@ import 'package:gharbeti_ui/owner/tenants/document_widget.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
@@ -70,6 +71,7 @@ class _TenantDetailState extends State<TenantDetail> {
             label: Text('Call Now'),
             onPressed: () {
               //CALL FUNCTION
+              launch("tel:${args.phoneNumber}");
             },
           ),
           SizedBox(
@@ -86,6 +88,7 @@ class _TenantDetailState extends State<TenantDetail> {
             label: Text('Message'),
             onPressed: () {
               //MESSAGE FUNCTION HERE
+              launch("sms:${args.phoneNumber}");
             },
           ),
         ],
