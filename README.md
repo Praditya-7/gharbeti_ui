@@ -7,7 +7,6 @@ A Flutter application aim to simplify rental activities between tenant and owner
 * Facilitate listing and searching for a vacant flat/ room for rent based on different criterias.
 * Allows the tenant and owner to communicate using a chat system. 
 * Generates invoices in pdf for tenants and facilitates online payment using payment gateway Khalti. 
-* 
 
 ## Tech Stack
 
