@@ -2,12 +2,14 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/owner/billing/entity/billing_container.dart';
 import 'package:gharbeti_ui/owner/home/entity/room_container.dart';
 import 'package:gharbeti_ui/owner/listings/entity/user_container.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
+import 'package:gharbeti_ui/tenant/billing/paynow_screen.dart';
 import 'package:gharbeti_ui/tenant/discover/discover_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -25,7 +27,7 @@ class TenantHomeScreen extends StatefulWidget {
 class _TenantHomeScreenState extends State<TenantHomeScreen> {
   String tenantStatus = "unregistered";
   int dueBalance = 8000;
-  String status = 'Paid';
+  String status = 'Pending';
   late String balance = dueBalance.toString();
   final pref = SharedPreferences.getInstance();
   String roomName = "";
@@ -38,6 +40,8 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
   double width = 0.0;
   double height = 0.0;
   bool isLoading = true;
+  List<Billings> pendingList = [];
+  int totalDueBalance = 0;
 
   @override
   void initState() {
@@ -90,6 +94,27 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
         }
       }
     });
+
+    var query4 = _fireStore
+        .collection('Billings')
+        .where("TenantEmail", isEqualTo: email)
+        .where("Status", isEqualTo: "Pending")
+        .get();
+    await query4.then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var doc in value.docs) {
+          pendingList.add(Billings.fromFireStoreSnapshot(doc));
+        }
+      }
+    }).catchError((e) {
+      pendingList.clear();
+      print(e);
+    });
+
+    for (var item in pendingList) {
+      int billValue = int.parse(item.total.toString());
+      totalDueBalance = billValue + totalDueBalance;
+    }
 
     setState(
       () {
@@ -218,7 +243,9 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                                       height: 5,
                                     ),
                                     Text(
-                                      'Rs. ' + balance + '.00',
+                                      'Rs. ' +
+                                          totalDueBalance.toString() +
+                                          '.00',
                                       style: TextStyle(
                                         color: Color(0xff09548c),
                                         fontWeight: FontWeight.w500,
@@ -244,7 +271,23 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                                       ],
                                     ),
                                     ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        List<String> billMonths = [];
+                                        for (var item in pendingList) {
+                                          billMonths.add(item.month.toString());
+                                        }
+                                        String months = billMonths.join(", ");
+
+                                        Billings bill = Billings(
+                                          ownerEmail: pendingList[0].ownerEmail,
+                                          total: totalDueBalance,
+                                          month: months,
+                                        );
+
+                                        Navigator.of(context).pushNamed(
+                                            PayNow.route,
+                                            arguments: bill);
+                                      },
                                       style: ElevatedButton.styleFrom(
                                         primary: Colors
                                             .deepOrangeAccent, // <-- Button color

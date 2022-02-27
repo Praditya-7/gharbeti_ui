@@ -24,7 +24,7 @@ class BillingTenantScreen extends StatefulWidget {
 
 class _BillingTenantScreenState extends State<BillingTenantScreen> {
   int totalDueBalance = 0;
-  String status = 'Paid';
+  String status = 'Pending';
 
   double width = 0.0;
   double height = 0.0;
