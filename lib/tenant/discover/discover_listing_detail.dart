@@ -8,6 +8,7 @@ import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'carousel.dart';
 
@@ -75,7 +76,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
             ),
             label: Text('Call Now'),
             onPressed: () {
-              //CALL FUNCTION
+              launch("tel:9803374994");
             },
           ),
           SizedBox(
@@ -91,7 +92,7 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
             ),
             label: Text('Message'),
             onPressed: () {
-              //MESSAGE FUNCTION HERE
+              launch("sms:9803374994");
             },
           ),
         ],
