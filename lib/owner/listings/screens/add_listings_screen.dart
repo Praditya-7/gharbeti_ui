@@ -42,8 +42,8 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
   Set<Marker> _marker = <Marker>{};
   bool isLoading = false;
   bool showMap = false;
-  String? listingTypeDropdownValue;
-  String? floorDropdownValue;
+  String? listingTypeDropdownValue = "Flat";
+  String? floorDropdownValue = "First";
   String parkingDropdownValue = 'No';
   String bathroomDropdownValue = '1';
   String kitchenDropdownValue = 'Yes';
@@ -704,8 +704,22 @@ class _AddListingsScreenState extends State<AddListingsScreen> {
                   child: InkWell(
                     onTap: () async {
                       setState(() {
-                        isLoading = true;
-                        setData();
+                        if (imageSelected == false ||
+                            listingNoController.text.toString() == "" ||
+                            addressController.text.toString() == "" ||
+                            priceController.text.toString() == "" ||
+                            lastMeterReadingController.text.toString() == "" ||
+                            _latLng.longitude == 0.0 ||
+                            _latLng.latitude == 0.0) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Fill all the details !!!'),
+                            ),
+                          );
+                        } else {
+                          isLoading = true;
+                          setData();
+                        }
                       });
                     },
                     child: const Padding(
