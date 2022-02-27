@@ -578,9 +578,19 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                       child: InkWell(
                         onTap: () async {
                           setState(() {
-                            isLoading = true;
+                            if (tenantDropdownValue == "" ||
+                                perUnitElectricityCharge == 0 ||
+                                currentMeterReadingController.text == "") {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Fill all the details !!!'),
+                                ),
+                              );
+                            } else {
+                              isLoading = true;
+                              setBillData();
+                            }
                           });
-                          setBillData();
                         },
                         child: const Padding(
                           padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
@@ -969,9 +979,6 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
   void setBillData() async {
     final pref = await SharedPreferences.getInstance();
     Timestamp time = Timestamp.fromDate(DateTime.now());
-
-    String bodyMsg = "Your total rent is Rs. $total";
-    String titleMsg = "Bill issued for $billMonthDropdownValue";
 
     var model = Billings(
       ownerEmail: pref.getString("email"),
