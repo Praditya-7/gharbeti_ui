@@ -49,6 +49,7 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
     final pref = await SharedPreferences.getInstance();
 
     var email = pref.getString("email");
+    var roomNo = pref.getString("roomName");
 
     var query1 =
         _fireStore.collection('Users').where("Email", isEqualTo: email).get();
@@ -64,7 +65,7 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
 
     var query2 = _fireStore
         .collection('Rooms')
-        .where("ListingNo", isEqualTo: roomName)
+        .where("ListingNo", isEqualTo: roomNo)
         .get();
     await query2.then(
       (value) async {
