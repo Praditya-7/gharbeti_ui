@@ -15,6 +15,7 @@ import 'package:gharbeti_ui/tenant/discover/entity/locationRadius_container.dart
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+String globalSearchAddress = "";
 
 class DiscoverTenantScreen extends StatefulWidget {
   const DiscoverTenantScreen({Key? key}) : super(key: key);
@@ -38,6 +39,8 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
   bool isIgnored = false;
   bool filterApplied = false;
   bool noDataFound = false;
+  List<String> addressList = [];
+  String searchAddress = "";
 
   final TextEditingController priceController = TextEditingController();
 
@@ -54,6 +57,7 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
   }
 
   setData() async {
+    globalSearchAddress = "";
     roomList.clear();
     var query = _fireStore
         .collection('Rooms')
@@ -66,6 +70,10 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
         }
       }
     });
+
+    for (var item in roomList) {
+      addressList.add(item.address.toString());
+    }
     setState(() {
       roomCount = roomList.length;
       isLoading = false;
@@ -81,32 +89,66 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
       backgroundColor: const Color.fromRGBO(240, 240, 240, 1),
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Container(
-          margin: const EdgeInsets.only(left: 0, right: 0, top: 20, bottom: 20),
-          padding: const EdgeInsets.only(left: 5, right: 20),
-          height: 40,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4),
-            color: const Color(0xffEEEEEE),
-          ),
-          child: TextField(
-            controller: _destinationController,
-            cursorColor: const Color(0xff09548c),
-            decoration: const InputDecoration(
-              focusColor: Color(0xff09548c),
-              fillColor: Color.fromRGBO(240, 240, 240, 1),
-              filled: true,
-              icon: Icon(
-                Icons.search,
-                color: Color(0xff09548c),
-              ),
-              hintText: "Search Destination",
-              disabledBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              focusedBorder: InputBorder.none,
+        title: InkWell(
+          onTap: () {
+            //SearchDelegate Part
+            showSearch(
+                    delegate: CustomSearchDelegate(searchTerms: addressList),
+                    context: context)
+                .then((value) {
+              setState(() {
+                if (value != null) {
+                  searchAddress = value.toString();
+                  print(searchAddress);
+                  isLoading = true;
+                  setSearchAddressFilterData();
+                }
+              });
+            });
+            //SEARCH PART
+          },
+          child: Container(
+            margin:
+                const EdgeInsets.only(left: 0, right: 0, top: 20, bottom: 20),
+            padding: const EdgeInsets.only(left: 5, right: 20),
+            height: 40,
+            color: const Color.fromRGBO(240, 240, 240, 1),
+            child: Row(
+              children: const [
+                Icon(
+                  Icons.search,
+                  color: Color(0xff09548c),
+                ),
+              ],
             ),
           ),
         ),
+        // Container(
+        //   margin: const EdgeInsets.only(left: 0, right: 0, top: 20, bottom: 20),
+        //   padding: const EdgeInsets.only(left: 5, right: 20),
+        //   height: 40,
+        //   decoration: BoxDecoration(
+        //     borderRadius: BorderRadius.circular(4),
+        //     color: const Color(0xffEEEEEE),
+        //   ),
+        //   child: TextField(
+        //     controller: _destinationController,
+        //     cursorColor: const Color(0xff09548c),
+        //     decoration: const InputDecoration(
+        //       focusColor: Color(0xff09548c),
+        //       fillColor: Color.fromRGBO(240, 240, 240, 1),
+        //       filled: true,
+        //       icon: Icon(
+        //         Icons.search,
+        //         color: Color(0xff09548c),
+        //       ),
+        //       hintText: "Search Destination",
+        //       disabledBorder: InputBorder.none,
+        //       enabledBorder: InputBorder.none,
+        //       focusedBorder: InputBorder.none,
+        //     ),
+        //   ),
+        // ),
         actions: [
           IconButton(
             onPressed: () async {
@@ -575,6 +617,32 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
     );
   }
 
+  setSearchAddressFilterData() async {
+    roomList.clear();
+
+    var query = _fireStore
+        .collection('Rooms')
+        .where("Status", isEqualTo: "Vacant")
+        .where("Address", isEqualTo: searchAddress)
+        .get();
+    await query.then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var doc in value.docs) {
+          roomList.add(Room.fromFireStoreSnapshot(doc));
+        }
+      }
+    });
+
+    setState(() {
+      if (roomList.isEmpty) {
+        //NO DATA FOUND
+        noDataFound = true;
+      }
+      roomCount = roomList.length;
+      isLoading = false;
+    });
+  }
+
   setFilterData() async {
     roomList.clear();
 
@@ -737,5 +805,83 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+  }
+}
+
+class CustomSearchDelegate extends SearchDelegate {
+  final List<String> searchTerms;
+
+  CustomSearchDelegate({
+    required this.searchTerms,
+  });
+
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: const Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      )
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    List<String> matchQuery = [];
+    for (var address in searchTerms) {
+      if (address.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(address);
+      }
+    }
+    return ListView.builder(
+      itemCount: matchQuery.length,
+      itemBuilder: (context, index) {
+        var result = matchQuery[index];
+        return InkWell(
+          onTap: () {
+            close(context, result.toString());
+          },
+          child: ListTile(
+            title: Text(result),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> matchQuery = [];
+    for (var address in searchTerms) {
+      if (address.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(address);
+      }
+    }
+    return ListView.builder(
+      itemCount: matchQuery.length,
+      itemBuilder: (context, index) {
+        var result = matchQuery[index];
+        return InkWell(
+          onTap: () {
+            close(context, result.toString());
+          },
+          child: ListTile(
+            title: Text(result),
+          ),
+        );
+      },
+    );
   }
 }

@@ -112,28 +112,37 @@ class InitState extends State<SignUpScreen> {
                                 color: Colors.grey[700], fontSize: 16),
                           )
                         ]),
-                        DropdownButton<String>(
-                          menuMaxHeight: height * 8,
-                          underline: Container(
-                            height: 0,
-                          ),
-                          value: genderDropdownValue,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              genderDropdownValue = newValue!;
-                            });
-                          },
-                          icon: Icon(Icons.arrow_drop_down_sharp),
-                          items: <String>[
-                            'Male',
-                            'Female',
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
+                        Row(
+                          children: [
+                            SafeArea(
+                              child: DropdownButton<String>(
+                                alignment: AlignmentDirectional.topStart,
+                                underline: Container(
+                                  height: 0,
+                                ),
+                                value: genderDropdownValue,
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    genderDropdownValue = newValue!;
+                                  });
+                                },
+                                icon: Icon(Icons.arrow_drop_down_sharp),
+                                items: <String>[
+                                  'Male',
+                                  'Female',
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                            SizedBox(
+                              width: width * 5,
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),

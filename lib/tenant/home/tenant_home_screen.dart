@@ -120,6 +120,7 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
       () {
         roomName = pref.getString("roomName").toString();
         tenantDoc = userDataList.first;
+        isLoading = true;
         isLoading = false;
       },
     );
@@ -330,6 +331,7 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                                   ),
                                   margin: const EdgeInsets.fromLTRB(
                                       10.0, 5, 10.0, 5),
+                                  padding: EdgeInsets.all(10),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
