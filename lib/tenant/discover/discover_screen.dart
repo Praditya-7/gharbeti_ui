@@ -72,7 +72,9 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
     });
 
     for (var item in roomList) {
-      addressList.add(item.address.toString());
+      if (!addressList.contains(item.address.toString())) {
+        addressList.add(item.address.toString());
+      }
     }
     setState(() {
       roomCount = roomList.length;
