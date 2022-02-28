@@ -121,6 +121,13 @@ class _DiscoverTenantScreenState extends State<DiscoverTenantScreen> {
                   Icons.search,
                   color: Color(0xff09548c),
                 ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  "Search Address",
+                  style: TextStyle(color: Color(0xff09548c), fontSize: 15.0),
+                ),
               ],
             ),
           ),
