@@ -149,46 +149,44 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                         children: [
                           _getNoLeaseWidget("No active lease"),
                           SizedBox(height: 10.0),
-                          Expanded(
-                            child: Container(
-                              margin: EdgeInsets.all(10.0),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    BuildText(
-                                      text: "Looking for New Home?",
-                                      fontSize: 16,
+                          Container(
+                            margin: EdgeInsets.all(10.0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  BuildText(
+                                    text: "Looking for New Home?",
+                                    fontSize: 16,
+                                  ),
+                                  SizedBox(
+                                    height: 8.0,
+                                  ),
+                                  BuildText(
+                                    text:
+                                        "If you want to rent a new home, start looking from thousands of listings and apply online using yourRenter Profile.",
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                    weight: FontWeight.normal,
+                                  ),
+                                  SizedBox(
+                                    height: 8.0,
+                                  ),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: ColorData.primaryColor,
                                     ),
-                                    SizedBox(
-                                      height: 8.0,
-                                    ),
-                                    BuildText(
-                                      text:
-                                          "If you want to rent a new home, start looking from thousands of listings and apply online using yourRenter Profile.",
-                                      fontSize: 16,
-                                      color: Colors.grey,
-                                      weight: FontWeight.normal,
-                                    ),
-                                    SizedBox(
-                                      height: 8.0,
-                                    ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        primary: ColorData.primaryColor,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DiscoverTenantScreen()));
-                                      },
-                                      child: Text("Find New"),
-                                    )
-                                  ],
-                                ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DiscoverTenantScreen()));
+                                    },
+                                    child: Text("Find New"),
+                                  )
+                                ],
                               ),
                             ),
                           ),
@@ -409,37 +407,35 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
   }
 
   Widget _getNoLeaseWidget(String title) {
-    return Expanded(
-      child: Container(
-        margin: EdgeInsets.all(10.0),
-        height: 199,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Center(
-            child: Padding(
-          padding: const EdgeInsets.only(left: 20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              BuildText(
-                text: title,
-                fontSize: 16,
-              ),
-              SizedBox(
-                height: 8.0,
-              ),
-              Text(
-                  "Your landlord needs to connect with you in the system and share the lease with you",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
-                  )),
-            ],
-          ),
-        )),
+    return Container(
+      margin: EdgeInsets.all(10.0),
+      height: 199,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
       ),
+      child: Center(
+          child: Padding(
+        padding: const EdgeInsets.only(left: 20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            BuildText(
+              text: title,
+              fontSize: 16,
+            ),
+            SizedBox(
+              height: 8.0,
+            ),
+            Text(
+                "Your landlord needs to connect with you in the system and share the lease with you",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                )),
+          ],
+        ),
+      )),
     );
   }
 

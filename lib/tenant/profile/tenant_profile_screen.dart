@@ -83,7 +83,7 @@ class _ProfileTenantScreenState extends State<ProfileTenantScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: AssetImage("assets/image/khalti.png"),
+                          image: AssetImage("assets/image/avatar.png"),
                           fit: BoxFit.scaleDown,
                         ),
                       ),
@@ -181,7 +181,7 @@ class _ProfileTenantScreenState extends State<ProfileTenantScreen> {
                     width: double.infinity,
                     color: ColorData.primaryColor,
                     height: height * 20,
-                    child: Image.asset('assets/image/avatar.png'),
+                    child: Image.asset('assets/image/logo_image.png'),
                   )
                 ],
               ),
