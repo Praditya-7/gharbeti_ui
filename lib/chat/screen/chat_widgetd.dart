@@ -1,5 +1,6 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gharbeti_ui/chat/model/chat_user.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
@@ -38,8 +39,7 @@ class BuildChatListingWidget extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: width * 8,
-              backgroundImage: NetworkImage(
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXtphDb-HCEglyBvY3gM3K8PrTFGE5rd61dIum_PAYyCOsPZlSj5Gp7PIWt9FGSsDxTk4&usqp=CAU"),
+              backgroundImage: const AssetImage("assets/image/avatar.png"),
             ),
             SizedBox(
               width: width * 5,
@@ -242,7 +242,7 @@ class _NewMessageState extends State<NewMessage> {
                                 fontFamily: 'Noto Sans JP',
                                 fontSize: widget.width * 4,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xffB2B2B2),
+                                color: const Color(0xffB2B2B2),
                               ),
                             ),
                             onChanged: (value) {

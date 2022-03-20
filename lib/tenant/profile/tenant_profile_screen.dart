@@ -83,9 +83,7 @@ class _ProfileTenantScreenState extends State<ProfileTenantScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: NetworkImage(
-                            'https://googleflutter.com/sample_image.jpg',
-                          ),
+                          image: AssetImage("assets/image/khalti.png"),
                           fit: BoxFit.scaleDown,
                         ),
                       ),

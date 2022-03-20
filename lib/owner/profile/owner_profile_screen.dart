@@ -81,9 +81,7 @@ class _ProfileScreenOwnerState extends State<ProfileScreenOwner> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: NetworkImage(
-                            'https://googleflutter.com/sample_image.jpg',
-                          ),
+                          image: AssetImage("assets/image/khalti.png"),
                           fit: BoxFit.scaleDown,
                         ),
                       ),
