@@ -81,7 +81,7 @@ class _ProfileScreenOwnerState extends State<ProfileScreenOwner> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: AssetImage("assets/image/khalti.png"),
+                          image: AssetImage("assets/image/avatar.png"),
                           fit: BoxFit.scaleDown,
                         ),
                       ),

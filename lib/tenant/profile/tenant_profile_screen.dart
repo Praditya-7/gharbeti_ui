@@ -181,7 +181,7 @@ class _ProfileTenantScreenState extends State<ProfileTenantScreen> {
                     width: double.infinity,
                     color: ColorData.primaryColor,
                     height: height * 20,
-                    child: Image.asset('assets/image/logo_image.png'),
+                    child: Image.asset('assets/image/avatar.png'),
                   )
                 ],
               ),
