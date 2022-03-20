@@ -199,7 +199,7 @@ class _PayNowState extends State<PayNow> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Radio(
-                            value: "cash",
+                            value: "Cash",
                             groupValue: _payOption,
                             onChanged: (value) {
                               setState(() {
@@ -246,7 +246,7 @@ class _PayNowState extends State<PayNow> {
                               onFailure: (onFailure) {},
                               onCancel: () {},
                             );
-                          }
+                          } else {}
                         },
                         style: ElevatedButton.styleFrom(
                           primary: ColorData.primaryColor,
