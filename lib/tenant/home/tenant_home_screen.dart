@@ -335,15 +335,14 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Container(
-                                        width: width * 20,
+                                        width: width * 25,
                                         height: height * 10,
                                         padding: EdgeInsets.all(10.0),
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
-                                            image: NetworkImage(
-                                              'https://googleflutter.com/sample_image.jpg',
-                                            ),
+                                            image: AssetImage(
+                                                'assets/image/avatar.png'),
                                             fit: BoxFit.scaleDown,
                                           ),
                                         ),
