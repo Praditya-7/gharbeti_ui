@@ -56,6 +56,8 @@ dependencies:
   carousel_slider:
   khalti_flutter: ^2.0.0
   url_launcher: ^6.0.18
+  firebase_auth: ^2.0.0
+
 
 
 

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/auth/auth_service.dart';
 import 'package:gharbeti_ui/login/screen/login_screen.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/screen_config.dart';
@@ -366,33 +367,34 @@ class InitState extends State<SignUpScreen> {
                     },
                     child: Container(
                       alignment: Alignment.center,
-                      margin: EdgeInsets.only(left: 20, right: 20, top: 50),
-                      padding: EdgeInsets.only(left: 20, right: 20),
+                      margin:
+                          const EdgeInsets.only(left: 20, right: 20, top: 50),
+                      padding: const EdgeInsets.only(left: 20, right: 20),
                       height: 54,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Color(0xff09548c),
-                        boxShadow: [
+                        color: const Color(0xff09548c),
+                        boxShadow: const [
                           BoxShadow(
                               offset: Offset(0, 10),
                               blurRadius: 50,
                               color: Color(0xffEEEEEE)),
                         ],
                       ),
-                      child: Text(
+                      child: const Text(
                         "REGISTER",
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 10),
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Have Already Member?  "),
+                        const Text("Have Already Member?  "),
                         GestureDetector(
-                          child: Text(
+                          child: const Text(
                             "Login Now",
                             style: TextStyle(color: Color(0xff09548c)),
                           ),
@@ -459,6 +461,16 @@ class InitState extends State<SignUpScreen> {
         });
       });
     });
+    //New Code
+    try {
+      final newUser = await AuthService.createAccount(
+          _email.text.toString(), _password.text.toString());
+      if (newUser != null) {
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   Map<String, dynamic> addData(Users model) {

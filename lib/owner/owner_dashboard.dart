@@ -129,7 +129,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen>
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
         child: GNav(
           curve: Curves.fastOutSlowIn,
-          duration: Duration(milliseconds: 100),
+          duration: const Duration(milliseconds: 100),
           tabs: [
             gTabs("Home", OwnerDashboard.home),
             gTabs("Tenants", OwnerDashboard.tenant),

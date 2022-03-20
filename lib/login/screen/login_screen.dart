@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/auth/auth_service.dart';
 import 'package:gharbeti_ui/owner/owner_dashboard.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/progress_indicator_widget.dart';
@@ -239,52 +240,73 @@ class StartState extends State<LoginScreen> {
       });
       showErrorMessage("Password can not be empty", context);
     } else {
-      var type = "";
-      var roomName = "";
-      var query = _fireStore.collection('Users').get();
-      await query.then((value) {
-        Map<String, dynamic> addUser = {};
-        if (value.docs.isEmpty) {
-          //Please  Register
-        } else {
-          var count = 0;
-          for (int i = 0; i < value.docs.length; i++) {
-            var emailDatabase = value.docs[i]["Email"];
-            var passwordDatabase = value.docs[i]["Password"];
-            if (email == emailDatabase && pass == passwordDatabase) {
-              type = value.docs[i]["Type"];
-              roomName = value.docs[i]["Room Name"];
-              count += 1;
-              break;
-            }
-          }
-          if (count > 0) {
-            setState(() {
-              isLoading = false;
-            });
-            pref.setString('type', type);
-            if (type == "tenant") {
-              pref.setString('roomName', roomName);
-              pref.setString('email', email);
-              Navigator.pushReplacementNamed(
-                context,
-                TenantDashboardScreen.route,
-              );
-            } else {
-              pref.setString('email', email);
-              Navigator.pushReplacementNamed(
-                  context, OwnerDashboardScreen.route);
-            }
-          } else {
-            setState(() {
-              isLoading = false;
-            });
-            showErrorMessage("Invalid email or password", context);
+      //NEW CODE
+      try {
+        final user = await AuthService.loginWithEmail(email, pass, context);
+        setState(() {
+          isLoading = false;
+        });
+        if (user != null) {
+          if (user.emailVerified) {
+            pref.setBool('login', true);
+            //OLD
+            var type = "";
+            var roomName = "";
+            var query = _fireStore.collection('Users').get();
+            await query.then((value) {
+              if (value.docs.isEmpty) {
+                //Please  Register
+              } else {
+                var count = 0;
+                for (int i = 0; i < value.docs.length; i++) {
+                  var emailDatabase = value.docs[i]["Email"];
+                  var passwordDatabase = value.docs[i]["Password"];
+                  if (email == emailDatabase && pass == passwordDatabase) {
+                    type = value.docs[i]["Type"];
+                    roomName = value.docs[i]["Room Name"];
+                    count += 1;
+                    break;
+                  }
+                }
+                if (count > 0) {
+                  setState(() {
+                    isLoading = false;
+                  });
+                  pref.setString('type', type);
+                  if (type == "tenant") {
+                    pref.setString('roomName', roomName);
+                    pref.setString('email', email);
+                    Navigator.pushReplacementNamed(
+                      context,
+                      TenantDashboardScreen.route,
+                    );
+                  } else {
+                    pref.setString('email', email);
+                    Navigator.pushReplacementNamed(
+                        context, OwnerDashboardScreen.route);
+                  }
+                } else {
+                  setState(() {
+                    isLoading = false;
+                  });
+                  showErrorMessage("Invalid email or password", context);
 
-            //show Invalid email and password Message
+                  //show Invalid email and password Message
+                }
+              }
+            });
+          } else {
+            showErrorMessage("Please verify your email for login", context);
           }
+        } else {
+          showErrorMessage("Invalid email or password", context);
         }
-      });
+      } catch (e) {
+        print(e);
+      }
+
+      //OLD
+
     }
   }
 
