@@ -30,7 +30,7 @@ class InitState extends State<SignUpScreen> {
   String selectedUserType = 'owner';
   double height = 0.0;
   double width = 0.0;
-  String genderDropdownValue = 'Male';
+  String selectedGender = 'Male';
 
   // CollectionReference users = _fireStore.collection('users');
 
@@ -98,52 +98,108 @@ class InitState extends State<SignUpScreen> {
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Row(children: [
-                          const Icon(
-                            Icons.person_pin,
-                            color: Color(0xff09548c),
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          Text(
-                            'Gender',
-                            style: TextStyle(
-                                color: Colors.grey[700], fontSize: 16),
-                          )
-                        ]),
                         Row(
                           children: [
-                            SafeArea(
-                              child: DropdownButton<String>(
-                                alignment: AlignmentDirectional.topStart,
-                                underline: Container(
-                                  height: 0,
-                                ),
-                                value: genderDropdownValue,
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    genderDropdownValue = newValue!;
-                                  });
-                                },
-                                icon: Icon(Icons.arrow_drop_down_sharp),
-                                items: <String>[
-                                  'Male',
-                                  'Female',
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              ),
+                            const Icon(
+                              Icons.person_pin,
+                              color: Color(0xff09548c),
                             ),
-                            SizedBox(
-                              width: width * 5,
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              'Gender',
+                              style: TextStyle(
+                                  color: Colors.grey[700], fontSize: 16),
                             ),
                           ],
-                        )
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(
+                                  () {
+                                    selectedGender = 'Male';
+                                  },
+                                );
+                              },
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.only(top: 10, bottom: 10),
+                                padding:
+                                    const EdgeInsets.only(left: 5, right: 5),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10),
+                                  ),
+                                  color: selectedGender == 'Male'
+                                      ? const Color(0xff09548c)
+                                      : const Color(0xffEEEEEE),
+                                ),
+                                child: Container(
+                                  margin: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                    'Male',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: selectedGender == 'Male'
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(
+                                  () {
+                                    selectedGender = 'Female';
+                                  },
+                                );
+                              },
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.only(top: 10, bottom: 10),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                  ),
+                                  color: selectedGender == 'Female'
+                                      ? Color(0xff09548c)
+                                      : Color(0xffEEEEEE),
+                                ),
+                                child: Container(
+                                  margin: EdgeInsets.all(10.0),
+                                  child: Text(
+                                    'Female',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: selectedGender == 'Female'
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -422,7 +478,7 @@ class InitState extends State<SignUpScreen> {
       type: selectedUserType,
       roomName: "",
       pdfLink: "",
-      gender: genderDropdownValue,
+      gender: selectedGender,
       fileName: "",
     );
     var query = _fireStore.collection('Users').get();

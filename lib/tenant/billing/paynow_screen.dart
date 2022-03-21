@@ -238,9 +238,7 @@ class _PayNowState extends State<PayNow> {
                             KhaltiScope.of(context).pay(
                               config: config,
                               preferences: [
-                                PaymentPreference.connectIPS,
-                                PaymentPreference.eBanking,
-                                PaymentPreference.sct,
+                                PaymentPreference.khalti,
                               ],
                               onSuccess: (value) {},
                               onFailure: (onFailure) {},

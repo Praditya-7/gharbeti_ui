@@ -67,126 +67,133 @@ class _ProfileTenantScreenState extends State<ProfileTenantScreen> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(240, 240, 240, 1),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-              color: Colors.white,
-              child: Column(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ListTile(
-                    leading: Container(
-                      width: 75,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: AssetImage("assets/image/avatar.png"),
-                          fit: BoxFit.scaleDown,
-                        ),
-                      ),
-                    ),
-                    title: Text(userData.name.toString()),
-                    subtitle: Text(userData.email.toString()),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  GetListTile(
-                    onTap: () {
-                      //ROUTE CODE HERE
-                    },
-                    title: 'Edit Profile',
-                    leadingIconData: Icons.person_pin,
-                    trailingIconData: CupertinoIcons.chevron_forward,
-                  ),
-                  div,
-                  GetListTile(
-                    onTap: () {
-                      //ROUTE CODE HERE
-                    },
-                    title: 'Preferences',
-                    leadingIconData: CupertinoIcons.slider_horizontal_3,
-                    trailingIconData: CupertinoIcons.chevron_forward,
-                  ),
-                  div,
-                  SizedBox(
-                    height: 40,
-                    child: SwitchListTile(
-                      activeColor: Color(0xff09548c),
-                      title: Text(
-                        'Notifications',
-                        style: TextStyle(
-                          color: Color(0xff09548c),
-                        ),
-                      ),
-                      value: _toggleNotifications,
-                      onChanged: (bool value) {
-                        setState(() {
-                          _toggleNotifications = value;
-                        });
-                      },
-                      secondary: Icon(
-                        Icons.notifications_none,
-                        color: Color(0xff09548c),
-                      ),
-                    ),
-                  ),
-                  div,
-                  GetListTile(
-                    onTap: () {
-                      //ROUTE CODE HERE
-                      Navigator.of(context).pushNamed(AddDocuments.route);
-                    },
-                    title: 'Documents',
-                    leadingIconData: Icons.folder_open,
-                    trailingIconData: CupertinoIcons.chevron_forward,
-                  ),
-                  div,
-                  GetListTile(
-                    onTap: () {
-                      //ROUTE CODE HERE
-                    },
-                    title: 'Help Center',
-                    trailingIconData: CupertinoIcons.chevron_forward,
-                    leadingIconData: Icons.help_center,
-                  ),
-                  div,
-                  GetListTile(
-                    onTap: () {
-                      //ROUTE CODE HERE
-                    },
-                    title: 'About',
-                    trailingIconData: CupertinoIcons.chevron_forward,
-                    leadingIconData: Icons.alternate_email,
-                  ),
-                  div,
-                  GetListTile(
-                    onTap: () async {
-                      //ROUTE CODE HERE
-                      final pref = await SharedPreferences.getInstance();
-                      pref.setString('roomName', '');
-                      pref.setString('email', '');
-                      Navigator.pushReplacementNamed(
-                          context, LoginScreen.route);
-                    },
-                    title: 'Logout',
-                    trailingIconData: CupertinoIcons.chevron_forward,
-                    leadingIconData: Icons.logout,
-                  ),
-                  div,
                   Container(
-                    width: double.infinity,
-                    color: ColorData.primaryColor,
-                    height: height * 20,
-                    child: Image.asset('assets/image/logo_image.png'),
-                  )
+                    padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                    color: Colors.white,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ListTile(
+                          leading: Container(
+                            width: 75,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage("assets/image/avatar.png"),
+                                fit: BoxFit.scaleDown,
+                              ),
+                            ),
+                          ),
+                          title: Text(userData.name.toString()),
+                          subtitle: Text(userData.email.toString()),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        GetListTile(
+                          onTap: () {
+                            //ROUTE CODE HERE
+                          },
+                          title: 'Edit Profile',
+                          leadingIconData: Icons.person_pin,
+                          trailingIconData: CupertinoIcons.chevron_forward,
+                        ),
+                        div,
+                        GetListTile(
+                          onTap: () {
+                            //ROUTE CODE HERE
+                          },
+                          title: 'Preferences',
+                          leadingIconData: CupertinoIcons.slider_horizontal_3,
+                          trailingIconData: CupertinoIcons.chevron_forward,
+                        ),
+                        div,
+                        SizedBox(
+                          height: 40,
+                          child: SwitchListTile(
+                            activeColor: Color(0xff09548c),
+                            title: Text(
+                              'Notifications',
+                              style: TextStyle(
+                                color: Color(0xff09548c),
+                              ),
+                            ),
+                            value: _toggleNotifications,
+                            onChanged: (bool value) {
+                              setState(() {
+                                _toggleNotifications = value;
+                              });
+                            },
+                            secondary: Icon(
+                              Icons.notifications_none,
+                              color: Color(0xff09548c),
+                            ),
+                          ),
+                        ),
+                        div,
+                        GetListTile(
+                          onTap: () {
+                            //ROUTE CODE HERE
+                            Navigator.of(context).pushNamed(AddDocuments.route);
+                          },
+                          title: 'Documents',
+                          leadingIconData: Icons.folder_open,
+                          trailingIconData: CupertinoIcons.chevron_forward,
+                        ),
+                        div,
+                        GetListTile(
+                          onTap: () {
+                            //ROUTE CODE HERE
+                          },
+                          title: 'Help Center',
+                          trailingIconData: CupertinoIcons.chevron_forward,
+                          leadingIconData: Icons.help_center,
+                        ),
+                        div,
+                        GetListTile(
+                          onTap: () {
+                            //ROUTE CODE HERE
+                          },
+                          title: 'About',
+                          trailingIconData: CupertinoIcons.chevron_forward,
+                          leadingIconData: Icons.alternate_email,
+                        ),
+                        div,
+                        GetListTile(
+                          onTap: () async {
+                            //ROUTE CODE HERE
+                            final pref = await SharedPreferences.getInstance();
+                            pref.setString('roomName', '');
+                            pref.setString('email', '');
+                            Navigator.pushReplacementNamed(
+                                context, LoginScreen.route);
+                          },
+                          title: 'Logout',
+                          trailingIconData: CupertinoIcons.chevron_forward,
+                          leadingIconData: Icons.logout,
+                        ),
+                        div,
+                      ],
+                    ),
+                  ),
                 ],
               ),
-            ),
-          ],
+              Container(
+                width: double.infinity,
+                color: ColorData.primaryColor,
+                height: height * 18,
+                child: Image.asset('assets/image/logo_image.png'),
+              ),
+            ],
+          ),
         ),
       ),
     );
