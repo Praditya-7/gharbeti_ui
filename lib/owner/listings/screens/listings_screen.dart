@@ -39,7 +39,10 @@ class _ListingsScreenState extends State<ListingsScreen> {
     roomList.clear();
     final pref = await SharedPreferences.getInstance();
     var email = pref.getString("email");
-    var query = _fireStore.collection('Rooms').where("OwnerEmail", isEqualTo: email).get();
+    var query = _fireStore
+        .collection('Rooms')
+        .where("OwnerEmail", isEqualTo: email)
+        .get();
     await query.then((value) {
       if (value.docs.isNotEmpty) {
         for (var doc in value.docs) {
@@ -62,7 +65,8 @@ class _ListingsScreenState extends State<ListingsScreen> {
       backgroundColor: Color.fromRGBO(240, 240, 240, 1),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          var abc = Navigator.pushNamed(context, AddListingsScreen.route) as bool;
+          var abc =
+              Navigator.pushNamed(context, AddListingsScreen.route) as bool;
           if (abc) {
             isLoading = true;
             setData();
@@ -80,13 +84,21 @@ class _ListingsScreenState extends State<ListingsScreen> {
             SingleChildScrollView(
               child: roomCount == 0
                   ? Container(
-                      child: Text('No Listing Found'),
+                      margin: EdgeInsets.all(12),
+                      color: Colors.white,
+                      padding: EdgeInsets.all(8),
+                      child: Center(
+                        child: Text(
+                          "No Listing Found",
+                        ),
+                      ),
                     )
                   : ListView.separated(
                       shrinkWrap: true,
                       physics: BouncingScrollPhysics(),
                       itemCount: roomCount,
-                      separatorBuilder: (BuildContext context, int index) => Divider(
+                      separatorBuilder: (BuildContext context, int index) =>
+                          Divider(
                         height: 0.1,
                         indent: 0,
                         thickness: 0.1,
