@@ -315,7 +315,10 @@ class _DiscoverListingDetailState extends State<DiscoverListingDetail> {
                   width: double.infinity,
                   color: Colors.white,
                   padding: EdgeInsets.all(10.0),
-                  child: Text(args.description.toString()),
+                  child: Text(
+                    args.description.toString(),
+                    softWrap: true,
+                  ),
                 ),
 
                 Container(

@@ -37,45 +37,47 @@ class StartState extends State<LoginScreen> {
 
   initWidget() {
     return Scaffold(
-        body: Stack(
-      children: [
-        _createBody(),
-        Visibility(visible: isLoading, child: CustomProgressIndicatorWidget())
-      ],
-    ));
+      body: Stack(
+        children: [
+          _createBody(),
+          Visibility(visible: isLoading, child: CustomProgressIndicatorWidget())
+        ],
+      ),
+    );
   }
 
   Widget _createBody() {
     return SingleChildScrollView(
-        child: Container(
-      width: double.infinity,
-      height: height * 130,
-      color: ColorData.primaryColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: 50),
-            child: Image.asset(
-              "assets/image/logo_image.png",
-              height: 250,
-              width: 250,
-            ),
-          ),
-          Expanded(
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    topRight: Radius.circular(15)),
+      child: Container(
+        width: double.infinity,
+        height: height * 130,
+        color: ColorData.primaryColor,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 50),
+              child: Image.asset(
+                "assets/image/logo_image.png",
+                height: 250,
+                width: 250,
               ),
-              child: _createLoginBody(),
             ),
-          ),
-        ],
+            Expanded(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15)),
+                ),
+                child: _createLoginBody(),
+              ),
+            ),
+          ],
+        ),
       ),
-    ));
+    );
   }
 
   Widget _createLoginBody() {
@@ -149,18 +151,6 @@ class StartState extends State<LoginScreen> {
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
             ),
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-          alignment: Alignment.centerRight,
-          child: GestureDetector(
-            onTap: () {
-              // Write Click Listener Code Here
-              // Navigator.of(context)
-              //     .pushReplacementNamed(ForgotPassword.route);
-            },
-            child: const Text("Forgot Password?"),
           ),
         ),
         GestureDetector(
@@ -243,9 +233,6 @@ class StartState extends State<LoginScreen> {
       //NEW CODE
       try {
         final user = await AuthService.loginWithEmail(email, pass, context);
-        setState(() {
-          isLoading = false;
-        });
         if (user != null) {
           if (user.emailVerified) {
             pref.setBool('login', true);

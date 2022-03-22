@@ -136,10 +136,6 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            Visibility(
-              visible: isLoading,
-              child: CustomProgressIndicatorWidget(),
-            ),
             SingleChildScrollView(
               child: Container(
                 //margin: EdgeInsets.all(10.0),
@@ -399,6 +395,10 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                       ),
               ),
             ),
+            Visibility(
+              visible: isLoading,
+              child: CustomProgressIndicatorWidget(),
+            ),
           ],
         ),
       ),
@@ -440,7 +440,6 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 }

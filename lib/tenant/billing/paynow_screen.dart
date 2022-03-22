@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gharbeti_ui/notification/entity/notification_container.dart';
 import 'package:gharbeti_ui/owner/billing/entity/billing_container.dart';
 import 'package:gharbeti_ui/shared/color.dart';
 import 'package:gharbeti_ui/shared/widget/build_text.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
 class PayNow extends StatefulWidget {
   static String route = '/payNowScreen';
@@ -102,30 +107,29 @@ class _PayNowState extends State<PayNow> {
                     fontSize: 16,
                   ),
                   //Payment Options
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const [
-                          Image(
-                            image: AssetImage("assets/image/khalti.png"),
-                            width: 100,
-                            height: 100,
-                          ),
-                          BuildText(
-                            text: "CASH IN HAND",
-                            fontSize: 18,
-                            weight: FontWeight.bold,
-                          ),
-                        ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      Image(
+                        image: AssetImage("assets/image/khalti.png"),
+                        width: 100,
+                        height: 100,
                       ),
-                      const SizedBox(
-                        height: 30,
+                      BuildText(
+                        text: "CASH IN HAND",
+                        fontSize: 18,
+                        weight: FontWeight.bold,
                       ),
                     ],
                   ),
-                  // cah in hand
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  // cash in hand
                 ],
               ),
             ),
@@ -244,7 +248,18 @@ class _PayNowState extends State<PayNow> {
                               onFailure: (onFailure) {},
                               onCancel: () {},
                             );
-                          } else {}
+                          } else if (_payOption == "Cash") {
+                            notificationQuery();
+                            Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content:
+                                    Text('Payment Notification sent to Owner'),
+                              ),
+                            );
+                          } else {
+                            //
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           primary: ColorData.primaryColor,
@@ -259,11 +274,67 @@ class _PayNowState extends State<PayNow> {
         },
         style: ElevatedButton.styleFrom(
           primary: ColorData.primaryColor,
-          minimumSize: Size(330, 41),
+          minimumSize: const Size(330, 41),
         ),
         child: const Text("Pay Now"),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  paymentQuery() async {
+    final pref = await SharedPreferences.getInstance();
+    String email = pref.getString("email").toString();
+  }
+
+  notificationQuery() async {
+    final pref = await SharedPreferences.getInstance();
+    String email = pref.getString("email").toString();
+    Timestamp time = Timestamp.fromDate(DateTime.now());
+
+    String bodyMsg = "Cash payment of Rs. ${args.total} \nBy $email";
+    String titleMsg = "Cash Payment for month ${args.month}";
+
+    var notificationModel = Notifications(
+      from: pref.getString("email"),
+      to: args.ownerEmail.toString(),
+      title: titleMsg,
+      body: bodyMsg,
+      time: time,
+      status: "Request",
+      month: args.month.toString(),
+    );
+
+    var query1 = _fireStore.collection('Notifications').get();
+    await query1.then((value) {
+      Map<String, dynamic> addNotification = {};
+      if (value.docs.isEmpty) {
+        addNotification = addNotificationData(notificationModel);
+      } else {
+        addNotification = addNotificationData(notificationModel);
+      }
+      _fireStore
+          .collection('Notifications')
+          .add(addNotification)
+          .then((value) async {
+        print("Notification Data Updated");
+        // Navigator.pop(context);
+      }).catchError((error) {
+        print("Failed to add data: $error");
+      });
+    });
+  }
+
+  Map<String, dynamic> addNotificationData(Notifications model) {
+    Map<String, dynamic> data = <String, dynamic>{
+      'From': model.from,
+      'To': model.to,
+      'Title': model.title,
+      'Body': model.body,
+      'Time': model.time,
+      'Status': model.status,
+      'Month': model.month,
+    };
+    return data;
   }
 }

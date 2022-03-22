@@ -7,6 +7,8 @@ class Notifications {
   String? documentId;
   final String? body;
   final Timestamp? time;
+  final String? status;
+  final String? month;
 
   Notifications({
     this.from,
@@ -14,6 +16,8 @@ class Notifications {
     this.title,
     this.body,
     this.time,
+    this.status,
+    this.month,
   });
 
   factory Notifications.fromJson(Map<String, dynamic> json) {
@@ -23,6 +27,8 @@ class Notifications {
       title: json['Title'],
       body: json['Body'],
       time: json['Time'],
+      status: json['Status'],
+      month: json['Month'],
     );
   }
 
@@ -32,7 +38,9 @@ class Notifications {
         to = snap.get('To'),
         title = snap.get('Title'),
         body = snap.get('Body'),
-        time = snap.get('Time');
+        time = snap.get('Time'),
+        status = snap.get('Status'),
+        month = snap.get('Month');
 
   toJson() {
     return {
@@ -41,6 +49,8 @@ class Notifications {
       'Title': title,
       'Body': body,
       'Time': time,
+      'Status': status,
+      'Month': month,
     };
   }
 }

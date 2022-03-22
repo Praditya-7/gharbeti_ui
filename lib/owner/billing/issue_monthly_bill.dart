@@ -1080,6 +1080,8 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
       title: titleMsg,
       body: bodyMsg,
       time: time,
+      status: "Pending",
+      month: billMonthDropdownValue,
     );
 
     var query1 = _fireStore.collection('Notifications').get();
@@ -1116,6 +1118,8 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
       'Title': model.title,
       'Body': model.body,
       'Time': model.time,
+      'Status': model.status,
+      'Month': model.month,
     };
     return data;
   }
