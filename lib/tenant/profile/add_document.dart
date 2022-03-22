@@ -128,7 +128,8 @@ class _AddDocumentsState extends State<AddDocuments> {
                                 color: const Color(0xffDCE0F1),
                               ),
                               margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.only(
+                                  left: 20.0, right: 20.0),
                               child: DropdownButton<String>(
                                 isExpanded: true,
                                 hint: const Text('Type*'),

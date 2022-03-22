@@ -33,7 +33,8 @@ class TenantScreenWidget extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(TenantDetail.route, arguments: tenantData);
+        Navigator.of(context)
+            .pushNamed(TenantDetail.route, arguments: tenantData);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -65,7 +66,9 @@ class TenantScreenWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  roomData.type.toString() + ' No. ' + tenantData.roomName.toString(),
+                  roomData.type.toString() +
+                      ' No. ' +
+                      tenantData.roomName.toString(),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -74,7 +77,7 @@ class TenantScreenWidget extends StatelessWidget {
                 Row(
                   children: [
                     const Text(
-                      'Due: ',
+                      'Rent: ',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -83,7 +86,9 @@ class TenantScreenWidget extends StatelessWidget {
                       //ERROR HERE IN DUE VALUE
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        color: (roomData.rent.toString() == 0) ? Color(0xff30d472) : Colors.orange,
+                        color: (roomData.rent.toString() == 0)
+                            ? Color(0xff30d472)
+                            : Colors.orange,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

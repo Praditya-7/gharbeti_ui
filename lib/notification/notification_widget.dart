@@ -40,174 +40,181 @@ class _NotificationWidgetState extends State<NotificationWidget> {
         DateFormat.yMMMMd().format(unformattedDate!).toString();
     //
     if (widget.data.status == "Pending" || widget.data.status == "Paid") {
-      return Container(
-        margin: const EdgeInsets.all(10),
-        padding: const EdgeInsets.all(10),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //Image and Msg
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Image.asset(
-                  'assets/image/logo_image.png',
-                  width: widget.width * 13,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.data.title.toString(),
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      widget.data.body.toString(),
-                      softWrap: true,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            //Time
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(formattedTime),
-            ),
-          ],
+      return SafeArea(
+        child: Container(
+          margin: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(12),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //Image and Msg
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/image/logo_image.png',
+                    width: widget.width * 8,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.data.title.toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 12),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        widget.data.body.toString(),
+                        softWrap: true,
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              //Time
+              Text(
+                formattedTime,
+                style: TextStyle(fontSize: 10),
+              ),
+            ],
+          ),
         ),
       );
     } else if (widget.data.status == "Request") {
-      return Container(
-        margin: const EdgeInsets.all(10),
-        padding: const EdgeInsets.all(10),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //Image and Msg
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Image.asset(
-                  'assets/image/logo_image.png',
-                  width: widget.width * 13,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.data.title.toString(),
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      widget.data.body.toString(),
-                      softWrap: true,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            //Time
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    setState(
-                      () {
-                        option = 'Yes';
-                      },
-                    );
-                    billingQuery();
-                    notificationQuery();
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 10, bottom: 10),
-                    padding: const EdgeInsets.only(left: 5, right: 5),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1.0,
-                      ),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
-                      ),
-                      color: option == 'Yes'
-                          ? const Color(0xff09548c)
-                          : const Color(0xffEEEEEE),
-                    ),
-                    child: Container(
-                      margin: const EdgeInsets.all(10.0),
-                      child: Text(
-                        'Yes',
-                        textAlign: TextAlign.center,
+      return SafeArea(
+        child: Container(
+          margin: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              //Image and Msg
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Image.asset(
+                    'assets/image/logo_image.png',
+                    width: widget.width * 8,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.data.title.toString(),
                         style: TextStyle(
-                          color: option == 'Yes' ? Colors.white : Colors.black,
-                          fontSize: 15.0,
+                            fontWeight: FontWeight.bold, fontSize: 12),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        widget.data.body.toString(),
+                        softWrap: true,
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              //Time
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(
+                        () {
+                          option = 'Yes';
+                        },
+                      );
+                      billingQuery();
+                      notificationQuery();
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1.0,
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                        ),
+                        color: option == 'Yes'
+                            ? const Color(0xff09548c)
+                            : const Color(0xffEEEEEE),
+                      ),
+                      child: Container(
+                        margin: const EdgeInsets.all(10.0),
+                        child: Text(
+                          'Yes',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color:
+                                option == 'Yes' ? Colors.white : Colors.black,
+                            fontSize: 15.0,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(
-                      () {
-                        option = 'No';
-                      },
-                    );
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 10, bottom: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1.0,
-                      ),
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      ),
-                      color: option == 'No'
-                          ? Color(0xff09548c)
-                          : Color(0xffEEEEEE),
-                    ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(
+                        () {
+                          option = 'No';
+                        },
+                      );
+                      Navigator.pop(context);
+                    },
                     child: Container(
-                      margin: EdgeInsets.all(10.0),
-                      child: Text(
-                        'No',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: option == 'No' ? Colors.white : Colors.black,
-                          fontSize: 15.0,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1.0,
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                        ),
+                        color: option == 'No'
+                            ? Color(0xff09548c)
+                            : Color(0xffEEEEEE),
+                      ),
+                      child: Container(
+                        margin: EdgeInsets.all(10.0),
+                        child: Text(
+                          'No',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: option == 'No' ? Colors.white : Colors.black,
+                            fontSize: 15.0,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       );
     } else {

@@ -114,9 +114,7 @@ class _TenantDetailState extends State<TenantDetail> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: NetworkImage(
-                              'https://googleflutter.com/sample_image.jpg',
-                            ),
+                            image: AssetImage('assets/image/avatar.png'),
                             fit: BoxFit.scaleDown,
                           ),
                         ),
