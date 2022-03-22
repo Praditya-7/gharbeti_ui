@@ -144,13 +144,13 @@ class _IssueMonthlyBillState extends State<IssueMonthlyBill> {
                           //Select Tenant
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                            padding: EdgeInsets.only(left: 20, right: 20),
+                            padding: EdgeInsets.only(left: 40, right: 40),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               color: Colors.grey[200],
                             ),
                             child: DropdownButton<String>(
-                              menuMaxHeight: height * 10,
+                              menuMaxHeight: height * 20,
                               isExpanded: true,
                               hint: Text(
                                 'Select Tenant*',

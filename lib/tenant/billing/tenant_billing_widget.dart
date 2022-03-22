@@ -66,7 +66,7 @@ class _TenantBillingWidgetState extends State<TenantBillingWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Rent of Month',
+                'Month',
               ),
               Text(
                 "${widget.data.month.toString()}",

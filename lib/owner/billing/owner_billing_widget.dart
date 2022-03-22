@@ -39,7 +39,7 @@ class _OwnerBillingWidgetState extends State<OwnerBillingWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Rs. ' + widget.data.rent.toString(),
+                'Rs. ' + widget.data.total.toString(),
                 style: const TextStyle(
                   color: Color(0xff09548c),
                   fontWeight: FontWeight.w500,
